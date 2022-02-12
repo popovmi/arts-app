@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PasswordService } from '../auth/password.service';
-import { CreateUserInput } from './create-user.input';
-import { UpdateUserInput } from './update-user.input';
-import { User } from './user.entity';
+import { CreateUserInput, UpdateUserInput } from './dto';
+import { User } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
@@ -14,7 +13,7 @@ export class UserService {
   ) {}
 
   async getUser(id: string): Promise<User> {
-    return this.userRepository.findOne({ id });
+    return this.userRepository.findOneOrFail({ id });
   }
 
   async getUsers(): Promise<User[]> {
@@ -36,10 +35,13 @@ export class UserService {
   }
 
   async updateUser(updateUserInput: UpdateUserInput): Promise<User> {
-    const { id, active, fullName, role } = updateUserInput.format();
-    const user = await this.userRepository.findOne({ id });
+    const { id, password, ...updateInput } = updateUserInput.format();
+    const user = await this.userRepository.findOneOrFail({ id });
 
-    Object.assign(user, { active, fullName, role });
+    Object.assign(user, {
+      ...updateInput,
+      ...(password ? { password: await this.passwordService.hash(password) } : {}),
+    });
 
     return await this.userRepository.save(user);
   }

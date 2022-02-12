@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Role } from './role.enum';
+import { Role } from '../role.enum';
 
 @Entity()
 export class User {

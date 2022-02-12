@@ -46,5 +46,5 @@ input UpdateUserInput {
   fullName: String
   role: Role
   active: Boolean
-  password: String!
+  password: String
 }

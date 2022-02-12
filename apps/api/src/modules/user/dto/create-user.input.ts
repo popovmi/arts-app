@@ -1,22 +1,22 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsBoolean, IsEnum, IsString } from 'class-validator';
-import { Role } from './role.enum';
+import { Role } from '../role.enum';
 
 @InputType()
-export class UpdateUserInput {
+export class CreateUserInput {
   @IsString()
-  @Field({ nullable: false })
-  id: string;
+  @Field()
+  username: string;
 
   @IsString()
-  @Field({ nullable: true })
+  @Field({})
   fullName: string;
 
   @IsEnum(Role)
-  @Field(() => Role, { nullable: true })
+  @Field(() => Role)
   role: Role;
 
-  @Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean)
   @IsBoolean()
   active: boolean;
 
@@ -27,6 +27,7 @@ export class UpdateUserInput {
   format() {
     return {
       ...this,
+      username: this.username.toUpperCase(),
       fullName: this.fullName
         .split(' ')
         .map((part) => part[0].toUpperCase() + part.slice(1))

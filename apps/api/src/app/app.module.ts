@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { AuthModule } from '../modules/auth/auth.module';
+import { AuthModule } from '../modules/auth';
 import { UserModule } from '../modules/user';
 import { DateScalar } from '../shared/scalar/date.scalar';
 
@@ -30,6 +30,7 @@ import { DateScalar } from '../shared/scalar/date.scalar';
       debug: true,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'apps/api/src/schema.gql'),
+      context: ({ req, res }) => ({ req, res }),
     }),
 
     UserModule,

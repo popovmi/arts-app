@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { User } from '../user/entity/user.entity';
 import { LoginInput } from './dto';
 import { PasswordService } from './password.service';
@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   public async validateCredentials({ username, password }: LoginInput) {
-    const user = await this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOne({ username: ILike(username) });
 
     if (!user || !(await this.passwordService.compare(password, user.password)))
       throw new UnauthorizedException('Неверные данные для входа');
@@ -21,4 +21,3 @@ export class AuthService {
     return user;
   }
 }
-

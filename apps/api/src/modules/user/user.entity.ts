@@ -15,6 +15,9 @@ export class User {
   @Column({ type: 'enum', enum: Role })
   role: Role;
 
+  @Column({ type: 'text' })
+  password: string;
+
   @Column({ default: true, type: 'boolean' })
   active: boolean;
 

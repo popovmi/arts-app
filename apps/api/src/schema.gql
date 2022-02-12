@@ -7,7 +7,7 @@ type User {
   username: String!
   fullName: String!
   role: String!
-  active: String!
+  active: Boolean!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -22,6 +22,7 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 input CreateUserInput {
@@ -29,6 +30,7 @@ input CreateUserInput {
   fullName: String!
   role: Role!
   active: Boolean!
+  password: String!
 }
 
 enum Role {
@@ -37,4 +39,12 @@ enum Role {
 
   """Simple user role"""
   USER
+}
+
+input UpdateUserInput {
+  id: String!
+  fullName: String
+  role: Role
+  active: Boolean
+  password: String!
 }

@@ -15,7 +15,7 @@ export class UserType {
   @Field(() => String)
   role: Role;
 
-  @Field(() => String)
+  @Field(() => Boolean)
   active: boolean;
 
   @Field(() => Date)

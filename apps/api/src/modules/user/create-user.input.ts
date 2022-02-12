@@ -9,7 +9,7 @@ export class CreateUserInput {
   username: string;
 
   @IsString()
-  @Field()
+  @Field({})
   fullName: string;
 
   @IsEnum(Role)
@@ -19,4 +19,19 @@ export class CreateUserInput {
   @Field(() => Boolean)
   @IsBoolean()
   active: boolean;
+
+  @IsString()
+  @Field()
+  password: string;
+
+  format() {
+    return {
+      ...this,
+      username: this.username.toUpperCase(),
+      fullName: this.fullName
+        .split(' ')
+        .map((part) => part[0].toUpperCase() + part.slice(1))
+        .join(' '),
+    };
+  }
 }

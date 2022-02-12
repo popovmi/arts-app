@@ -15,9 +15,19 @@ type User {
 """Date custom scalar type"""
 scalar Date
 
+type LoginResponse {
+  user: User!
+}
+
 type Query {
   user(id: String!): User!
   users: [User!]!
+  login(loginInput: LoginInput!): LoginResponse!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
 }
 
 type Mutation {

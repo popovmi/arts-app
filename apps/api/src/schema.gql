@@ -171,6 +171,7 @@ type Mutation {
   logout: Boolean!
   changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
   createProject(createProjectInput: CreateProjectInput!): Project!
+  updateProject(updateProjectInput: UpdateProjectInput!): Project!
 }
 
 input CreateUserInput {
@@ -199,6 +200,13 @@ input UpdateUserInput {
 
 input CreateProjectInput {
   name: String!
+  internal: Boolean
+  hasDesignDoc: Boolean
+}
+
+input UpdateProjectInput {
+  id: String!
+  name: String
   internal: Boolean
   hasDesignDoc: Boolean
 }

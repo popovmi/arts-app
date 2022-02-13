@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateProjectInput } from './dto';
 import { FindProjectArgs } from './dto/find-projects.args';
 import { ProjectResponse } from './dto/projects.response';
+import { UpdateProjectInput } from './dto/update-project.input';
 import { Project } from './entity/project.entity';
 
 @Injectable()
@@ -37,6 +38,17 @@ export class ProjectService {
       hasDesignDoc,
       internal,
       name,
+    });
+
+    return await this.projectRepository.save(project);
+  }
+
+  public async updateUser(updateProjectInput: UpdateProjectInput): Promise<Project> {
+    const { id, ...updateInput } = updateProjectInput.format();
+    const project = await this.projectRepository.findOneOrFail({ id });
+
+    Object.assign(project, {
+      ...updateInput,
     });
 
     return await this.projectRepository.save(project);

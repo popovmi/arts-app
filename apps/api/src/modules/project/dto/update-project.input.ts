@@ -10,22 +10,22 @@ export class UpdateProjectInput {
   @IsString()
   @IsOptional()
   @Field({ nullable: true })
-  name: string;
+  name?: string;
 
   @Field(() => Boolean, { nullable: true })
   @IsBoolean()
   @IsOptional()
-  internal: boolean;
+  internal?: boolean;
 
   @Field(() => Boolean, { nullable: true })
   @IsBoolean()
   @IsOptional()
-  hasDesignDoc: boolean;
+  hasDesignDoc?: boolean;
 
   format() {
     return {
       ...this,
-      name: this.name.toUpperCase(),
+      ...(this.name ? { name: this.name.toUpperCase() } : {}),
     };
   }
 }

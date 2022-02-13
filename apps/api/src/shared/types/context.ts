@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import { Session } from 'express-session';
 
 export interface AppContext {
   currentUserId?: string;
-  session?: Session;
+  session?: Request['session'];
   httpContext: {
     req: Request;
     res: Response;

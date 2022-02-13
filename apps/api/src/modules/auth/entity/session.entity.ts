@@ -9,6 +9,6 @@ export class Session {
   @Column({ type: 'jsonb' })
   sess: AppSessionData;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp with time zone' })
   expire: Date;
 }

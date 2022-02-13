@@ -1,13 +1,12 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { initTestData } from 'db/initTestData';
-import * as session from 'express-session';
 import * as pgSession from 'connect-pg-simple';
+import * as session from 'express-session';
+import { Pool } from 'pg';
+import { ApiConfigService } from 'shared/services/api-config.service';
 import { v4 } from 'uuid';
 import { AppModule } from './app/app.module';
-import { ApiConfigService } from 'shared/services/api-config.service';
-import { Pool } from 'pg';
 
 const PGSession = pgSession(session);
 
@@ -37,10 +36,6 @@ async function bootstrap() {
       }),
     })
   );
-
-  if (process.env.NODE_ENV === 'development') {
-    await initTestData(app);
-  }
 
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);

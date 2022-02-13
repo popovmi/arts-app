@@ -1,12 +1,13 @@
 import { ApolloDriver } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { Module, NestModule, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
+import { initTestData } from 'db/initTestData';
 import { AuthModule } from 'modules/auth';
 import { UserModule } from 'modules/user';
-import { SharedModule, ApiConfigService } from 'shared';
+import { ApiConfigService, SharedModule } from 'shared';
+import { EntityManager } from 'typeorm';
 
 @Module({
   imports: [
@@ -30,4 +31,12 @@ import { SharedModule, ApiConfigService } from 'shared';
     AuthModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationBootstrap {
+  constructor(@InjectEntityManager() readonly em: EntityManager, readonly config: ApiConfigService) {}
+
+  async onApplicationBootstrap() {
+    if (this.config.isDevelopment) {
+      await initTestData(this.em);
+    }
+  }
+}

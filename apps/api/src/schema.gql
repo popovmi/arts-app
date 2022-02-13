@@ -50,7 +50,6 @@ type LoginResponse {
 type Query {
   user(id: String!): User!
   users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
-  login(username: String!, password: String!): LoginResponse!
 }
 
 input UserFilterQuery {
@@ -118,6 +117,9 @@ enum OrderDirection {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  login(username: String!, password: String!): LoginResponse!
+  logout: Boolean!
+  changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
 }
 
 input CreateUserInput {

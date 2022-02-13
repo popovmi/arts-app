@@ -1,18 +1,16 @@
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
 import { User } from 'modules/user/entity/user.entity';
 import { Role } from 'modules/user/role.enum';
-import { Repository } from 'typeorm';
+import { EntityManager } from 'typeorm';
 
-export const initTestData = async (app: NestExpressApplication) => {
-  const repository = app.get<Repository<User>>(getRepositoryToken(User));
+export const initTestData = async (em: EntityManager) => {
+  const repository = em.getRepository(User);
   const data = [];
 
   data.push({
     username: `ADMIN`,
     role: Role.ADMIN,
-    active: false,
+    active: true,
     fullName: `Администратор`,
     password: await hash('USER', 10),
   });

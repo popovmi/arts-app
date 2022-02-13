@@ -16,17 +16,17 @@ export class UpdateUserInput {
   @IsEnum(Role)
   @IsOptional()
   @Field(() => Role, { nullable: true })
-  role: Role;
+  role?: Role;
 
   @Field(() => Boolean, { nullable: true })
   @IsBoolean()
   @IsOptional()
-  active: boolean;
+  active?: boolean;
 
   @IsString()
   @Field({ nullable: true })
   @IsOptional()
-  password: string;
+  password?: string;
 
   format() {
     return {

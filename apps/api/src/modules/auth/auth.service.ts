@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { User } from '../user/entity/user.entity';
 import { LoginArgs } from './dto';
+import { ChangePasswordArgs } from './dto/change-password.args';
 import { PasswordService } from './password.service';
 
 @Injectable()
@@ -19,5 +20,13 @@ export class AuthService {
       throw new UnauthorizedException('Неверные данные для входа');
 
     return user;
+  }
+
+  public async changePassword({ username, password, newPassword }: ChangePasswordArgs) {
+    const user = await this.validateCredentials({ username, password });
+    await this.userRepository.update(
+      { id: user.id },
+      { password: await this.passwordService.hash(newPassword) }
+    );
   }
 }

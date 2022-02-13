@@ -1,0 +1,204 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  username: String!
+  fullName: String!
+  role: String!
+  active: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type PageData {
+  count: Float!
+  take: Float!
+  skip: Float!
+}
+
+type UserResponse {
+  page: UserTypeConnection!
+  pageData: PageData
+}
+
+type UserTypeConnection {
+  edges: [UserTypeEdge!]
+  pageInfo: UserTypePageInfo
+}
+
+type UserTypeEdge {
+  cursor: String
+  node: User
+}
+
+type UserTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type LoginResponse {
+  user: User!
+}
+
+type Project {
+  id: String!
+  name: String!
+  internal: Boolean!
+  hasDesignDoc: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type ProjectResponse {
+  page: ProjectTypeConnection!
+  pageData: PageData
+}
+
+type ProjectTypeConnection {
+  edges: [ProjectTypeEdge!]
+  pageInfo: ProjectTypePageInfo
+}
+
+type ProjectTypeEdge {
+  cursor: String
+  node: Project
+}
+
+type ProjectTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type Query {
+  user(id: String!): User!
+  users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
+  whoAmI: User!
+  project(id: String!): Project!
+  projects(filter: ProjectFilterQuery, pagination: ConnectionArgs = {}, order: ProjectOrderQuery): ProjectResponse!
+}
+
+input UserFilterQuery {
+  AND: [UserFilterQuery!]
+  OR: [UserFilterQuery!]
+  id: StringFieldOption
+  username: StringFieldOption
+  fullName: StringFieldOption
+  role: StringFieldOption
+  active: BooleanFieldOption
+}
+
+input StringFieldOption {
+  is: String
+  not: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  notContains: String
+  startsWith: String
+  notStartsWith: String
+  endsWith: String
+  notEndsWith: String
+}
+
+input BooleanFieldOption {
+  is: Boolean
+  not: Boolean
+}
+
+input ConnectionArgs {
+  """Paginate before opaque cursor"""
+  before: String
+
+  """Paginate after opaque cursor"""
+  after: String
+
+  """Paginate first"""
+  first: Float
+
+  """Paginate last"""
+  last: Float
+}
+
+input UserOrderQuery {
+  username: OrderDirection
+  fullName: OrderDirection
+  active: OrderDirection
+  role: OrderDirection
+  id: OrderDirection
+}
+
+enum OrderDirection {
+  """Ascending"""
+  ASC
+
+  """Descending"""
+  DESC
+}
+
+input ProjectFilterQuery {
+  AND: [ProjectFilterQuery!]
+  OR: [ProjectFilterQuery!]
+  id: StringFieldOption
+  name: StringFieldOption
+  internal: BooleanFieldOption
+  hasDesignDoc: BooleanFieldOption
+}
+
+input ProjectOrderQuery {
+  id: OrderDirection
+  name: OrderDirection
+  internal: OrderDirection
+  hasDesignDoc: OrderDirection
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  login(username: String!, password: String!): LoginResponse!
+  logout: Boolean!
+  changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
+  createProject(createProjectInput: CreateProjectInput!): Project!
+}
+
+input CreateUserInput {
+  username: String!
+  fullName: String!
+  role: Role!
+  active: Boolean!
+  password: String!
+}
+
+enum Role {
+  """Administrator Role"""
+  ADMIN
+
+  """Simple user role"""
+  USER
+}
+
+input UpdateUserInput {
+  id: String!
+  fullName: String
+  role: Role
+  active: Boolean
+  password: String
+}
+
+input CreateProjectInput {
+  name: String!
+  internal: Boolean
+  hasDesignDoc: Boolean
+}

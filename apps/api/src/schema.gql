@@ -15,19 +15,86 @@ type User {
 """Date custom scalar type"""
 scalar Date
 
+type PageData {
+  count: Float!
+  take: Float!
+  skip: Float!
+}
+
+type UserResponse {
+  page: UserTypeConnection!
+  pageData: PageData
+}
+
+type UserTypeConnection {
+  edges: [UserTypeEdge!]
+  pageInfo: UserTypePageInfo
+}
+
+type UserTypeEdge {
+  cursor: String
+  node: User
+}
+
+type UserTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
 type LoginResponse {
   user: User!
 }
 
 type Query {
   user(id: String!): User!
-  users: [User!]!
-  login(loginInput: LoginInput!): LoginResponse!
+  users(filter: UserFilterQuery, pagination: ConnectionArgs): UserResponse!
+  login(username: String!, password: String!): LoginResponse!
 }
 
-input LoginInput {
-  username: String!
-  password: String!
+input UserFilterQuery {
+  AND: [UserFilterQuery!]
+  OR: [UserFilterQuery!]
+  username: StringFieldOption
+  fullName: StringFieldOption
+  active: BooleanFieldOption
+}
+
+input StringFieldOption {
+  is: String
+  not: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  notContains: String
+  startsWith: String
+  notStartsWith: String
+  endsWith: String
+  notEndsWith: String
+}
+
+input BooleanFieldOption {
+  is: Boolean
+  not: Boolean
+}
+
+input ConnectionArgs {
+  """Paginate before opaque cursor"""
+  before: String
+
+  """Paginate after opaque cursor"""
+  after: String
+
+  """Paginate first"""
+  first: Float
+
+  """Paginate last"""
+  last: Float
 }
 
 type Mutation {

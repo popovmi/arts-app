@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PasswordService } from 'modules/auth/password.service';
+import { filterQuery } from 'shared/utils/query-builder';
 import { Repository } from 'typeorm';
-import { PasswordService } from '../auth/password.service';
 import { CreateUserInput, UpdateUserInput } from './dto';
 import { User } from './entity/user.entity';
 
@@ -16,8 +17,11 @@ export class UserService {
     return this.userRepository.findOneOrFail({ id });
   }
 
-  async getUsers(): Promise<User[]> {
-    return this.userRepository.find();
+  async getUsers(take, skip, filter): Promise<[User[], number]> {
+    const query = filterQuery(this.userRepository.createQueryBuilder().select(), filter);
+    query.skip(skip);
+    query.take(take);
+    return await query.getManyAndCount();
   }
 
   async createUser(createUserInput: CreateUserInput): Promise<User> {
@@ -31,7 +35,7 @@ export class UserService {
       password: await this.passwordService.hash(password),
     });
 
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   async updateUser(updateUserInput: UpdateUserInput): Promise<User> {

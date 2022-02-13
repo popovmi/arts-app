@@ -1,6 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserType, UpdateUserInput } from './dto';
+import { connectionFromArraySlice } from 'graphql-relay';
+import { FindUsersArgs, UpdateUserInput, UserType } from './dto';
 import { CreateUserInput } from './dto/create-user.input';
+import UserResponse from './dto/users.response';
 import { UserService } from './user.service';
 
 @Resolver(() => UserType)
@@ -9,21 +11,25 @@ export class UserResolver {
 
   @Query(() => UserType)
   async user(@Args('id') id: string) {
-    return this.userService.getUser(id);
+    return await this.userService.getUser(id);
   }
 
-  @Query(() => [UserType])
-  async users() {
-    return this.userService.getUsers();
+  @Query(() => UserResponse)
+  async users(@Args() { filter, pagination }: FindUsersArgs) {
+    const { take, skip } = pagination.pagingParams();
+    const [users, count] = await this.userService.getUsers(take, skip, filter);
+    const page = connectionFromArraySlice(users, pagination, { arrayLength: count, sliceStart: skip || 0 });
+
+    return { page, pageData: { count, take, skip } };
   }
 
   @Mutation(() => UserType)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.createUser(createUserInput);
+    return await this.userService.createUser(createUserInput);
   }
 
   @Mutation(() => UserType)
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.updateUser(updateUserInput);
+    return await this.userService.updateUser(updateUserInput);
   }
 }

@@ -4,9 +4,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { AuthModule } from '../modules/auth';
-import { UserModule } from '../modules/user';
-import { DateScalar } from '../shared/scalar/date.scalar';
+import { AuthModule } from 'modules/auth';
+import { UserModule } from 'modules/user';
+import { DateScalar } from 'shared/scalar/date.scalar';
 
 @Module({
   imports: [

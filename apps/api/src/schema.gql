@@ -47,10 +47,43 @@ type LoginResponse {
   user: User!
 }
 
+type Project {
+  id: String!
+  name: String!
+  internal: Boolean!
+  hasDesignDoc: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type ProjectResponse {
+  page: ProjectTypeConnection!
+  pageData: PageData
+}
+
+type ProjectTypeConnection {
+  edges: [ProjectTypeEdge!]
+  pageInfo: ProjectTypePageInfo
+}
+
+type ProjectTypeEdge {
+  cursor: String
+  node: Project
+}
+
+type ProjectTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
 type Query {
   user(id: String!): User!
   users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
   whoAmI: User!
+  project(id: String!): Project!
+  projects(filter: ProjectFilterQuery, pagination: ConnectionArgs = {}, order: ProjectOrderQuery): ProjectResponse!
 }
 
 input UserFilterQuery {
@@ -115,12 +148,29 @@ enum OrderDirection {
   DESC
 }
 
+input ProjectFilterQuery {
+  AND: [ProjectFilterQuery!]
+  OR: [ProjectFilterQuery!]
+  id: StringFieldOption
+  name: StringFieldOption
+  internal: BooleanFieldOption
+  hasDesignDoc: BooleanFieldOption
+}
+
+input ProjectOrderQuery {
+  id: OrderDirection
+  name: OrderDirection
+  internal: OrderDirection
+  hasDesignDoc: OrderDirection
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   login(username: String!, password: String!): LoginResponse!
   logout: Boolean!
   changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
+  createProject(createProjectInput: CreateProjectInput!): Project!
 }
 
 input CreateUserInput {
@@ -145,4 +195,10 @@ input UpdateUserInput {
   role: Role
   active: Boolean
   password: String
+}
+
+input CreateProjectInput {
+  name: String!
+  internal: Boolean
+  hasDesignDoc: Boolean
 }

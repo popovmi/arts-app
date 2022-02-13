@@ -1,5 +1,10 @@
 import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from 'typeorm';
-import { BooleanFieldOption, StringFieldOption } from '../../../common/filter-input.type';
+import {
+  BooleanFieldOption,
+  DateFieldOptions,
+  NumberFieldOptions,
+  StringFieldOption,
+} from 'common/filter-input.type';
 
 export enum Operator {
   AND = 'AND',
@@ -7,7 +12,7 @@ export enum Operator {
 }
 
 export interface Field {
-  [key: string]: StringFieldOption | BooleanFieldOption;
+  [key: string]: StringFieldOption | BooleanFieldOption | NumberFieldOptions | DateFieldOptions;
 }
 
 export type Where = {

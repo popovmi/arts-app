@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class StringFieldOption {
@@ -85,4 +85,100 @@ export class BooleanFieldOption {
   @IsBoolean()
   @Field(() => Boolean, { nullable: true })
   not?: boolean;
+}
+
+@InputType()
+export class NumberFieldOptions {
+  @IsOptional()
+  @IsNumber()
+  @Field(() => Number, { nullable: true })
+  is?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Field(() => Number, { nullable: true })
+  not?: number;
+
+  @IsOptional()
+  @IsNumber({}, { each: true })
+  @Field(() => [Number], { nullable: true })
+  in?: number[];
+
+  @IsOptional()
+  @IsNumber({}, { each: true })
+  @Field(() => [Number], { nullable: true })
+  notIn?: number[];
+
+  @IsOptional()
+  @IsNumber()
+  @Field({ nullable: true })
+  lt?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Field({ nullable: true })
+  lte?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Field({ nullable: true })
+  gt?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Field({ nullable: true })
+  gte?: number;
+
+  @IsOptional()
+  @IsNumber({}, { each: true })
+  @Field(() => [Number], { nullable: true })
+  between?: [number, number];
+}
+
+@InputType()
+export class DateFieldOptions {
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  is?: number;
+
+  @IsOptional()
+  @IsDate()
+  @Field(() => Date, { nullable: true })
+  not?: number;
+
+  @IsOptional()
+  @IsDate({ each: true })
+  @Field(() => [Date], { nullable: true })
+  in?: number[];
+
+  @IsOptional()
+  @IsDate({ each: true })
+  @Field(() => [Date], { nullable: true })
+  notIn?: number[];
+
+  @IsOptional()
+  @IsDate()
+  @Field({ nullable: true })
+  lt?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Field({ nullable: true })
+  lte?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Field({ nullable: true })
+  gt?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @Field({ nullable: true })
+  gte?: Date;
+
+  @IsOptional()
+  @IsDate({ each: true })
+  @Field(() => [Date], { nullable: true })
+  between?: [Date, Date];
 }

@@ -50,6 +50,7 @@ type LoginResponse {
 type Query {
   user(id: String!): User!
   users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
+  whoAmI: User!
 }
 
 input UserFilterQuery {

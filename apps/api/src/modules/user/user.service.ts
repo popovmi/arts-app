@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { connectionFromArraySlice } from 'graphql-relay';
 import { PasswordService } from 'modules/auth/password.service';
-import { filterQuery } from 'shared/utils/query-builder';
+import { filterQuery, orderQuery } from 'shared/utils/query-builder';
 import { Repository } from 'typeorm';
-import { CreateUserInput, UpdateUserInput } from './dto';
+import { CreateUserInput, FindUsersArgs, UpdateUserInput, UserResponse } from './dto';
 import { User } from './entity/user.entity';
 
 @Injectable()
@@ -17,11 +18,18 @@ export class UserService {
     return this.userRepository.findOneOrFail({ id });
   }
 
-  async getUsers(take, skip, filter): Promise<[User[], number]> {
-    const query = filterQuery(this.userRepository.createQueryBuilder().select(), filter);
+  async getUsers({ filter, pagination, order }: FindUsersArgs): Promise<UserResponse> {
+    const query = filterQuery(this.userRepository.createQueryBuilder(), filter);
+    const { take = 50, skip = 0 } = pagination.pagingParams();
+
     query.skip(skip);
     query.take(take);
-    return await query.getManyAndCount();
+    orderQuery(query, { ...order });
+
+    const [users, count] = await query.getManyAndCount();
+    const page = connectionFromArraySlice(users, pagination, { arrayLength: count, sliceStart: skip || 0 });
+
+    return { page, pageData: { count, take, skip } };
   }
 
   async createUser(createUserInput: CreateUserInput): Promise<User> {

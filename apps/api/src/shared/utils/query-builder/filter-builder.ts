@@ -5,18 +5,14 @@ import {
   NumberFieldOptions,
   StringFieldOption,
 } from 'common/filter-input.type';
-
-export enum Operator {
-  AND = 'AND',
-  OR = 'OR',
-}
+import { LogicalOperator } from 'shared/types';
 
 export interface Field {
   [key: string]: StringFieldOption | BooleanFieldOption | NumberFieldOptions | DateFieldOptions;
 }
 
 export type Where = {
-  [K in Operator]?: (Where | Field)[];
+  [K in LogicalOperator]?: (Where | Field)[];
 };
 export const filterQuery = <T>(query: SelectQueryBuilder<T>, where: Where) => {
   if (!where) {
@@ -26,21 +22,24 @@ export const filterQuery = <T>(query: SelectQueryBuilder<T>, where: Where) => {
   }
 };
 
-const traverseTree = (query: WhereExpressionBuilder, where: Where, upperOperator = Operator.AND) => {
+const traverseTree = (query: WhereExpressionBuilder, where: Where, upperOperator = LogicalOperator.AND) => {
   Object.keys(where).forEach((key) => {
-    if (key === Operator.OR) {
-      query = query.orWhere(buildNewBrackets(where, Operator.OR));
-    } else if (key === Operator.AND) {
-      query = query.andWhere(buildNewBrackets(where, Operator.AND));
+    if (key === LogicalOperator.OR) {
+      query = query.orWhere(buildNewBrackets(where, LogicalOperator.OR));
+    } else if (key === LogicalOperator.AND) {
+      query = query.andWhere(buildNewBrackets(where, LogicalOperator.AND));
     } else {
-      // Field
-      query = handleArgs(query, where as Field, upperOperator === Operator.AND ? 'andWhere' : 'orWhere');
+      query = handleArgs(
+        query,
+        where as Field,
+        upperOperator === LogicalOperator.AND ? 'andWhere' : 'orWhere'
+      );
     }
   });
 
   return query;
 };
-const buildNewBrackets = (where: Where, operator: Operator) => {
+const buildNewBrackets = (where: Where, operator: LogicalOperator) => {
   return new Brackets((qb) =>
     where[operator].map((queryArray) => {
       traverseTree(qb, queryArray, operator);

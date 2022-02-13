@@ -1,8 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { connectionFromArraySlice } from 'graphql-relay';
-import { FindUsersArgs, UpdateUserInput, UserType } from './dto';
-import { CreateUserInput } from './dto/create-user.input';
-import UserResponse from './dto/users.response';
+import { CreateUserInput, FindUsersArgs, UpdateUserInput, UserResponse, UserType } from './dto';
 import { UserService } from './user.service';
 
 @Resolver(() => UserType)
@@ -15,12 +12,8 @@ export class UserResolver {
   }
 
   @Query(() => UserResponse)
-  async users(@Args() { filter, pagination }: FindUsersArgs) {
-    const { take, skip } = pagination.pagingParams();
-    const [users, count] = await this.userService.getUsers(take, skip, filter);
-    const page = connectionFromArraySlice(users, pagination, { arrayLength: count, sliceStart: skip || 0 });
-
-    return { page, pageData: { count, take, skip } };
+  async users(@Args() args: FindUsersArgs) {
+    return this.userService.getUsers(args);
   }
 
   @Mutation(() => UserType)

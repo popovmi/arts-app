@@ -49,15 +49,17 @@ type LoginResponse {
 
 type Query {
   user(id: String!): User!
-  users(filter: UserFilterQuery, pagination: ConnectionArgs): UserResponse!
+  users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
   login(username: String!, password: String!): LoginResponse!
 }
 
 input UserFilterQuery {
   AND: [UserFilterQuery!]
   OR: [UserFilterQuery!]
+  id: StringFieldOption
   username: StringFieldOption
   fullName: StringFieldOption
+  role: StringFieldOption
   active: BooleanFieldOption
 }
 
@@ -95,6 +97,22 @@ input ConnectionArgs {
 
   """Paginate last"""
   last: Float
+}
+
+input UserOrderQuery {
+  username: OrderDirection
+  fullName: OrderDirection
+  active: OrderDirection
+  role: OrderDirection
+  id: OrderDirection
+}
+
+enum OrderDirection {
+  """Ascending"""
+  ASC
+
+  """Descending"""
+  DESC
 }
 
 type Mutation {

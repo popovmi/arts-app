@@ -29,6 +29,6 @@ export class ProjectResolver {
 
   @Mutation(() => ProjectType)
   async updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput) {
-    return await this.projectService.updateUser(updateProjectInput);
+    return await this.projectService.updateProject(updateProjectInput);
   }
 }

@@ -2,12 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Art {
   id: String!
-  username: String!
-  fullName: String!
-  role: String!
-  active: Boolean!
+  name: String!
+  internal: Boolean!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -19,6 +17,38 @@ type PageData {
   count: Float!
   take: Float!
   skip: Float!
+}
+
+type ArtResponse {
+  page: ArtTypeConnection!
+  pageData: PageData
+}
+
+type ArtTypeConnection {
+  edges: [ArtTypeEdge!]
+  pageInfo: ArtTypePageInfo
+}
+
+type ArtTypeEdge {
+  cursor: String
+  node: Art
+}
+
+type ArtTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type User {
+  id: String!
+  username: String!
+  fullName: String!
+  role: String!
+  active: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type UserResponse {
@@ -84,6 +114,8 @@ type Query {
   whoAmI: User!
   project(id: String!): Project!
   projects(filter: ProjectFilterQuery, pagination: ConnectionArgs = {}, order: ProjectOrderQuery): ProjectResponse!
+  art(id: String!): Art!
+  arts(filter: ArtFilterQuery, pagination: ConnectionArgs = {}, order: ArtOrderQuery): ArtResponse!
 }
 
 input UserFilterQuery {
@@ -164,6 +196,20 @@ input ProjectOrderQuery {
   hasDesignDoc: OrderDirection
 }
 
+input ArtFilterQuery {
+  AND: [ArtFilterQuery!]
+  OR: [ArtFilterQuery!]
+  id: StringFieldOption
+  name: StringFieldOption
+  internal: BooleanFieldOption
+}
+
+input ArtOrderQuery {
+  id: OrderDirection
+  name: OrderDirection
+  internal: OrderDirection
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -172,6 +218,8 @@ type Mutation {
   changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
+  createArt(createArtInput: CreateArtInput!): Art!
+  updateArt(updateArtInput: UpdateArtInput!): Art!
 }
 
 input CreateUserInput {
@@ -209,4 +257,15 @@ input UpdateProjectInput {
   name: String
   internal: Boolean
   hasDesignDoc: Boolean
+}
+
+input CreateArtInput {
+  name: String!
+  internal: Boolean
+}
+
+input UpdateArtInput {
+  id: String!
+  name: String
+  internal: Boolean
 }

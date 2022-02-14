@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
 import { initTestData } from 'db/initTestData';
+import { ArtModule } from 'modules/art/art.module';
 import { AuthModule } from 'modules/auth';
 import { ProjectModule } from 'modules/project/project.module';
 import { UserModule } from 'modules/user';
@@ -32,6 +33,8 @@ import { EntityManager } from 'typeorm';
     AuthModule,
 
     ProjectModule,
+
+    ArtModule,
   ],
 })
 export class AppModule implements OnApplicationBootstrap {

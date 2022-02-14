@@ -43,7 +43,7 @@ export class ProjectService {
     return await this.projectRepository.save(project);
   }
 
-  public async updateUser(updateProjectInput: UpdateProjectInput): Promise<Project> {
+  public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {
     const { id, ...updateInput } = updateProjectInput.format();
     const project = await this.projectRepository.findOneOrFail({ id });
 

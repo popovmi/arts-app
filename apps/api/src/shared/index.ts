@@ -3,6 +3,7 @@ import { DateScalar } from './scalar/date.scalar';
 import { ApiConfigService } from './services/api-config.service';
 
 export { ApiConfigService };
+
 @Global()
 @Module({
   providers: [ApiConfigService, DateScalar],

@@ -10,6 +10,7 @@ import { UpdateArtInput } from '../dto/update-art.input';
 import { Art } from '../entity/art.entity';
 import { ArtFileService } from './art-file.service';
 import { v4 } from 'uuid';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 @Injectable()
 export class ArtService {
@@ -34,6 +35,7 @@ export class ArtService {
     return { page, pageData: { count, take, skip } };
   }
 
+  @Transactional()
   public async createArt(createArtInput: CreateArtInput): Promise<Art> {
     const { filePath, ...input } = createArtInput;
 
@@ -44,6 +46,7 @@ export class ArtService {
     return art;
   }
 
+  @Transactional()
   public async updateArt(updateArtInput: UpdateArtInput): Promise<Art> {
     const { id, filePath, ...updateInput } = updateArtInput;
     const art = await this.artRepository.findOneOrFail({ id });

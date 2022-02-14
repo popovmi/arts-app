@@ -6,6 +6,7 @@ import * as Jimp from 'jimp';
 import { Poppler } from 'node-poppler';
 import { dirname, resolve } from 'path';
 import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { ArtFile } from '../entity/art-file.entity';
 import { Art } from '../entity/art.entity';
 
@@ -88,6 +89,7 @@ export class ArtFileService {
     return originalFilePath;
   }
 
+  @Transactional()
   public async saveArtFile(filePath: string, art: Art) {
     let originalPath: string;
     let watermarkPath: string;

@@ -66,11 +66,14 @@
     "class-validator": "^0.13.2",
     "connect-pg-simple": "^7.0.0",
     "core-js": "^3.21.0",
+    "dataloader": "^2.0.0",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
     "graphql": "^16.3.0",
     "graphql-relay": "^0.10.0",
     "graphql-tools": "^8.2.0",
+    "jimp": "^0.16.1",
+    "node-poppler": "^5.1.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
@@ -82,6 +85,7 @@
     "rxjs": "^7.5.4",
     "tslib": "^2.3.1",
     "typeorm": "^0.2.41",
+    "typeorm-transactional-cls-hooked": "^0.1.21",
     "uuid": "^8.3.2"
   }
 }

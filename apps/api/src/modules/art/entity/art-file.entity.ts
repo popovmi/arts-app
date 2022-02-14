@@ -1,16 +1,13 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Art } from './art.entity';
 
 @Entity()
 export class ArtFile {
-  @PrimaryGeneratedColumn('increment')
-  id: number;
-
-  @Column()
+  @PrimaryColumn()
   artId: string;
 
-  @ManyToOne(() => Art, (art) => art.files, { cascade: true })
-  @JoinColumn()
+  @ManyToOne(() => Art, (art) => art.files, { cascade: true, primary: true })
+  @JoinColumn({ name: 'artId' })
   art: Art;
 
   @Column({ type: 'text' })

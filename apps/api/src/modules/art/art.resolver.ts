@@ -1,34 +1,49 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from 'modules/auth/auth.guard';
-import { CreateArtInput, ArtType } from './dto';
-import { FindArtArgs } from './dto/find-arts.args';
+import { ProjectType } from 'modules/project/dto';
+import { ArtService } from './services/art.service';
+import { ArtType, CreateArtInput } from './dto';
+import { ArtFileType } from './dto/art-file.type';
 import { ArtResponse } from './dto/arts.response';
+import { FindArtArgs } from './dto/find-arts.args';
 import { UpdateArtInput } from './dto/update-art.input';
-import { ArtService } from './art.service';
+import { ArtLoader } from './loaders';
 
 @Resolver(() => ArtType)
 @UseGuards(AuthGuard)
 export class ArtResolver {
-  constructor(private artService: ArtService) {}
+  constructor(private artService: ArtService, private artLoader: ArtLoader) {}
 
   @Query(() => ArtType)
-  async art(@Args('id') id: string) {
+  public async art(@Args('id') id: string) {
     return this.artService.getArt(id);
   }
 
   @Query(() => ArtResponse)
-  async arts(@Args() args: FindArtArgs) {
+  public async arts(@Args() args: FindArtArgs) {
     return await this.artService.getArts(args);
   }
 
-  @Mutation(() => ArtType)
-  async createArt(@Args('createArtInput') createArtInput: CreateArtInput) {
-    return this.artService.createArt(createArtInput);
+  @ResolveField('project', () => ProjectType, { nullable: true })
+  public async getProject(@Parent() art: ArtType) {
+    const { projectId } = art;
+    return projectId ? await this.artLoader.batchProjects.load(projectId) : null;
+  }
+
+  @ResolveField('files', () => [ArtFileType], { nullable: true })
+  public async getFiles(@Parent() art: ArtType) {
+    const { id } = art;
+    return await this.artLoader.batchArtsFiles.load(id);
   }
 
   @Mutation(() => ArtType)
-  async updateArt(@Args('updateArtInput') updateArtInput: UpdateArtInput) {
+  public async createArt(@Args('createArtInput') createArtInput: CreateArtInput) {
+    return await this.artService.createArt(createArtInput);
+  }
+
+  @Mutation(() => ArtType)
+  public async updateArt(@Args('updateArtInput') updateArtInput: UpdateArtInput) {
     return await this.artService.updateArt(updateArtInput);
   }
 }

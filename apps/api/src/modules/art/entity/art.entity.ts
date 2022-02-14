@@ -13,6 +13,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -35,8 +36,9 @@ export class Art {
   @OneToMany(() => ArtFile, (file) => file.art)
   files: ArtFile[];
 
+  @Index()
   @Column({ nullable: true })
-  projectId: number;
+  projectId: string;
 
   @Column({ nullable: true })
   bottomForm: string;

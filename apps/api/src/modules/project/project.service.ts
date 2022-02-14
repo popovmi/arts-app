@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
 import { filterQuery, orderQuery } from 'shared/utils/query-builder';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateProjectInput } from './dto';
 import { FindProjectArgs } from './dto/find-projects.args';
 import { ProjectResponse } from './dto/projects.response';
@@ -13,7 +13,13 @@ import { Project } from './entity/project.entity';
 export class ProjectService {
   constructor(@InjectRepository(Project) private projectRepository: Repository<Project>) {}
 
-  async getProject(id: string): Promise<Project> {
+  public async getByIds(ids: string[]): Promise<Project[]> {
+    return this.projectRepository.find({
+      where: { id: In(ids) },
+    });
+  }
+
+  public async getProject(id: string): Promise<Project> {
     return this.projectRepository.findOne({ id });
   }
 

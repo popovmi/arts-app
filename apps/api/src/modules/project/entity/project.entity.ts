@@ -56,7 +56,7 @@ export class Project {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ referencedColumnName: 'name' })
+  @JoinColumn({ name: 'sfm', referencedColumnName: 'name' })
   sfmEntity: Sfm;
 
   @ManyToOne(() => DropNumber, (lookup) => lookup.name, {
@@ -64,7 +64,7 @@ export class Project {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ referencedColumnName: 'name' })
+  @JoinColumn({ name: 'dropNumber', referencedColumnName: 'name' })
   dropNumberEntity: DropNumber;
 
   @ManyToOne(() => Intercenter, (lookup) => lookup.name, {
@@ -72,7 +72,7 @@ export class Project {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ referencedColumnName: 'name' })
+  @JoinColumn({ name: 'intercenter', referencedColumnName: 'name' })
   intercenterEntity: Intercenter;
 
   @ManyToOne(() => Factory, {
@@ -80,7 +80,7 @@ export class Project {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ referencedColumnName: 'id' })
+  @JoinColumn({ name: 'factoryId', referencedColumnName: 'id' })
   factory: Factory;
 
   @ManyToOne(() => Customer, {
@@ -88,6 +88,6 @@ export class Project {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ referencedColumnName: 'id' })
+  @JoinColumn({ name: 'customerId', referencedColumnName: 'id' })
   customer: Customer;
 }

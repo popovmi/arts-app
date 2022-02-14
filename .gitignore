@@ -3,6 +3,9 @@
 # env
 .env
 
+# files
+/test-files
+
 # compiled output
 /dist
 /tmp

@@ -1,4 +1,6 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { ProjectType } from 'modules/project/dto';
+import { ArtFileType } from './art-file.type';
 
 @ObjectType('Art')
 export class ArtType {
@@ -11,9 +13,42 @@ export class ArtType {
   @Field(() => Boolean)
   internal: boolean;
 
-  @Field(() => Date)
+  @Field(() => [ArtFileType], { nullable: true })
+  files: ArtFileType[];
+
+  @Field(() => String, { nullable: true })
+  projectId: string;
+
+  @Field(() => Date, { nullable: true })
   createdAt: Date;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   updatedAt: Date;
+
+  @Field(() => String, { nullable: true })
+  bottomForm: string;
+
+  @Field(() => String, { nullable: true })
+  artClass: string;
+
+  @Field(() => String, { nullable: true })
+  form: string;
+
+  @Field(() => String, { nullable: true })
+  nominalVolume: string;
+
+  @Field(() => String, { nullable: true })
+  height: string;
+
+  @Field(() => String, { nullable: true })
+  productType: string;
+
+  @Field(() => String, { nullable: true })
+  productionMethod: string;
+
+  @Field(() => String, { nullable: true })
+  ringType: string;
+
+  @Field(() => ProjectType, { nullable: true })
+  project: ProjectType;
 }

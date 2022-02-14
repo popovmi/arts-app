@@ -21,6 +21,33 @@ export class ArtFilterQuery {
 
   @Field(() => BooleanFieldOption, { nullable: true })
   internal?: BooleanFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  projectId?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  bottomForm?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  artClass?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  form?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  nominalVolume?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  height?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  productType?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  productionMethod?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  ringType?: StringFieldOption;
 }
 
 @InputType()
@@ -33,6 +60,33 @@ export class ArtOrderQuery {
 
   @Field(() => OrderDirection, { nullable: true })
   internal?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  projectId?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  bottomForm?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  artClass?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  form?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  nominalVolume?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  height?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  productType?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  productionMethod?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  ringType?: OrderDirection;
 }
 
 @ArgsType()

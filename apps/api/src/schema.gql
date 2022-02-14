@@ -2,16 +2,35 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Art {
-  id: String!
-  name: String!
-  internal: Boolean!
-  createdAt: Date!
-  updatedAt: Date!
+type ArtFileType {
+  artId: String!
+  art: Art!
+  originalPath: String!
+  watermarkPath: String!
+  uploadedAt: Date!
 }
 
 """Date custom scalar type"""
 scalar Date
+
+type Art {
+  id: String!
+  name: String!
+  internal: Boolean!
+  files: [ArtFileType!]
+  projectId: String
+  createdAt: Date
+  updatedAt: Date
+  bottomForm: String
+  artClass: String
+  form: String
+  nominalVolume: String
+  height: String
+  productType: String
+  productionMethod: String
+  ringType: String
+  project: Project
+}
 
 type PageData {
   count: Float!
@@ -35,6 +54,43 @@ type ArtTypeEdge {
 }
 
 type ArtTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type Project {
+  id: String!
+  name: String!
+  internal: Boolean!
+  hasDesignDoc: Boolean
+  sfm: String
+  dropNumber: String
+  intercenter: String
+  arts: [Art!]
+  factoryId: String
+  customerId: String
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type ProjectResponse {
+  page: ProjectTypeConnection!
+  pageData: PageData
+}
+
+type ProjectTypeConnection {
+  edges: [ProjectTypeEdge!]
+  pageInfo: ProjectTypePageInfo
+}
+
+type ProjectTypeEdge {
+  cursor: String
+  node: Project
+}
+
+type ProjectTypePageInfo {
   startCursor: String
   endCursor: String
   hasPreviousPage: Boolean!
@@ -75,37 +131,6 @@ type UserTypePageInfo {
 
 type LoginResponse {
   user: User!
-}
-
-type Project {
-  id: String!
-  name: String!
-  internal: Boolean!
-  hasDesignDoc: Boolean!
-  createdAt: Date!
-  updatedAt: Date!
-}
-
-type ProjectResponse {
-  page: ProjectTypeConnection!
-  pageData: PageData
-}
-
-type ProjectTypeConnection {
-  edges: [ProjectTypeEdge!]
-  pageInfo: ProjectTypePageInfo
-}
-
-type ProjectTypeEdge {
-  cursor: String
-  node: Project
-}
-
-type ProjectTypePageInfo {
-  startCursor: String
-  endCursor: String
-  hasPreviousPage: Boolean!
-  hasNextPage: Boolean!
 }
 
 type Query {
@@ -202,12 +227,30 @@ input ArtFilterQuery {
   id: StringFieldOption
   name: StringFieldOption
   internal: BooleanFieldOption
+  projectId: StringFieldOption
+  bottomForm: StringFieldOption
+  artClass: StringFieldOption
+  form: StringFieldOption
+  nominalVolume: StringFieldOption
+  height: StringFieldOption
+  productType: StringFieldOption
+  productionMethod: StringFieldOption
+  ringType: StringFieldOption
 }
 
 input ArtOrderQuery {
   id: OrderDirection
   name: OrderDirection
   internal: OrderDirection
+  projectId: OrderDirection
+  bottomForm: OrderDirection
+  artClass: OrderDirection
+  form: OrderDirection
+  nominalVolume: OrderDirection
+  height: OrderDirection
+  productType: OrderDirection
+  productionMethod: OrderDirection
+  ringType: OrderDirection
 }
 
 type Mutation {
@@ -261,11 +304,31 @@ input UpdateProjectInput {
 
 input CreateArtInput {
   name: String!
-  internal: Boolean
+  internal: Boolean = true
+  projectId: String
+  bottomForm: String
+  artClass: String
+  form: String
+  nominalVolume: String
+  height: String
+  productType: String
+  productionMethod: String
+  ringType: String
+  filePath: String!
 }
 
 input UpdateArtInput {
   id: String!
   name: String
   internal: Boolean
+  projectId: String
+  bottomForm: String
+  artClass: String
+  form: String
+  nominalVolume: String
+  height: String
+  productType: String
+  productionMethod: String
+  filePath: String
+  ringType: String
 }

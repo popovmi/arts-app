@@ -3,14 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
 import { filterQuery, orderQuery } from 'shared/utils/query-builder';
 import { In, Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { CreateArtInput } from '../dto';
-import { FindArtArgs } from '../dto/find-arts.args';
 import { ArtResponse } from '../dto/arts.response';
+import { FindArtArgs } from '../dto/find-arts.args';
 import { UpdateArtInput } from '../dto/update-art.input';
 import { Art } from '../entity/art.entity';
 import { ArtFileService } from './art-file.service';
-import { v4 } from 'uuid';
-import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 @Injectable()
 export class ArtService {

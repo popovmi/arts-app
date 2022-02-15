@@ -1,0 +1,10 @@
+mutation createBottomForm($input: CreateAttributeInput!){
+    createBottomForm(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

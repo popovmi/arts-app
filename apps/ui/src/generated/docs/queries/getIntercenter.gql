@@ -1,0 +1,10 @@
+query getIntercenter{
+    getIntercenter{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

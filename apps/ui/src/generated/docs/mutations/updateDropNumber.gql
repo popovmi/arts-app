@@ -1,0 +1,10 @@
+mutation updateDropNumber($input: UpdateAttributeInput!){
+    updateDropNumber(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

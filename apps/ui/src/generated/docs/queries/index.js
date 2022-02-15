@@ -1,0 +1,25 @@
+const fs = require('fs');
+const path = require('path');
+
+module.exports.user = fs.readFileSync(path.join(__dirname, 'user.gql'), 'utf8');
+module.exports.users = fs.readFileSync(path.join(__dirname, 'users.gql'), 'utf8');
+module.exports.whoAmI = fs.readFileSync(path.join(__dirname, 'whoAmI.gql'), 'utf8');
+module.exports.project = fs.readFileSync(path.join(__dirname, 'project.gql'), 'utf8');
+module.exports.projects = fs.readFileSync(path.join(__dirname, 'projects.gql'), 'utf8');
+module.exports.art = fs.readFileSync(path.join(__dirname, 'art.gql'), 'utf8');
+module.exports.arts = fs.readFileSync(path.join(__dirname, 'arts.gql'), 'utf8');
+module.exports.getArtClass = fs.readFileSync(path.join(__dirname, 'getArtClass.gql'), 'utf8');
+module.exports.getBottomForm = fs.readFileSync(path.join(__dirname, 'getBottomForm.gql'), 'utf8');
+module.exports.getDropNumber = fs.readFileSync(path.join(__dirname, 'getDropNumber.gql'), 'utf8');
+module.exports.getForm = fs.readFileSync(path.join(__dirname, 'getForm.gql'), 'utf8');
+module.exports.getHeight = fs.readFileSync(path.join(__dirname, 'getHeight.gql'), 'utf8');
+module.exports.getIntercenter = fs.readFileSync(path.join(__dirname, 'getIntercenter.gql'), 'utf8');
+module.exports.getNominalVolume = fs.readFileSync(path.join(__dirname, 'getNominalVolume.gql'), 'utf8');
+module.exports.getProductType = fs.readFileSync(path.join(__dirname, 'getProductType.gql'), 'utf8');
+module.exports.getProductionMethod = fs.readFileSync(path.join(__dirname, 'getProductionMethod.gql'), 'utf8');
+module.exports.getRingType = fs.readFileSync(path.join(__dirname, 'getRingType.gql'), 'utf8');
+module.exports.getSfm = fs.readFileSync(path.join(__dirname, 'getSfm.gql'), 'utf8');
+module.exports.factories = fs.readFileSync(path.join(__dirname, 'factories.gql'), 'utf8');
+module.exports.factory = fs.readFileSync(path.join(__dirname, 'factory.gql'), 'utf8');
+module.exports.customers = fs.readFileSync(path.join(__dirname, 'customers.gql'), 'utf8');
+module.exports.customer = fs.readFileSync(path.join(__dirname, 'customer.gql'), 'utf8');

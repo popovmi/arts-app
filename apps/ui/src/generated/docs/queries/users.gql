@@ -1,0 +1,29 @@
+query users($filter: UserFilterQuery, $pagination: ConnectionArgs, $order: UserOrderQuery){
+    users(filter: $filter, pagination: $pagination, order: $order){
+        page{
+            edges{
+                cursor
+                node{
+                    id
+                    username
+                    fullName
+                    role
+                    active
+                    createdAt
+                    updatedAt
+                }
+            }
+            pageInfo{
+                startCursor
+                endCursor
+                hasPreviousPage
+                hasNextPage
+            }
+        }
+        pageData{
+            count
+            take
+            skip
+        }
+    }
+}

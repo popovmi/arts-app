@@ -1,0 +1,10 @@
+query getRingType{
+    getRingType{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

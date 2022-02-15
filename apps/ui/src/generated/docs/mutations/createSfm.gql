@@ -1,0 +1,10 @@
+mutation createSfm($input: CreateAttributeInput!){
+    createSfm(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

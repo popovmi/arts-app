@@ -1,0 +1,10 @@
+mutation updateForm($input: UpdateAttributeInput!){
+    updateForm(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

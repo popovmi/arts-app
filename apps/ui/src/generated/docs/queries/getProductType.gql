@@ -1,0 +1,10 @@
+query getProductType{
+    getProductType{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

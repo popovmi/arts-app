@@ -1,0 +1,10 @@
+query getNominalVolume{
+    getNominalVolume{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

@@ -1,0 +1,10 @@
+query getDropNumber{
+    getDropNumber{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ArtType } from '.';
 
-@ObjectType()
+@ObjectType('ArtFile')
 export class ArtFileType {
     @Field(() => String)
     artId: string;

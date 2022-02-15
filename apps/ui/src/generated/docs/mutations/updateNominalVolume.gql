@@ -1,0 +1,10 @@
+mutation updateNominalVolume($input: UpdateAttributeInput!){
+    updateNominalVolume(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

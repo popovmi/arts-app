@@ -1,0 +1,10 @@
+mutation createDropNumber($input: CreateAttributeInput!){
+    createDropNumber(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

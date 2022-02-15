@@ -1,0 +1,10 @@
+query getBottomForm{
+    getBottomForm{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

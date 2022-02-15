@@ -28,13 +28,23 @@ export class ArtService {
         return this.artRepository.findOne({ id });
     }
 
-    async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
+    async getArts(
+        { filter, order, pagination }: FindArtArgs,
+        fields: string[],
+        relations: string[],
+        relationFields: string[]
+    ): Promise<ArtResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
-        const query = filterQuery(this.artRepository.createQueryBuilder(), filter).skip(skip).take(take);
+        const query = filterQuery(this.artRepository.createQueryBuilder('arts'), filter).skip(skip).take(take);
+        const count = await query.getCount();
 
+        query.select(fields.map((field) => `arts.${field}`));
+        query.addSelect(relationFields.map((field) => `${field}`));
+
+        relations.forEach((relation) => query.leftJoin(`arts.${relation}`, relation));
         orderQuery(query, { ...order });
 
-        const [arts, count] = await query.getManyAndCount();
+        const arts = await query.getMany();
         const page = connectionFromArraySlice(arts, pagination, { arrayLength: count, sliceStart: skip || 0 });
 
         return { page, pageData: { count, take, skip } };

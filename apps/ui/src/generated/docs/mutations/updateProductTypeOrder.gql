@@ -1,0 +1,10 @@
+mutation updateProductTypeOrder($input: UpdateAttributeValueOrderInput!){
+    updateProductTypeOrder(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

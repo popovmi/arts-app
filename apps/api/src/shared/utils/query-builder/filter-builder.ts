@@ -18,19 +18,25 @@ export const filterQuery = <T>(query: SelectQueryBuilder<T>, where: Where) => {
     if (!where) {
         return query;
     } else {
-        return traverseTree(query, where) as SelectQueryBuilder<T>;
+        return traverseTree(query, query.alias, where) as SelectQueryBuilder<T>;
     }
 };
 
-const traverseTree = (query: WhereExpressionBuilder, where: Where, upperOperator = LogicalOperator.AND) => {
+const traverseTree = (
+    query: WhereExpressionBuilder,
+    alias: string,
+    where: Where,
+    upperOperator = LogicalOperator.AND
+) => {
     Object.keys(where).forEach((key) => {
         if (key === LogicalOperator.OR) {
-            query = query.orWhere(buildNewBrackets(where, LogicalOperator.OR));
+            query = query.orWhere(buildNewBrackets(where, alias, LogicalOperator.OR));
         } else if (key === LogicalOperator.AND) {
-            query = query.andWhere(buildNewBrackets(where, LogicalOperator.AND));
+            query = query.andWhere(buildNewBrackets(where, alias, LogicalOperator.AND));
         } else {
             query = handleArgs(
                 query,
+                alias,
                 where as Field,
                 upperOperator === LogicalOperator.AND ? 'andWhere' : 'orWhere'
             );
@@ -39,15 +45,15 @@ const traverseTree = (query: WhereExpressionBuilder, where: Where, upperOperator
 
     return query;
 };
-const buildNewBrackets = (where: Where, operator: LogicalOperator) => {
+const buildNewBrackets = (where: Where, alias: string, operator: LogicalOperator) => {
     return new Brackets((qb) =>
         where[operator].map((queryArray) => {
-            traverseTree(qb, queryArray, operator);
+            traverseTree(qb, alias, queryArray, operator);
         })
     );
 };
 
-const handleArgs = (query: WhereExpressionBuilder, where: Where, andOr: 'andWhere' | 'orWhere') => {
+const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, andOr: 'andWhere' | 'orWhere') => {
     const whereArgs = Object.entries(where);
     whereArgs.forEach((whereArg) => {
         const [fieldName, filters] = whereArg;
@@ -57,71 +63,71 @@ const handleArgs = (query: WhereExpressionBuilder, where: Where, andOr: 'andWher
             const [operation, value] = parameters;
             switch (operation) {
                 case 'is': {
-                    query[andOr](`"${fieldName}" = :isvalue`, { isvalue: value });
+                    query[andOr](`${alias}."${fieldName}" = :isvalue`, { isvalue: value });
                     break;
                 }
                 case 'not': {
-                    query[andOr](`"${fieldName}" != :notvalue`, { notvalue: value });
+                    query[andOr](`${alias}."${fieldName}" != :notvalue`, { notvalue: value });
                     break;
                 }
                 case 'in': {
-                    query[andOr](`"${fieldName}" IN (:...invalue)`, { invalue: value });
+                    query[andOr](`${alias}."${fieldName}" IN (:...invalue)`, { invalue: value });
                     break;
                 }
                 case 'not_in': {
-                    query[andOr](`"${fieldName}" NOT IN (:...notinvalue)`, {
+                    query[andOr](`${alias}."${fieldName}" NOT IN (:...notinvalue)`, {
                         notinvalue: value,
                     });
                     break;
                 }
                 case 'lt': {
-                    query[andOr](`"${fieldName}" < :ltvalue`, { ltvalue: value });
+                    query[andOr](`${alias}."${fieldName}" < :ltvalue`, { ltvalue: value });
                     break;
                 }
                 case 'lte': {
-                    query[andOr](`"${fieldName}" <= :ltevalue`, { ltevalue: value });
+                    query[andOr](`${alias}."${fieldName}" <= :ltevalue`, { ltevalue: value });
                     break;
                 }
                 case 'gt': {
-                    query[andOr](`"${fieldName}" > :gtvalue`, { gtvalue: value });
+                    query[andOr](`${alias}."${fieldName}" > :gtvalue`, { gtvalue: value });
                     break;
                 }
                 case 'gte': {
-                    query[andOr](`"${fieldName}" >= :gtevalue`, { gtevalue: value });
+                    query[andOr](`${alias}."${fieldName}" >= :gtevalue`, { gtevalue: value });
                     break;
                 }
                 case 'contains': {
-                    query[andOr](`"${fieldName}" ILIKE :convalue`, {
+                    query[andOr](`${alias}."${fieldName}" ILIKE :convalue`, {
                         convalue: `%${value}%`,
                     });
                     break;
                 }
                 case 'not_contains': {
-                    query[andOr](`"${fieldName}" NOT ILIKE :notconvalue`, {
+                    query[andOr](`${alias}."${fieldName}" NOT ILIKE :notconvalue`, {
                         notconvalue: `%${value}%`,
                     });
                     break;
                 }
                 case 'starts_with': {
-                    query[andOr](`"${fieldName}" ILIKE :swvalue`, {
+                    query[andOr](`${alias}."${fieldName}" ILIKE :swvalue`, {
                         swvalue: `${value}%`,
                     });
                     break;
                 }
                 case 'not_starts_with': {
-                    query[andOr](`"${fieldName}" NOT ILIKE :nswvalue`, {
+                    query[andOr](`${alias}."${fieldName}" NOT ILIKE :nswvalue`, {
                         nswvalue: `${value}%`,
                     });
                     break;
                 }
                 case 'ends_with': {
-                    query[andOr](`"${fieldName}" ILIKE :ewvalue`, {
+                    query[andOr](`${alias}."${fieldName}" ILIKE :ewvalue`, {
                         ewvalue: `%${value}`,
                     });
                     break;
                 }
                 case 'not_ends_with': {
-                    query[andOr](`"${fieldName}" ILIKE :newvalue`, {
+                    query[andOr](`${alias}."${fieldName}" ILIKE :newvalue`, {
                         newvalue: `%${value}`,
                     });
                     break;

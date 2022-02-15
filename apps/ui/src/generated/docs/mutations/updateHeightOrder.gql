@@ -1,0 +1,10 @@
+mutation updateHeightOrder($input: UpdateAttributeValueOrderInput!){
+    updateHeightOrder(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

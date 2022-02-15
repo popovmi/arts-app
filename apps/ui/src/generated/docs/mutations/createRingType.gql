@@ -1,0 +1,10 @@
+mutation createRingType($input: CreateAttributeInput!){
+    createRingType(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

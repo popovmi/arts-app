@@ -1,0 +1,10 @@
+mutation updateSfmOrder($input: UpdateAttributeValueOrderInput!){
+    updateSfmOrder(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

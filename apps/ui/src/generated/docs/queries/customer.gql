@@ -1,0 +1,9 @@
+query customer($id: String!){
+    customer(id: $id){
+        id
+        name
+        active
+        createdAt
+        updatedAt
+    }
+}

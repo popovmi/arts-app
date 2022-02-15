@@ -1,0 +1,10 @@
+mutation createProductType($input: CreateAttributeInput!){
+    createProductType(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

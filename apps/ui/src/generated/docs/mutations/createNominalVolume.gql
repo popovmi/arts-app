@@ -1,0 +1,10 @@
+mutation createNominalVolume($input: CreateAttributeInput!){
+    createNominalVolume(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

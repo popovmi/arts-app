@@ -1,0 +1,10 @@
+mutation updateIntercenter($input: UpdateAttributeInput!){
+    updateIntercenter(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

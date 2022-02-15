@@ -1,0 +1,10 @@
+mutation updateBottomFormOrder($input: UpdateAttributeValueOrderInput!){
+    updateBottomFormOrder(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

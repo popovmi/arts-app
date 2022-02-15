@@ -2,64 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ArtFileType {
-  artId: String!
-  art: Art!
-  originalPath: String!
-  watermarkPath: String!
-  uploadedAt: Date!
-}
-
-"""Date custom scalar type"""
-scalar Date
-
-type Art {
-  id: String!
-  name: String!
-  internal: Boolean!
-  files: [ArtFileType!]
-  projectId: String
-  createdAt: Date
-  updatedAt: Date
-  bottomForm: String
-  artClass: String
-  form: String
-  nominalVolume: String
-  height: String
-  productType: String
-  productionMethod: String
-  ringType: String
-  project: Project
-}
-
-type PageData {
-  count: Float!
-  take: Float!
-  skip: Float!
-}
-
-type ArtResponse {
-  page: ArtTypeConnection!
-  pageData: PageData
-}
-
-type ArtTypeConnection {
-  edges: [ArtTypeEdge!]
-  pageInfo: ArtTypePageInfo
-}
-
-type ArtTypeEdge {
-  cursor: String
-  node: Art
-}
-
-type ArtTypePageInfo {
-  startCursor: String
-  endCursor: String
-  hasPreviousPage: Boolean!
-  hasNextPage: Boolean!
-}
-
 type Project {
   id: String!
   name: String!
@@ -73,6 +15,15 @@ type Project {
   customerId: String
   createdAt: Date!
   updatedAt: Date!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type PageData {
+  count: Float!
+  take: Float!
+  skip: Float!
 }
 
 type ProjectResponse {
@@ -91,6 +42,55 @@ type ProjectTypeEdge {
 }
 
 type ProjectTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type ArtFile {
+  artId: String!
+  art: Art!
+  originalPath: String!
+  watermarkPath: String!
+  uploadedAt: Date!
+}
+
+type Art {
+  id: String!
+  name: String!
+  internal: Boolean!
+  files: [ArtFile!]
+  projectId: String
+  createdAt: Date
+  updatedAt: Date
+  bottomForm: String
+  artClass: String
+  form: String
+  nominalVolume: String
+  height: String
+  productType: String
+  productionMethod: String
+  ringType: String
+  project: Project
+}
+
+type ArtResponse {
+  page: ArtTypeConnection!
+  pageData: PageData
+}
+
+type ArtTypeConnection {
+  edges: [ArtTypeEdge!]
+  pageInfo: ArtTypePageInfo
+}
+
+type ArtTypeEdge {
+  cursor: String
+  node: Art
+}
+
+type ArtTypePageInfo {
   startCursor: String
   endCursor: String
   hasPreviousPage: Boolean!

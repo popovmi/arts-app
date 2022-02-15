@@ -1,0 +1,10 @@
+mutation updateArtClassOrder($input: UpdateAttributeValueOrderInput!){
+    updateArtClassOrder(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

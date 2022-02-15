@@ -1,0 +1,10 @@
+query getSfm{
+    getSfm{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

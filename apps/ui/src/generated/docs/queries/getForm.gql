@@ -1,0 +1,10 @@
+query getForm{
+    getForm{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

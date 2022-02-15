@@ -1,0 +1,10 @@
+mutation updateRingType($input: UpdateAttributeInput!){
+    updateRingType(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

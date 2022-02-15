@@ -1,0 +1,10 @@
+mutation updateProductionMethod($input: UpdateAttributeInput!){
+    updateProductionMethod(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

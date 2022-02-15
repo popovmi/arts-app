@@ -1,0 +1,10 @@
+mutation createArtClass($input: CreateAttributeInput!){
+    createArtClass(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

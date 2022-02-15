@@ -1,0 +1,10 @@
+query getProductionMethod{
+    getProductionMethod{
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

@@ -20,7 +20,7 @@ export function createAttributeServiceClass<T extends BaseAttribute = BaseAttrib
     constructor(@InjectRepository(Entity) readonly repository: Repository<ObjectType<T>>) {}
 
     public async create({ name, active }: CreateAttributeInput): Promise<T> {
-      const valueOrder: number =
+      const valueOrder =
         ((await this.repository.createQueryBuilder().select('MAX("valueOrder")', 'max').getRawOne()).max || 0) + 1;
 
       const result = this.repository.create({

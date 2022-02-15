@@ -24,6 +24,15 @@ export class ProjectFilterQuery {
 
   @Field(() => BooleanFieldOption, { nullable: true })
   hasDesignDoc?: BooleanFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  dropNumber?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  intercenter?: StringFieldOption;
+
+  @Field(() => StringFieldOption, { nullable: true })
+  sfm?: StringFieldOption;
 }
 
 @InputType()
@@ -39,6 +48,15 @@ export class ProjectOrderQuery {
 
   @Field(() => OrderDirection, { nullable: true })
   hasDesignDoc?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  dropNumber?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  intercenter?: OrderDirection;
+
+  @Field(() => OrderDirection, { nullable: true })
+  sfm?: OrderDirection;
 }
 
 @ArgsType()

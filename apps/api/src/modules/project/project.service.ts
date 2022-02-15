@@ -24,11 +24,9 @@ export class ProjectService {
   }
 
   async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {
-    const query = filterQuery(this.projectRepository.createQueryBuilder(), filter);
     const { take = 50, skip = 0 } = pagination.pagingParams();
+    const query = filterQuery(this.projectRepository.createQueryBuilder(), filter).skip(skip).take(take);
 
-    query.skip(skip);
-    query.take(take);
     orderQuery(query, { ...order });
 
     const [projects, count] = await query.getManyAndCount();
@@ -38,12 +36,8 @@ export class ProjectService {
   }
 
   public async createProject(createProjectInput: CreateProjectInput): Promise<Project> {
-    const { hasDesignDoc, internal, name } = createProjectInput;
-
     const project = this.projectRepository.create({
-      hasDesignDoc,
-      internal,
-      name,
+      ...createProjectInput,
     });
 
     return await this.projectRepository.save(project);

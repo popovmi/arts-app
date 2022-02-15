@@ -17,6 +17,21 @@ export class CreateProjectInput {
   @Field(() => Boolean, { nullable: true })
   hasDesignDoc: boolean;
 
+  @IsString()
+  @IsOptional()
+  @Field(() => String)
+  dropNumber: string;
+
+  @IsString()
+  @IsOptional()
+  @Field(() => String)
+  intercenter: string;
+
+  @IsString()
+  @IsOptional()
+  @Field(() => String)
+  sfm: string;
+
   format() {
     return {
       ...this,

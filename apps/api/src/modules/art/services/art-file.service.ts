@@ -93,6 +93,7 @@ export class ArtFileService {
   public async saveArtFile(filePath: string, art: Art) {
     let originalPath: string;
     let watermarkPath: string;
+
     try {
       originalPath = await this.saveOriginal(filePath, art);
       watermarkPath = await this.saveWatemark(filePath, art);

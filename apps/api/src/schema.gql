@@ -232,6 +232,9 @@ input ProjectFilterQuery {
   name: StringFieldOption
   internal: BooleanFieldOption
   hasDesignDoc: BooleanFieldOption
+  dropNumber: StringFieldOption
+  intercenter: StringFieldOption
+  sfm: StringFieldOption
 }
 
 input ProjectOrderQuery {
@@ -239,6 +242,9 @@ input ProjectOrderQuery {
   name: OrderDirection
   internal: OrderDirection
   hasDesignDoc: OrderDirection
+  dropNumber: OrderDirection
+  intercenter: OrderDirection
+  sfm: OrderDirection
 }
 
 input ArtFilterQuery {
@@ -346,6 +352,9 @@ input CreateProjectInput {
   name: String!
   internal: Boolean
   hasDesignDoc: Boolean
+  dropNumber: String!
+  intercenter: String!
+  sfm: String!
 }
 
 input UpdateProjectInput {
@@ -353,6 +362,9 @@ input UpdateProjectInput {
   name: String
   internal: Boolean
   hasDesignDoc: Boolean
+  dropNumber: String!
+  intercenter: String!
+  sfm: String!
 }
 
 input CreateArtInput {

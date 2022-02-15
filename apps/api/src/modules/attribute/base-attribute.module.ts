@@ -11,7 +11,9 @@ export class BaseAttributeModule {
       provide: `${entity.name}Service`,
       useClass: createAttributeServiceClass(entity),
     }));
+
     const resolvers = entities.map((entity) => createAttributeResolverClass(entity));
+	
     return {
       module: BaseAttributeModule,
       imports: [TypeOrmModule.forFeature(entities)],

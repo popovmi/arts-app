@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { BaseAttributeModule } from './base-attribute.module';
 import * as Entities from './entities';
 
+const EntitiesArray = Object.values(Entities);
+
 @Module({
-  imports: [TypeOrmModule.forFeature(Object.values(Entities))],
+  imports: [BaseAttributeModule.register(EntitiesArray)],
 })
 export class AttributeModule {}

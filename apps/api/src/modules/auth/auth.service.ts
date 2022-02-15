@@ -14,7 +14,7 @@ export class AuthService {
   ) {}
 
   public async validateCredentials({ username, password }: LoginArgs) {
-    const user = await this.userRepository.findOne({ username: ILike(username) });
+    const user = await this.userRepository.findOne({ username: ILike(username), active: true });
 
     if (!user || !(await this.passwordService.compare(password, user.password)))
       throw new UnauthorizedException('Неверные данные для входа');
@@ -24,9 +24,6 @@ export class AuthService {
 
   public async changePassword({ username, password, newPassword }: ChangePasswordArgs) {
     const user = await this.validateCredentials({ username, password });
-    await this.userRepository.update(
-      { id: user.id },
-      { password: await this.passwordService.hash(newPassword) }
-    );
+    await this.userRepository.update({ id: user.id }, { password: await this.passwordService.hash(newPassword) });
   }
 }

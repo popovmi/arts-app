@@ -52,7 +52,13 @@ export const initTestData = async (em: EntityManager) => {
 
   let attributes = [];
   for (const AttrEntity of Object.values(AttrEntities)) {
-    attributes.push(em.create(AttrEntity, { name: 'qq', order: 1 }));
+    let i = 1;
+    attributes.push(em.create(AttrEntity, { name: 'qq', valueOrder: i++ }));
+    attributes.push(em.create(AttrEntity, { name: 'ww', valueOrder: i++ }));
+    attributes.push(em.create(AttrEntity, { name: 'ee', valueOrder: i++ }));
+    attributes.push(em.create(AttrEntity, { name: 'rr', valueOrder: i++ }));
+    attributes.push(em.create(AttrEntity, { name: 'tt', valueOrder: i++ }));
+    attributes.push(em.create(AttrEntity, { name: 'yy', valueOrder: i++ }));
   }
   attributes = await em.save(attributes);
 };

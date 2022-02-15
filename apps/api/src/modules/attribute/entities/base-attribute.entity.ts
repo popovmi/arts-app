@@ -1,14 +1,17 @@
-import { Column, CreateDateColumn, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export class BaseAttribute {
-  @PrimaryColumn({ type: 'text' })
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({ type: 'text', unique: true })
   name: string;
 
   @Column({ type: 'boolean', default: true })
   active: boolean;
 
-  @Column({ type: 'integer' })
-  order: number;
+  @Column({ type: 'integer', unique: true })
+  valueOrder: number;
 
   @CreateDateColumn()
   createdAt: Date;

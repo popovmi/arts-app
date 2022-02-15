@@ -97,6 +97,15 @@ type ProjectTypePageInfo {
   hasNextPage: Boolean!
 }
 
+type BaseAttributeType {
+  id: Float!
+  name: String!
+  active: Boolean!
+  valueOrder: Float!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
 type User {
   id: String!
   username: String!
@@ -141,6 +150,17 @@ type Query {
   projects(filter: ProjectFilterQuery, pagination: ConnectionArgs = {}, order: ProjectOrderQuery): ProjectResponse!
   art(id: String!): Art!
   arts(filter: ArtFilterQuery, pagination: ConnectionArgs = {}, order: ArtOrderQuery): ArtResponse!
+  getArtClass: [BaseAttributeType!]!
+  getBottomForm: [BaseAttributeType!]!
+  getDropNumber: [BaseAttributeType!]!
+  getForm: [BaseAttributeType!]!
+  getHeight: [BaseAttributeType!]!
+  getIntercenter: [BaseAttributeType!]!
+  getNominalVolume: [BaseAttributeType!]!
+  getProductType: [BaseAttributeType!]!
+  getProductionMethod: [BaseAttributeType!]!
+  getRingType: [BaseAttributeType!]!
+  getSfm: [BaseAttributeType!]!
 }
 
 input UserFilterQuery {
@@ -263,6 +283,39 @@ type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createArt(createArtInput: CreateArtInput!): Art!
   updateArt(updateArtInput: UpdateArtInput!): Art!
+  createArtClass(input: CreateAttributeInput!): BaseAttributeType!
+  updateArtClassOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateArtClass(input: UpdateAttributeInput!): BaseAttributeType!
+  createBottomForm(input: CreateAttributeInput!): BaseAttributeType!
+  updateBottomFormOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateBottomForm(input: UpdateAttributeInput!): BaseAttributeType!
+  createDropNumber(input: CreateAttributeInput!): BaseAttributeType!
+  updateDropNumberOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateDropNumber(input: UpdateAttributeInput!): BaseAttributeType!
+  createForm(input: CreateAttributeInput!): BaseAttributeType!
+  updateFormOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateForm(input: UpdateAttributeInput!): BaseAttributeType!
+  createHeight(input: CreateAttributeInput!): BaseAttributeType!
+  updateHeightOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateHeight(input: UpdateAttributeInput!): BaseAttributeType!
+  createIntercenter(input: CreateAttributeInput!): BaseAttributeType!
+  updateIntercenterOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateIntercenter(input: UpdateAttributeInput!): BaseAttributeType!
+  createNominalVolume(input: CreateAttributeInput!): BaseAttributeType!
+  updateNominalVolumeOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateNominalVolume(input: UpdateAttributeInput!): BaseAttributeType!
+  createProductType(input: CreateAttributeInput!): BaseAttributeType!
+  updateProductTypeOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateProductType(input: UpdateAttributeInput!): BaseAttributeType!
+  createProductionMethod(input: CreateAttributeInput!): BaseAttributeType!
+  updateProductionMethodOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateProductionMethod(input: UpdateAttributeInput!): BaseAttributeType!
+  createRingType(input: CreateAttributeInput!): BaseAttributeType!
+  updateRingTypeOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateRingType(input: UpdateAttributeInput!): BaseAttributeType!
+  createSfm(input: CreateAttributeInput!): BaseAttributeType!
+  updateSfmOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateSfm(input: UpdateAttributeInput!): BaseAttributeType!
 }
 
 input CreateUserInput {
@@ -331,4 +384,20 @@ input UpdateArtInput {
   productionMethod: String
   filePath: String
   ringType: String
+}
+
+input CreateAttributeInput {
+  name: String!
+  active: Boolean!
+}
+
+input UpdateAttributeValueOrderInput {
+  oldOrder: Float!
+  newOrder: Float!
+}
+
+input UpdateAttributeInput {
+  id: Float!
+  name: String
+  active: Boolean
 }

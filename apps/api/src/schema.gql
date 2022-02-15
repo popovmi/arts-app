@@ -352,9 +352,9 @@ input CreateProjectInput {
   name: String!
   internal: Boolean
   hasDesignDoc: Boolean
-  dropNumber: String!
-  intercenter: String!
-  sfm: String!
+  dropNumber: String
+  intercenter: String
+  sfm: String
 }
 
 input UpdateProjectInput {
@@ -362,9 +362,9 @@ input UpdateProjectInput {
   name: String
   internal: Boolean
   hasDesignDoc: Boolean
-  dropNumber: String!
-  intercenter: String!
-  sfm: String!
+  dropNumber: String
+  intercenter: String
+  sfm: String
 }
 
 input CreateArtInput {

@@ -11,46 +11,54 @@ import { Project } from './entity/project.entity';
 
 @Injectable()
 export class ProjectService {
-  constructor(@InjectRepository(Project) private projectRepository: Repository<Project>) {}
+    constructor(@InjectRepository(Project) private projectRepository: Repository<Project>) {}
 
-  public async getByIds(ids: string[]): Promise<Project[]> {
-    return this.projectRepository.find({
-      where: { id: In(ids) },
-    });
-  }
+    public async getByIds(ids: string[]): Promise<Project[]> {
+        return this.projectRepository.find({
+            where: { id: In(ids) },
+        });
+    }
 
-  public async getProject(id: string): Promise<Project> {
-    return this.projectRepository.findOne({ id });
-  }
+    public async loadProjectsArts(projectIds: string[]): Promise<Project[]> {
+        return await this.projectRepository.find({
+            where: { id: In(projectIds) },
+            select: ['id'],
+            relations: ['arts'],
+        });
+    }
 
-  async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {
-    const { take = 50, skip = 0 } = pagination.pagingParams();
-    const query = filterQuery(this.projectRepository.createQueryBuilder(), filter).skip(skip).take(take);
+    public async getProject(id: string): Promise<Project> {
+        return this.projectRepository.findOne({ id });
+    }
 
-    orderQuery(query, { ...order });
+    async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {
+        const { take = 50, skip = 0 } = pagination.pagingParams();
+        const query = filterQuery(this.projectRepository.createQueryBuilder(), filter).skip(skip).take(take);
 
-    const [projects, count] = await query.getManyAndCount();
-    const page = connectionFromArraySlice(projects, pagination, { arrayLength: count, sliceStart: skip || 0 });
+        orderQuery(query, { ...order });
 
-    return { page, pageData: { count, take, skip } };
-  }
+        const [projects, count] = await query.getManyAndCount();
+        const page = connectionFromArraySlice(projects, pagination, { arrayLength: count, sliceStart: skip || 0 });
 
-  public async createProject(createProjectInput: CreateProjectInput): Promise<Project> {
-    const project = this.projectRepository.create({
-      ...createProjectInput,
-    });
+        return { page, pageData: { count, take, skip } };
+    }
 
-    return await this.projectRepository.save(project);
-  }
+    public async createProject(createProjectInput: CreateProjectInput): Promise<Project> {
+        const project = this.projectRepository.create({
+            ...createProjectInput,
+        });
 
-  public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {
-    const { id, ...updateInput } = updateProjectInput.format();
-    const project = await this.projectRepository.findOneOrFail({ id });
+        return await this.projectRepository.save(project);
+    }
 
-    Object.assign(project, {
-      ...updateInput,
-    });
+    public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {
+        const { id, ...updateInput } = updateProjectInput.format();
+        const project = await this.projectRepository.findOneOrFail({ id });
 
-    return await this.projectRepository.save(project);
-  }
+        Object.assign(project, {
+            ...updateInput,
+        });
+
+        return await this.projectRepository.save(project);
+    }
 }

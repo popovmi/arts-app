@@ -18,6 +18,12 @@ export class ArtService {
     private artFileService: ArtFileService
   ) {}
 
+  public async getByIds(ids: string[]): Promise<Art[]> {
+    return this.artRepository.find({
+      where: { id: In(ids) },
+    });
+  }
+
   async getArt(id: string): Promise<Art> {
     return this.artRepository.findOne({ id });
   }

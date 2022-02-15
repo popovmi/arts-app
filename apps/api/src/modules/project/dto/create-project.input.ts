@@ -19,17 +19,17 @@ export class CreateProjectInput {
 
   @IsString()
   @IsOptional()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   dropNumber: string;
 
   @IsString()
   @IsOptional()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   intercenter: string;
 
   @IsString()
   @IsOptional()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   sfm: string;
 
   format() {

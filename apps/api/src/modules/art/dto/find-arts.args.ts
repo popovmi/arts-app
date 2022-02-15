@@ -1,5 +1,6 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 import ConnectionArgs from 'common/connection-args.type';
 import { BooleanFieldOption, StringFieldOption } from 'common/filter-input.type';
 import { LogicalOperator } from 'shared/types';
@@ -92,12 +93,15 @@ export class ArtOrderQuery {
 @ArgsType()
 export class FindArtArgs {
   @Field(() => ArtFilterQuery, { nullable: true })
-  filter: ArtFilterQuery;
+  @IsOptional()
+  filter?: ArtFilterQuery;
 
   @Field(() => ConnectionArgs, { nullable: true, defaultValue: {} })
   @Type(() => ConnectionArgs)
-  pagination: ConnectionArgs;
+  @IsOptional()
+  pagination?: ConnectionArgs;
 
   @Field(() => ArtOrderQuery, { nullable: true })
-  order: ArtOrderQuery;
+  @IsOptional()
+  order?: ArtOrderQuery;
 }

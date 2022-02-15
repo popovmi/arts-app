@@ -3,12 +3,12 @@ import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class CreateAttributeInput {
-  @IsString()
-  @Field()
-  name: string;
+    @IsString()
+    @Field()
+    name: string;
 
-  @IsBoolean()
-  @IsOptional()
-  @Field()
-  active?: boolean;
+    @IsBoolean()
+    @IsOptional()
+    @Field()
+    active?: boolean;
 }

@@ -3,39 +3,39 @@ import { IsString, IsBoolean, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateProjectInput {
-  @IsString()
-  @Field(() => String)
-  name: string;
+    @IsString()
+    @Field(() => String)
+    name: string;
 
-  @IsString()
-  @IsOptional()
-  @Field(() => Boolean, { nullable: true })
-  internal: boolean;
+    @IsString()
+    @IsOptional()
+    @Field(() => Boolean, { nullable: true })
+    internal: boolean;
 
-  @IsBoolean()
-  @IsOptional()
-  @Field(() => Boolean, { nullable: true })
-  hasDesignDoc: boolean;
+    @IsBoolean()
+    @IsOptional()
+    @Field(() => Boolean, { nullable: true })
+    hasDesignDoc: boolean;
 
-  @IsString()
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  dropNumber: string;
+    @IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    dropNumber: string;
 
-  @IsString()
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  intercenter: string;
+    @IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    intercenter: string;
 
-  @IsString()
-  @IsOptional()
-  @Field(() => String, { nullable: true })
-  sfm: string;
+    @IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    sfm: string;
 
-  format() {
-    return {
-      ...this,
-      name: this.name.toUpperCase(),
-    };
-  }
+    format() {
+        return {
+            ...this,
+            name: this.name.toUpperCase(),
+        };
+    }
 }

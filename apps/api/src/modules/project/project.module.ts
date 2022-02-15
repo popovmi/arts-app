@@ -7,8 +7,8 @@ import { ProjectResolver } from './project.resolver';
 import { ProjectService } from './project.service';
 
 @Module({
-  imports: [forwardRef(() => ArtModule), TypeOrmModule.forFeature([Project])],
-  providers: [ProjectResolver, ProjectService, ProjectLoader],
-  exports: [ProjectService],
+    imports: [forwardRef(() => ArtModule), TypeOrmModule.forFeature([Project])],
+    providers: [ProjectResolver, ProjectService, ProjectLoader],
+    exports: [ProjectService],
 })
 export class ProjectModule {}

@@ -3,24 +3,24 @@ import { Role } from '../role.enum';
 
 @ObjectType('User')
 export class UserType {
-  @Field(() => String)
-  id: string;
+    @Field(() => String)
+    id: string;
 
-  @Field(() => String)
-  username: string;
+    @Field(() => String)
+    username: string;
 
-  @Field(() => String)
-  fullName: string;
+    @Field(() => String)
+    fullName: string;
 
-  @Field(() => String)
-  role: Role;
+    @Field(() => String)
+    role: Role;
 
-  @Field(() => Boolean)
-  active: boolean;
+    @Field(() => Boolean)
+    active: boolean;
 
-  @Field(() => Date)
-  createdAt: Date;
+    @Field(() => Date)
+    createdAt: Date;
 
-  @Field(() => Date)
-  updatedAt: Date;
+    @Field(() => Date)
+    updatedAt: Date;
 }

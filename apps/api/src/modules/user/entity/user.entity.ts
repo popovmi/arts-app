@@ -3,27 +3,27 @@ import { Role } from '../role.enum';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column({ type: 'text', unique: true })
-  username: string;
+    @Column({ type: 'text', unique: true })
+    username: string;
 
-  @Column({ type: 'text' })
-  fullName: string;
+    @Column({ type: 'text' })
+    fullName: string;
 
-  @Column({ type: 'enum', enum: Role })
-  role: Role;
+    @Column({ type: 'enum', enum: Role })
+    role: Role;
 
-  @Column({ type: 'text' })
-  password: string;
+    @Column({ type: 'text' })
+    password: string;
 
-  @Column({ default: true, type: 'boolean' })
-  active: boolean;
+    @Column({ default: true, type: 'boolean' })
+    active: boolean;
 
-  @CreateDateColumn()
-  createdAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

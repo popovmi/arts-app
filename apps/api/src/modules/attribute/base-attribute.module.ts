@@ -6,18 +6,18 @@ import { createAttributeServiceClass } from './utils/create-service-class';
 
 @Module({})
 export class BaseAttributeModule {
-  static register(entities: typeof BaseAttribute[]): DynamicModule {
-    const services = entities.map((entity) => ({
-      provide: `${entity.name}Service`,
-      useClass: createAttributeServiceClass(entity),
-    }));
+    static register(entities: typeof BaseAttribute[]): DynamicModule {
+        const services = entities.map((entity) => ({
+            provide: `${entity.name}Service`,
+            useClass: createAttributeServiceClass(entity),
+        }));
 
-    const resolvers = entities.map((entity) => createAttributeResolverClass(entity));
-	
-    return {
-      module: BaseAttributeModule,
-      imports: [TypeOrmModule.forFeature(entities)],
-      providers: [...services, ...resolvers],
-    };
-  }
+        const resolvers = entities.map((entity) => createAttributeResolverClass(entity));
+
+        return {
+            module: BaseAttributeModule,
+            imports: [TypeOrmModule.forFeature(entities)],
+            providers: [...services, ...resolvers],
+        };
+    }
 }

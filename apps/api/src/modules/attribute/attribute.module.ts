@@ -5,6 +5,6 @@ import * as Entities from './entities';
 const EntitiesArray = Object.values(Entities);
 
 @Module({
-  imports: [BaseAttributeModule.register(EntitiesArray)],
+    imports: [BaseAttributeModule.register(EntitiesArray)],
 })
 export class AttributeModule {}

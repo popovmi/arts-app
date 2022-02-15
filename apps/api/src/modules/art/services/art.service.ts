@@ -13,57 +13,61 @@ import { ArtFileService } from './art-file.service';
 
 @Injectable()
 export class ArtService {
-  constructor(
-    @InjectRepository(Art) private artRepository: Repository<Art>,
-    private artFileService: ArtFileService
-  ) {}
+    constructor(
+        @InjectRepository(Art) private artRepository: Repository<Art>,
+        private artFileService: ArtFileService
+    ) {}
 
-  public async getByIds(ids: string[]): Promise<Art[]> {
-    return this.artRepository.find({
-      where: { id: In(ids) },
-    });
-  }
+    public async getByIds(ids: string[]): Promise<Art[]> {
+        return this.artRepository.find({
+            where: { id: In(ids) },
+        });
+    }
 
-  async getArt(id: string): Promise<Art> {
-    return this.artRepository.findOne({ id });
-  }
+    async getArt(id: string): Promise<Art> {
+        return this.artRepository.findOne({ id });
+    }
 
-  async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
-    const { take = 50, skip = 0 } = pagination.pagingParams();
-    const query = filterQuery(this.artRepository.createQueryBuilder(), filter).skip(skip).take(take);
+    async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
+        const { take = 50, skip = 0 } = pagination.pagingParams();
+        const query = filterQuery(this.artRepository.createQueryBuilder(), filter).skip(skip).take(take);
 
-    orderQuery(query, { ...order });
+        orderQuery(query, { ...order });
 
-    const [arts, count] = await query.getManyAndCount();
-    const page = connectionFromArraySlice(arts, pagination, { arrayLength: count, sliceStart: skip || 0 });
+        const [arts, count] = await query.getManyAndCount();
+        const page = connectionFromArraySlice(arts, pagination, { arrayLength: count, sliceStart: skip || 0 });
 
-    return { page, pageData: { count, take, skip } };
-  }
+        return { page, pageData: { count, take, skip } };
+    }
 
-  @Transactional()
-  public async createArt(createArtInput: CreateArtInput): Promise<Art> {
-    const { filePath, ...input } = createArtInput;
+    @Transactional()
+    public async createArt(createArtInput: CreateArtInput): Promise<Art> {
+        const { filePath, ...input } = createArtInput;
 
-    const art = await this.artRepository.save({ ...input });
+        const art = await this.artRepository.save({ ...input });
 
-    if (filePath) await this.artFileService.saveArtFile(filePath, art);
+        if (filePath) await this.artFileService.saveArtFile(filePath, art);
 
-    return art;
-  }
+        return art;
+    }
 
-  @Transactional()
-  public async updateArt(updateArtInput: UpdateArtInput): Promise<Art> {
-    const { id, filePath, ...updateInput } = updateArtInput;
-    const art = await this.artRepository.findOneOrFail({ id });
+    @Transactional()
+    public async updateArt(updateArtInput: UpdateArtInput): Promise<Art> {
+        const { id, filePath, ...updateInput } = updateArtInput;
+        const art = await this.artRepository.findOneOrFail({ id });
 
-    if (filePath) await this.artFileService.saveArtFile(filePath, art);
-    Object.assign(art, { ...updateInput });
+        if (filePath) await this.artFileService.saveArtFile(filePath, art);
+        Object.assign(art, { ...updateInput });
 
-    return await this.artRepository.save(art);
-  }
+        return await this.artRepository.save(art);
+    }
 
-  public async loadArtsFiles(ids: string[]): Promise<Pick<Art, 'id' | 'files'>[]> {
-    const arts = await this.artRepository.find({ where: { id: In(ids) }, select: ['id'], relations: ['files'] });
-    return arts;
-  }
+    public async loadArtsFiles(ids: string[]): Promise<Pick<Art, 'id' | 'files'>[]> {
+        const arts = await this.artRepository.find({
+            where: { id: In(ids) },
+            select: ['id'],
+            relations: ['files'],
+        });
+        return arts;
+    }
 }

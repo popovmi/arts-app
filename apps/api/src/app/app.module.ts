@@ -15,43 +15,43 @@ import { ApiConfigService, SharedModule } from 'shared';
 import { EntityManager } from 'typeorm';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
 
-    SharedModule,
+        SharedModule,
 
-    TypeOrmModule.forRootAsync({
-      inject: [ApiConfigService],
-      useFactory: (config: ApiConfigService) => config.typeOrmConfig,
-    }),
+        TypeOrmModule.forRootAsync({
+            inject: [ApiConfigService],
+            useFactory: (config: ApiConfigService) => config.typeOrmConfig,
+        }),
 
-    GraphQLModule.forRootAsync({
-      driver: ApolloDriver,
-      inject: [ApiConfigService],
-      useFactory: (config: ApiConfigService) => config.graphQLConfig,
-    }),
+        GraphQLModule.forRootAsync({
+            driver: ApolloDriver,
+            inject: [ApiConfigService],
+            useFactory: (config: ApiConfigService) => config.graphQLConfig,
+        }),
 
-    UserModule,
+        UserModule,
 
-    AuthModule,
+        AuthModule,
 
-    ProjectModule,
+        ProjectModule,
 
-    ArtModule,
+        ArtModule,
 
-    AttributeModule,
+        AttributeModule,
 
-    FactoryModule,
+        FactoryModule,
 
-    CustomerModule,
-  ],
+        CustomerModule,
+    ],
 })
 export class AppModule implements OnApplicationBootstrap {
-  constructor(@InjectEntityManager() readonly em: EntityManager, readonly config: ApiConfigService) {}
+    constructor(@InjectEntityManager() readonly em: EntityManager, readonly config: ApiConfigService) {}
 
-  async onApplicationBootstrap() {
-    if (this.config.isDevelopment) {
-      await initTestData(this.em);
+    async onApplicationBootstrap() {
+        if (this.config.isDevelopment) {
+            await initTestData(this.em);
+        }
     }
-  }
 }

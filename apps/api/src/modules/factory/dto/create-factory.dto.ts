@@ -1,9 +1,9 @@
 import { IsBoolean, IsString } from 'class-validator';
 
 export class CreateFactoryDto {
-  @IsString()
-  name: string;
+    @IsString()
+    name: string;
 
-  @IsBoolean()
-  active: boolean;
+    @IsBoolean()
+    active: boolean;
 }

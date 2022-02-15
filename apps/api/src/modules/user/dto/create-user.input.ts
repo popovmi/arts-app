@@ -4,34 +4,34 @@ import { Role } from '../role.enum';
 
 @InputType()
 export class CreateUserInput {
-  @IsString()
-  @Field()
-  username: string;
+    @IsString()
+    @Field()
+    username: string;
 
-  @IsString()
-  @Field({})
-  fullName: string;
+    @IsString()
+    @Field({})
+    fullName: string;
 
-  @IsEnum(Role)
-  @Field(() => Role)
-  role: Role;
+    @IsEnum(Role)
+    @Field(() => Role)
+    role: Role;
 
-  @Field(() => Boolean)
-  @IsBoolean()
-  active: boolean;
+    @Field(() => Boolean)
+    @IsBoolean()
+    active: boolean;
 
-  @IsString()
-  @Field()
-  password: string;
+    @IsString()
+    @Field()
+    password: string;
 
-  format() {
-    return {
-      ...this,
-      username: this.username.toUpperCase(),
-      fullName: this.fullName
-        .split(' ')
-        .map((part) => part[0].toUpperCase() + part.slice(1))
-        .join(' '),
-    };
-  }
+    format() {
+        return {
+            ...this,
+            username: this.username.toUpperCase(),
+            fullName: this.fullName
+                .split(' ')
+                .map((part) => part[0].toUpperCase() + part.slice(1))
+                .join(' '),
+        };
+    }
 }

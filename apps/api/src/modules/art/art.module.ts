@@ -8,8 +8,8 @@ import { ProjectModule } from 'modules/project/project.module';
 import { ArtLoader } from './loaders';
 
 @Module({
-  imports: [forwardRef(() => ProjectModule), TypeOrmModule.forFeature([Art, ArtFile])],
-  providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
-  exports: [ArtService],
+    imports: [forwardRef(() => ProjectModule), TypeOrmModule.forFeature([Art, ArtFile])],
+    providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
+    exports: [ArtService],
 })
 export class ArtModule {}

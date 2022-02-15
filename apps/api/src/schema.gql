@@ -142,6 +142,22 @@ type LoginResponse {
   user: User!
 }
 
+type Customer {
+  id: String!
+  name: String!
+  active: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type Factory {
+  id: String!
+  name: String!
+  active: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
 type Query {
   user(id: String!): User!
   users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
@@ -161,6 +177,10 @@ type Query {
   getProductionMethod: [BaseAttributeType!]!
   getRingType: [BaseAttributeType!]!
   getSfm: [BaseAttributeType!]!
+  factories: [Factory!]!
+  factory(id: String!): Factory!
+  customers: [Customer!]!
+  customer(id: String!): Customer!
 }
 
 input UserFilterQuery {
@@ -322,6 +342,10 @@ type Mutation {
   createSfm(input: CreateAttributeInput!): BaseAttributeType!
   updateSfmOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
   updateSfm(input: UpdateAttributeInput!): BaseAttributeType!
+  createFactory(input: CreateFactoryInput!): Factory!
+  updateFactory(input: UpdateFactoryInput!): Factory!
+  createCustomer(input: CreateCustomerInput!): Customer!
+  updateCustomer(input: UpdateCustomerInput!): Customer!
 }
 
 input CreateUserInput {
@@ -412,4 +436,26 @@ input UpdateAttributeInput {
   id: Float!
   name: String
   active: Boolean
+}
+
+input CreateFactoryInput {
+  name: String!
+  active: Boolean = true
+}
+
+input UpdateFactoryInput {
+  id: String!
+  name: String!
+  active: Boolean = true
+}
+
+input CreateCustomerInput {
+  name: String!
+  active: Boolean = true
+}
+
+input UpdateCustomerInput {
+  id: String!
+  name: String!
+  active: Boolean = true
 }

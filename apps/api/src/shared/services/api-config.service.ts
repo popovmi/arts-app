@@ -1,10 +1,11 @@
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AppContext } from '@/shared/types';
+import { ApolloDriverConfig } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Request, Response } from 'express';
+import { GraphQLFormattedError } from 'graphql';
 import { join } from 'path';
-import { AppContext } from '@/shared/types';
 
 @Injectable()
 export class ApiConfigService {
@@ -54,7 +55,6 @@ export class ApiConfigService {
 
     get graphQLConfig(): ApolloDriverConfig {
         return {
-            driver: ApolloDriver,
             debug: !this.isProduction,
             playground: this.isProduction
                 ? false
@@ -64,11 +64,21 @@ export class ApiConfigService {
                       },
                   },
             autoSchemaFile: join(process.cwd(), 'apps/api/src/schema.gql'),
+
             context: ({ req, res }: { req: Request; res: Response }): AppContext => ({
                 httpContext: { req, res },
                 session: req.session,
                 currentUserId: req.session.userId,
             }),
+
+            formatError: (error) => {
+                console.log(error);
+                const graphQLFormattedError: GraphQLFormattedError = {
+                    message: error.extensions?.response?.message || error.message,
+                };
+                console.log(graphQLFormattedError);
+                return graphQLFormattedError;
+            },
         };
     }
 

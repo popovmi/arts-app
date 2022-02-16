@@ -1,5 +1,5 @@
-mutation updateNominalVolume($input: UpdateAttributeInput!){
-    updateNominalVolume(input: $input){
+query attributes($type: AttributeType!){
+    attributes(type: $type){
         id
         name
         active

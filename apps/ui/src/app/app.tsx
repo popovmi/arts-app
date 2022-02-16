@@ -1,8 +1,9 @@
-import { useLoginMutation, useLazyArtsQuery } from 'generated';
+import { useLoginMutation, useLazyArtsQuery } from '@/graphql';
 import { useEffect } from 'react';
+import { AttributeTable } from './attribute.table';
 
 export function App() {
-    const [login, { data }] = useLoginMutation();
+    const [login, { data, error }] = useLoginMutation();
     const [fetchArts, { data: artsData }] = useLazyArtsQuery();
 
     useEffect(() => {
@@ -17,6 +18,8 @@ export function App() {
         <>
             <button onClick={() => login({ username: 'admin', password: 'USER' })}>VHOD</button>;
             <button onClick={() => fetchArts()}>ARTS</button>
+            <div>{error && error.message}</div>
+            <AttributeTable></AttributeTable>
         </>
     );
 }

@@ -1,16 +1,17 @@
-import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './app/app';
+import { store } from './app/store';
 
 ReactDOM.render(
     <StrictMode>
-        <ApiProvider api={api}>
+        <Provider store={store}>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
-        </ApiProvider>
+        </Provider>
     </StrictMode>,
     document.getElementById('root')
 );

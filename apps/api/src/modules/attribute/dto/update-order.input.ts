@@ -1,10 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { NotMatch } from '@/shared/decorators/match.decorator';
+import { AttributeType } from '../attribute-type';
 
 type UpdateOrderDirection = 'forward' | 'backward';
 
 @InputType()
 export class UpdateAttributeValueOrderInput {
+    @Field(() => AttributeType)
+    type: AttributeType;
+
     @Field(() => Number)
     oldOrder: number;
 

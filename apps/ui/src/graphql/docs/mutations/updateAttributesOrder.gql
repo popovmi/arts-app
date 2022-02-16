@@ -1,0 +1,10 @@
+mutation updateAttributesOrder($input: UpdateAttributeValueOrderInput!){
+    updateAttributesOrder(input: $input){
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
+}

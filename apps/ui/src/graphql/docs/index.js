@@ -1,2 +1,2 @@
-module.exports.mutations = require('../../../../../.temp/mutations');
-module.exports.queries = require('../../../../../.temp/queries');
+module.exports.mutations = require('./mutations');
+module.exports.queries = require('./queries');

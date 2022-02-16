@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { BaseAttributeModule } from './base-attribute.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AttributeResolver } from './attribute.resolver';
+import { AttributeService } from './attribute.service';
 import * as Entities from './entities';
 
 const EntitiesArray = Object.values(Entities);
 
 @Module({
-    imports: [BaseAttributeModule.register(EntitiesArray)],
+    imports: [TypeOrmModule.forFeature(EntitiesArray)],
+    providers: [AttributeService,AttributeResolver] ,
 })
 export class AttributeModule {}

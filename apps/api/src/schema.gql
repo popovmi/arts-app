@@ -172,17 +172,7 @@ type Query {
   factory(id: String!): Factory!
   customers: [Customer!]!
   customer(id: String!): Customer!
-  getArtClass: [BaseAttributeType!]!
-  getBottomForm: [BaseAttributeType!]!
-  getDropNumber: [BaseAttributeType!]!
-  getForm: [BaseAttributeType!]!
-  getHeight: [BaseAttributeType!]!
-  getIntercenter: [BaseAttributeType!]!
-  getNominalVolume: [BaseAttributeType!]!
-  getProductType: [BaseAttributeType!]!
-  getProductionMethod: [BaseAttributeType!]!
-  getRingType: [BaseAttributeType!]!
-  getSfm: [BaseAttributeType!]!
+  attributes(type: AttributeType!): [BaseAttributeType!]!
 }
 
 input UserFilterQuery {
@@ -301,6 +291,20 @@ input ArtOrderQuery {
   ringType: OrderDirection
 }
 
+enum AttributeType {
+  artClass
+  bottomForm
+  form
+  height
+  nominalVolume
+  productionMethod
+  productType
+  ringType
+  dropNumber
+  intercenter
+  sfm
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -315,39 +319,9 @@ type Mutation {
   updateFactory(input: UpdateFactoryInput!): Factory!
   createCustomer(input: CreateCustomerInput!): Customer!
   updateCustomer(input: UpdateCustomerInput!): Customer!
-  createArtClass(input: CreateAttributeInput!): BaseAttributeType!
-  updateArtClassOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateArtClass(input: UpdateAttributeInput!): BaseAttributeType!
-  createBottomForm(input: CreateAttributeInput!): BaseAttributeType!
-  updateBottomFormOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateBottomForm(input: UpdateAttributeInput!): BaseAttributeType!
-  createDropNumber(input: CreateAttributeInput!): BaseAttributeType!
-  updateDropNumberOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateDropNumber(input: UpdateAttributeInput!): BaseAttributeType!
-  createForm(input: CreateAttributeInput!): BaseAttributeType!
-  updateFormOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateForm(input: UpdateAttributeInput!): BaseAttributeType!
-  createHeight(input: CreateAttributeInput!): BaseAttributeType!
-  updateHeightOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateHeight(input: UpdateAttributeInput!): BaseAttributeType!
-  createIntercenter(input: CreateAttributeInput!): BaseAttributeType!
-  updateIntercenterOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateIntercenter(input: UpdateAttributeInput!): BaseAttributeType!
-  createNominalVolume(input: CreateAttributeInput!): BaseAttributeType!
-  updateNominalVolumeOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateNominalVolume(input: UpdateAttributeInput!): BaseAttributeType!
-  createProductType(input: CreateAttributeInput!): BaseAttributeType!
-  updateProductTypeOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateProductType(input: UpdateAttributeInput!): BaseAttributeType!
-  createProductionMethod(input: CreateAttributeInput!): BaseAttributeType!
-  updateProductionMethodOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateProductionMethod(input: UpdateAttributeInput!): BaseAttributeType!
-  createRingType(input: CreateAttributeInput!): BaseAttributeType!
-  updateRingTypeOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateRingType(input: UpdateAttributeInput!): BaseAttributeType!
-  createSfm(input: CreateAttributeInput!): BaseAttributeType!
-  updateSfmOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
-  updateSfm(input: UpdateAttributeInput!): BaseAttributeType!
+  createAttribute(input: CreateAttributeInput!): BaseAttributeType!
+  updateAttributesOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateAttribute(input: UpdateAttributeInput!): BaseAttributeType!
 }
 
 input CreateUserInput {
@@ -447,16 +421,19 @@ input UpdateCustomerInput {
 }
 
 input CreateAttributeInput {
+  type: AttributeType!
   name: String!
   active: Boolean!
 }
 
 input UpdateAttributeValueOrderInput {
+  type: AttributeType!
   oldOrder: Float!
   newOrder: Float!
 }
 
 input UpdateAttributeInput {
+  type: AttributeType!
   id: Float!
   name: String
   active: Boolean

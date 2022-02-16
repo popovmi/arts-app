@@ -1,6 +1,8 @@
 import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export class BaseAttribute {
+    static attributeType = undefined;
+
     @PrimaryGeneratedColumn('increment')
     id: number;
 

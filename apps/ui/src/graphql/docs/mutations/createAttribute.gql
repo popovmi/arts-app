@@ -1,5 +1,5 @@
-mutation updateRingType($input: UpdateAttributeInput!){
-    updateRingType(input: $input){
+mutation createAttribute($input: CreateAttributeInput!){
+    createAttribute(input: $input){
         id
         name
         active

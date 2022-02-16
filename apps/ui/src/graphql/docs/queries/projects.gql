@@ -1,9 +1,9 @@
-query projects($filter: ProjectFilterQuery, $pagination: ConnectionArgs, $order: ProjectOrderQuery){
-    projects(filter: $filter, pagination: $pagination, order: $order){
-        page{
-            edges{
+query projects($filter: ProjectFilterQuery, $pagination: ConnectionArgs, $order: ProjectOrderQuery) {
+    projects(filter: $filter, pagination: $pagination, order: $order) {
+        page {
+            edges {
                 cursor
-                node{
+                node {
                     id
                     name
                     internal
@@ -11,106 +11,26 @@ query projects($filter: ProjectFilterQuery, $pagination: ConnectionArgs, $order:
                     sfm
                     dropNumber
                     intercenter
-                    arts{
+                    factory {
                         id
                         name
-                        internal
-                        files{
-                            artId
-                            art{
-                                id
-                                name
-                                internal
-                                files{
-                                    artId
-                                    originalPath
-                                    watermarkPath
-                                    uploadedAt
-                                }
-                                projectId
-                                createdAt
-                                updatedAt
-                                bottomForm
-                                artClass
-                                form
-                                nominalVolume
-                                height
-                                productType
-                                productionMethod
-                                ringType
-                                project{
-                                    id
-                                    name
-                                    internal
-                                    hasDesignDoc
-                                    sfm
-                                    dropNumber
-                                    intercenter
-                                    arts{
-                                        id
-                                        name
-                                        internal
-                                        projectId
-                                        createdAt
-                                        updatedAt
-                                        bottomForm
-                                        artClass
-                                        form
-                                        nominalVolume
-                                        height
-                                        productType
-                                        productionMethod
-                                        ringType
-                                        project{
-                                            id
-                                            name
-                                            internal
-                                            hasDesignDoc
-                                            sfm
-                                            dropNumber
-                                            intercenter
-                                            factoryId
-                                            customerId
-                                            createdAt
-                                            updatedAt
-                                        }
-                                    }
-                                    factoryId
-                                    customerId
-                                    createdAt
-                                    updatedAt
-                                }
-                            }
-                            originalPath
-                            watermarkPath
-                            uploadedAt
-                        }
-                        projectId
-                        createdAt
-                        updatedAt
-                        bottomForm
-                        artClass
-                        form
-                        nominalVolume
-                        height
-                        productType
-                        productionMethod
-                        ringType
                     }
-                    factoryId
-                    customerId
+                    customer {
+                        id
+                        name
+                    }
                     createdAt
                     updatedAt
                 }
             }
-            pageInfo{
+            pageInfo {
                 startCursor
                 endCursor
                 hasPreviousPage
                 hasNextPage
             }
         }
-        pageData{
+        pageData {
             count
             take
             skip

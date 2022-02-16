@@ -1,5 +1,5 @@
-mutation createProject($createProjectInput: CreateProjectInput!){
-    createProject(createProjectInput: $createProjectInput){
+mutation createProject($createProjectInput: CreateProjectInput!) {
+    createProject(createProjectInput: $createProjectInput) {
         id
         name
         internal
@@ -7,94 +7,14 @@ mutation createProject($createProjectInput: CreateProjectInput!){
         sfm
         dropNumber
         intercenter
-        arts{
+        factory {
             id
             name
-            internal
-            files{
-                artId
-                art{
-                    id
-                    name
-                    internal
-                    files{
-                        artId
-                        originalPath
-                        watermarkPath
-                        uploadedAt
-                    }
-                    projectId
-                    createdAt
-                    updatedAt
-                    bottomForm
-                    artClass
-                    form
-                    nominalVolume
-                    height
-                    productType
-                    productionMethod
-                    ringType
-                    project{
-                        id
-                        name
-                        internal
-                        hasDesignDoc
-                        sfm
-                        dropNumber
-                        intercenter
-                        arts{
-                            id
-                            name
-                            internal
-                            projectId
-                            createdAt
-                            updatedAt
-                            bottomForm
-                            artClass
-                            form
-                            nominalVolume
-                            height
-                            productType
-                            productionMethod
-                            ringType
-                            project{
-                                id
-                                name
-                                internal
-                                hasDesignDoc
-                                sfm
-                                dropNumber
-                                intercenter
-                                factoryId
-                                customerId
-                                createdAt
-                                updatedAt
-                            }
-                        }
-                        factoryId
-                        customerId
-                        createdAt
-                        updatedAt
-                    }
-                }
-                originalPath
-                watermarkPath
-                uploadedAt
-            }
-            projectId
-            createdAt
-            updatedAt
-            bottomForm
-            artClass
-            form
-            nominalVolume
-            height
-            productType
-            productionMethod
-            ringType
         }
-        factoryId
-        customerId
+        customer {
+            id
+            name
+        }
         createdAt
         updatedAt
     }

@@ -3,7 +3,7 @@ import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
-import { initTestData } from 'db/init-test-data';
+import { initTestData } from '@/db/init-test-data';
 import { ArtModule } from '@/modules/art/art.module';
 import { AttributeModule } from '@/modules/attribute/attribute.module';
 import { AuthModule } from '@/modules/auth';

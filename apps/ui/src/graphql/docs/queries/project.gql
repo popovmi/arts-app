@@ -1,5 +1,5 @@
-query project($id: String!){
-    project(id: $id){
+query project($id: String!) {
+    project(id: $id) {
         id
         name
         internal
@@ -7,52 +7,16 @@ query project($id: String!){
         sfm
         dropNumber
         intercenter
-        arts{
+        arts {
             id
             name
             internal
-            files{
+            files {
                 artId
-                art{
-                    id
-                    name
-                    internal
-                    files{
-                        artId
-                        originalPath
-                        watermarkPath
-                        uploadedAt
-                    }
-                    projectId
-                    createdAt
-                    updatedAt
-                    bottomForm
-                    artClass
-                    form
-                    nominalVolume
-                    height
-                    productType
-                    productionMethod
-                    ringType
-                    project{
-                        id
-                        name
-                        internal
-                        hasDesignDoc
-                        sfm
-                        dropNumber
-                        intercenter
-                        factoryId
-                        customerId
-                        createdAt
-                        updatedAt
-                    }
-                }
                 originalPath
                 watermarkPath
                 uploadedAt
             }
-            projectId
             createdAt
             updatedAt
             bottomForm
@@ -63,22 +27,15 @@ query project($id: String!){
             productType
             productionMethod
             ringType
-            project{
-                id
-                name
-                internal
-                hasDesignDoc
-                sfm
-                dropNumber
-                intercenter
-                factoryId
-                customerId
-                createdAt
-                updatedAt
-            }
         }
-        factoryId
-        customerId
+        factory {
+            id
+            name
+        }
+        customer {
+            id
+            name
+        }
         createdAt
         updatedAt
     }

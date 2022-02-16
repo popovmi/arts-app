@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateCustomerInput, UpdateCustomerInput } from './dto';
 import { Customer } from './entities/customer.entity';
 
 @Injectable()
 export class CustomerService {
     constructor(@InjectRepository(Customer) private customerRepository: Repository<Customer>) {}
+
+    public async getByIds(ids: string[]) {
+        return await this.customerRepository.find({ id: In(ids) });
+    }
 
     public async create(input: CreateCustomerInput) {
         const customer = await this.customerRepository.save(input);

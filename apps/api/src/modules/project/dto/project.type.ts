@@ -1,5 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ArtType } from '@/modules/art/dto';
+import { FactoryType } from '@/modules/factory/dto';
+import { CustomerType } from '@/modules/customer/dto';
 
 @ObjectType('Project')
 export class ProjectType {
@@ -26,6 +28,12 @@ export class ProjectType {
 
     @Field(() => [ArtType], { nullable: true })
     arts: ArtType[];
+
+    @Field(() => FactoryType, { nullable: true })
+    factory: FactoryType;
+
+    @Field(() => CustomerType, { nullable: true })
+    customer: CustomerType;
 
     @Field(() => String, { nullable: true })
     factoryId: number;

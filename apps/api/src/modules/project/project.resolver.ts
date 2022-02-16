@@ -26,6 +26,16 @@ export class ProjectResolver {
         return await this.projectLoader.batchArts.load(project.id);
     }
 
+    @ResolveField('customer', () => [ArtType], { nullable: true })
+    public async getProjectsCustomers(@Parent() project: ProjectType) {
+        return await this.projectLoader.batchCustomers.load(project.id);
+    }
+
+    @ResolveField('factory', () => [ArtType], { nullable: true })
+    public async getProjectsFactories(@Parent() project: ProjectType) {
+        return await this.projectLoader.batchFactories.load(project.id);
+    }
+
     @Mutation(() => ProjectType)
     async createProject(@Args('createProjectInput') createProjectInput: CreateProjectInput) {
         return this.projectService.createProject(createProjectInput);

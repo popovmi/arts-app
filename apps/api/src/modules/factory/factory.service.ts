@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateFactoryInput, UpdateFactoryInput } from './dto';
 import { Factory } from './entities/factory.entity';
 
 @Injectable()
 export class FactoryService {
     constructor(@InjectRepository(Factory) private factoryRepo: Repository<Factory>) {}
+
+    public async getByIds(ids: string[]) {
+        return await this.factoryRepo.find({ id: In(ids) });
+    }
 
     public async create(input: CreateFactoryInput) {
         const factory = await this.factoryRepo.save(input);

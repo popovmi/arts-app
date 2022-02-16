@@ -7,8 +7,8 @@ import {
     ProductionMethod,
     ProductType,
     RingType,
-} from 'modules/attribute/entities';
-import { Project } from 'modules/project/entity/project.entity';
+} from '@/modules/attribute/entities';
+import { Project } from '@/modules/project/entity/project.entity';
 import {
     Column,
     CreateDateColumn,

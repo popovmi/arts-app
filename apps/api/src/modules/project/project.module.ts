@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArtModule } from 'modules/art/art.module';
+import { ArtModule } from '@/modules/art/art.module';
 import { Project } from './entity/project.entity';
 import { ProjectLoader } from './loaders';
 import { ProjectResolver } from './project.resolver';

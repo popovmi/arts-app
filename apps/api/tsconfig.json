@@ -1,13 +1,20 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+		"baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@arts-app-new/graphql-utils": ["../../libs/graphql-utils/src/index.ts"]
+        }
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+    "files": [],
+    "include": [],
+    "references": [
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.spec.json"
+        }
+    ]
 }

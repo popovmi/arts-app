@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
-import { PasswordService } from 'modules/auth/service';
-import { filterQuery, orderQuery } from 'shared/utils/query-builder';
+import { PasswordService } from '@/modules/auth/service';
+import { filterQuery, orderQuery } from '@/shared/utils/query-builder';
 import { Repository } from 'typeorm';
 import { CreateUserInput, FindUsersArgs, UpdateUserInput, UserResponse } from './dto';
 import { User } from './entity/user.entity';

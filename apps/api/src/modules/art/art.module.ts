@@ -1,11 +1,11 @@
+import { ProjectModule } from '@/modules/project/project.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Art } from './entity/art.entity';
 import { ArtResolver } from './art.resolver';
-import { ArtService, ArtFileService } from './services';
 import { ArtFile } from './entity/art-file.entity';
-import { ProjectModule } from 'modules/project/project.module';
+import { Art } from './entity/art.entity';
 import { ArtLoader } from './loaders';
+import { ArtFileService, ArtService } from './services';
 
 @Module({
     imports: [forwardRef(() => ProjectModule), TypeOrmModule.forFeature([Art, ArtFile])],

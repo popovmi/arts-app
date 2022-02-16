@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectType, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import { CreateAttributeInput } from '../dto/create-attribute.input';
-import { UpdateAttributeInput } from '../dto/update-attribute.input';
-import { UpdateAttributeValueOrderInput } from '../dto/update-order.input';
+import { CreateAttributeInput, UpdateAttributeValueOrderInput, UpdateAttributeInput } from '../dto';
 import { BaseAttribute } from '../entities/base-attribute.entity';
 
 export interface AttributeService<T extends BaseAttribute = BaseAttribute> {

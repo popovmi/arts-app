@@ -1,4 +1,4 @@
-import { OrderDirection } from 'shared/types/order';
+import { OrderDirection } from '@/shared/types/order';
 import { SelectQueryBuilder } from 'typeorm';
 
 export interface Order {

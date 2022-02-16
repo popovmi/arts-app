@@ -1,7 +1,7 @@
-import { Art } from 'modules/art/entity/art.entity';
-import { DropNumber, Intercenter, Sfm } from 'modules/attribute/entities';
-import { Customer } from 'modules/customer/entities/customer.entity';
-import { Factory } from 'modules/factory/entities/factory.entity';
+import { Art } from '@/modules/art/entity/art.entity';
+import { DropNumber, Intercenter, Sfm } from '@/modules/attribute/entities';
+import { Customer } from '@/modules/customer/entities/customer.entity';
+import { Factory } from '@/modules/factory/entities/factory.entity';
 import {
     Column,
     CreateDateColumn,

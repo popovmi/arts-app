@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'modules/user/entity/user.entity';
+import { User } from '@/modules/user/entity/user.entity';
 import { ILike, Repository } from 'typeorm';
 import { LoginArgs, ChangePasswordArgs } from '../dto';
 import { PasswordService } from './password.service';

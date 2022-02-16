@@ -2,52 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Project {
-  id: String!
-  name: String!
-  internal: Boolean!
-  hasDesignDoc: Boolean
-  sfm: String
-  dropNumber: String
-  intercenter: String
-  arts: [Art!]
-  factoryId: String
-  customerId: String
-  createdAt: Date!
-  updatedAt: Date!
-}
-
-"""Date custom scalar type"""
-scalar Date
-
-type PageData {
-  count: Float!
-  take: Float!
-  skip: Float!
-}
-
-type ProjectResponse {
-  page: ProjectTypeConnection!
-  pageData: PageData
-}
-
-type ProjectTypeConnection {
-  edges: [ProjectTypeEdge!]
-  pageInfo: ProjectTypePageInfo
-}
-
-type ProjectTypeEdge {
-  cursor: String
-  node: Project
-}
-
-type ProjectTypePageInfo {
-  startCursor: String
-  endCursor: String
-  hasPreviousPage: Boolean!
-  hasNextPage: Boolean!
-}
-
 type ArtFile {
   artId: String!
   art: Art!
@@ -55,6 +9,9 @@ type ArtFile {
   watermarkPath: String!
   uploadedAt: Date!
 }
+
+"""Date custom scalar type"""
+scalar Date
 
 type Art {
   id: String!
@@ -75,6 +32,12 @@ type Art {
   project: Project
 }
 
+type PageData {
+  count: Float!
+  take: Float!
+  skip: Float!
+}
+
 type ArtResponse {
   page: ArtTypeConnection!
   pageData: PageData
@@ -91,6 +54,43 @@ type ArtTypeEdge {
 }
 
 type ArtTypePageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type Project {
+  id: String!
+  name: String!
+  internal: Boolean!
+  hasDesignDoc: Boolean
+  sfm: String
+  dropNumber: String
+  intercenter: String
+  arts: [Art!]
+  factoryId: String
+  customerId: String
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type ProjectResponse {
+  page: ProjectTypeConnection!
+  pageData: PageData
+}
+
+type ProjectTypeConnection {
+  edges: [ProjectTypeEdge!]
+  pageInfo: ProjectTypePageInfo
+}
+
+type ProjectTypeEdge {
+  cursor: String
+  node: Project
+}
+
+type ProjectTypePageInfo {
   startCursor: String
   endCursor: String
   hasPreviousPage: Boolean!

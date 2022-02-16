@@ -1,10 +1,10 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { IsOptional } from 'class-validator';
-import ConnectionArgs from 'common/connection-args.type';
-import { BooleanFieldOption, StringFieldOption } from 'common/filter-input.type';
-import { LogicalOperator } from 'shared/types';
-import { OrderDirection } from 'shared/types/order';
+import ConnectionArgs from '@/common/connection-args.type';
+import { BooleanFieldOption, StringFieldOption } from '@/common/filter-input.type';
+import { LogicalOperator } from '@/shared/types';
+import { OrderDirection } from '@/shared/types/order';
 
 @InputType()
 export class ArtFilterQuery {

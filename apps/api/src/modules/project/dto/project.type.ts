@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { ArtType } from 'modules/art/dto';
+import { ArtType } from '@/modules/art/dto';
 
 @ObjectType('Project')
 export class ProjectType {

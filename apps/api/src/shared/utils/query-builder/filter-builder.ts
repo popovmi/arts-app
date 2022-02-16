@@ -1,11 +1,11 @@
-import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from 'typeorm';
 import {
     BooleanFieldOption,
     DateFieldOptions,
     NumberFieldOptions,
     StringFieldOption,
-} from 'common/filter-input.type';
-import { LogicalOperator } from 'shared/types';
+} from '@/common/filter-input.type';
+import { LogicalOperator } from '@/shared/types';
+import { Brackets, SelectQueryBuilder, WhereExpressionBuilder } from 'typeorm';
 
 export interface Field {
     [key: string]: StringFieldOption | BooleanFieldOption | NumberFieldOptions | DateFieldOptions;

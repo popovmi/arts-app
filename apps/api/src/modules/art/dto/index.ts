@@ -1,3 +1,4 @@
+export * from './art-file.type';
 export * from './art.type';
 export * from './arts.response';
 export * from './create-art.input';

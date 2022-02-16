@@ -1,5 +1,5 @@
 import { ObjectType } from '@nestjs/graphql';
-import relayTypes from 'common/relay.types';
+import relayTypes from '@/common/relay.types';
 import { ArtType } from '.';
 
 @ObjectType()

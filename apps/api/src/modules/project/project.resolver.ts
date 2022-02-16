@@ -1,11 +1,8 @@
+import { ArtType } from '@/modules/art/dto';
+import { AuthGuard } from '@/modules/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { ArtType } from 'modules/art/dto';
-import { AuthGuard } from 'modules/auth/auth.guard';
-import { CreateProjectInput, ProjectType } from './dto';
-import { FindProjectArgs } from './dto/find-projects.args';
-import { ProjectResponse } from './dto/projects.response';
-import { UpdateProjectInput } from './dto/update-project.input';
+import { CreateProjectInput, FindProjectArgs, ProjectResponse, ProjectType, UpdateProjectInput } from './dto';
 import { ProjectLoader } from './loaders';
 import { ProjectService } from './project.service';
 

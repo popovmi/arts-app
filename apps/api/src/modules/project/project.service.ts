@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
-import { filterQuery, orderQuery } from 'shared/utils/query-builder';
+import { filterQuery, orderQuery } from '@/shared/utils/query-builder';
 import { In, Repository } from 'typeorm';
-import { CreateProjectInput } from './dto';
-import { FindProjectArgs } from './dto/find-projects.args';
-import { ProjectResponse } from './dto/projects.response';
-import { UpdateProjectInput } from './dto/update-project.input';
+import { CreateProjectInput, FindProjectArgs, ProjectResponse, UpdateProjectInput } from './dto';
 import { Project } from './entity/project.entity';
 
 @Injectable()

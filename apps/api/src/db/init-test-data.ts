@@ -1,11 +1,11 @@
 import { hash } from 'bcrypt';
-import { Art } from 'modules/art/entity/art.entity';
-import { Project } from 'modules/project/entity/project.entity';
-import { User } from 'modules/user/entity/user.entity';
-import { Role } from 'modules/user/role.enum';
+import { Art } from '@/modules/art/entity/art.entity';
+import { Project } from '@/modules/project/entity/project.entity';
+import { User } from '@/modules/user/entity/user.entity';
+import { Role } from '@/modules/user/role.enum';
 import { EntityManager } from 'typeorm';
 
-import * as AttrEntities from 'modules/attribute/entities';
+import * as AttrEntities from '@/modules/attribute/entities';
 
 export const initTestData = async (em: EntityManager) => {
     const userRep = em.getRepository(User);

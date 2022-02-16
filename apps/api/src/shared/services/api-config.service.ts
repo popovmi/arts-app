@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Request, Response } from 'express';
 import { join } from 'path';
-import { AppContext } from 'shared/types/context';
+import { AppContext } from '@/shared/types';
 
 @Injectable()
 export class ApiConfigService {

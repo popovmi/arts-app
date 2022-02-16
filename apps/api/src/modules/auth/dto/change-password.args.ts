@@ -1,6 +1,6 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
-import { Match } from 'shared/decorators/match.decorator';
+import { Match } from '@/shared/decorators/match.decorator';
 
 @ArgsType()
 export class ChangePasswordArgs {

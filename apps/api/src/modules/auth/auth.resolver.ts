@@ -1,8 +1,8 @@
 import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserType } from 'modules/user/dto';
-import { UserService } from 'modules/user/user.service';
-import { AppContext } from 'shared/types/context';
+import { UserType } from '@/modules/user/dto';
+import { UserService } from '@/modules/user/user.service';
+import { AppContext } from '@/shared/types/context';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './service';
 import { LoginArgs, LoginResponse } from './dto';

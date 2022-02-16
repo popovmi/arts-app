@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { NotMatch } from 'shared/decorators/match.decorator';
+import { NotMatch } from '@/shared/decorators/match.decorator';
 
 type UpdateOrderDirection = 'forward' | 'backward';
 

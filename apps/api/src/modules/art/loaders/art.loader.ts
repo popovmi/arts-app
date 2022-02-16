@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { ProjectService } from 'modules/project/project.service';
+import { ProjectService } from '@/modules/project/project.service';
 import { ArtService } from '../services/art.service';
 
 @Injectable({ scope: Scope.REQUEST })

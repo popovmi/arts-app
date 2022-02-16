@@ -4,13 +4,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as pgSession from 'connect-pg-simple';
 import * as session from 'express-session';
 import { Pool } from 'pg';
-import { ApiConfigService } from 'shared';
+import { ApiConfigService } from '@/shared';
 import {
     initializeTransactionalContext,
     patchTypeORMRepositoryWithBaseRepository,
 } from 'typeorm-transactional-cls-hooked';
 import { v4 } from 'uuid';
-import { AppModule } from './app/app.module';
+import { AppModule } from '@/app/app.module';
 
 const PGSession = pgSession(session);
 

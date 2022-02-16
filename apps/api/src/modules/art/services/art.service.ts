@@ -1,13 +1,10 @@
+import { filterQuery, orderQuery } from '@/shared/utils/query-builder';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
-import { filterQuery, orderQuery } from 'shared/utils/query-builder';
 import { In, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import { CreateArtInput } from '../dto';
-import { ArtResponse } from '../dto/arts.response';
-import { FindArtArgs } from '../dto/find-arts.args';
-import { UpdateArtInput } from '../dto/update-art.input';
+import { ArtResponse, CreateArtInput, FindArtArgs, UpdateArtInput } from '../dto';
 import { Art } from '../entity/art.entity';
 import { ArtFileService } from './art-file.service';
 
@@ -28,20 +25,11 @@ export class ArtService {
         return this.artRepository.findOne({ id });
     }
 
-    async getArts(
-        { filter, order, pagination }: FindArtArgs,
-        fields: string[],
-        relations: string[],
-        relationFields: string[]
-    ): Promise<ArtResponse> {
+    async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
         const query = filterQuery(this.artRepository.createQueryBuilder('arts'), filter).skip(skip).take(take);
         const count = await query.getCount();
 
-        query.select(fields.map((field) => `arts.${field}`));
-        query.addSelect(relationFields.map((field) => `${field}`));
-
-        relations.forEach((relation) => query.leftJoin(`arts.${relation}`, relation));
         orderQuery(query, { ...order });
 
         const arts = await query.getMany();
@@ -53,7 +41,6 @@ export class ArtService {
     @Transactional()
     public async createArt(createArtInput: CreateArtInput): Promise<Art> {
         const { filePath, ...input } = createArtInput;
-
         const art = await this.artRepository.save({ ...input });
 
         if (filePath) await this.artFileService.saveArtFile(filePath, art);

@@ -1,10 +1,10 @@
 schema: './apps/api/src/schema.gql'
 generates:
-    ./apps/ui/src/generated/index.ts:
-        documents: 'apps/ui/src/generated/**/*'
+    ./apps/ui/src/graphql/index.ts:
+        documents: 'apps/ui/src/graphql/docs/**/*'
         plugins:
             - typescript
             - typescript-operations
             - typescript-rtk-query:
-                  importBaseApiFrom: 'app/api'
+                  importBaseApiFrom: '@/app/api'
                   exportHooks: true

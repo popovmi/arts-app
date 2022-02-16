@@ -1,5 +1,4 @@
 import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
-import { api } from 'generated';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';

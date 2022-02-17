@@ -12,7 +12,7 @@ export class UserType {
     @Field(() => String)
     fullName: string;
 
-    @Field(() => String)
+    @Field(() => Role)
     role: Role;
 
     @Field(() => Boolean)

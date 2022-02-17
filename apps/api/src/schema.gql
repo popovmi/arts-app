@@ -128,10 +128,18 @@ type User {
   id: String!
   username: String!
   fullName: String!
-  role: String!
+  role: Role!
   active: Boolean!
   createdAt: Date!
   updatedAt: Date!
+}
+
+enum Role {
+  """Administrator Role"""
+  ADMIN
+
+  """Simple user role"""
+  USER
 }
 
 type UserResponse {
@@ -330,14 +338,6 @@ input CreateUserInput {
   role: Role!
   active: Boolean!
   password: String!
-}
-
-enum Role {
-  """Administrator Role"""
-  ADMIN
-
-  """Simple user role"""
-  USER
 }
 
 input UpdateUserInput {

@@ -15,6 +15,7 @@ const baseQueryWithReauth = async (
 ) => {
     try {
         const result = await baseQuery(args, api, extraOptions);
+
         return result;
     } catch (error) {
         if (error instanceof ClientError) {
@@ -26,6 +27,7 @@ const baseQueryWithReauth = async (
                 },
             };
         }
+
         return { error: { status: 500, message: 'Неизвестная ошибка', data: error } };
     }
 };

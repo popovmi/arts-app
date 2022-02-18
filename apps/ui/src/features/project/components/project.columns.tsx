@@ -1,12 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { Project } from '@/graphql';
-import { Button, Col, Input, Row, TableColumnProps } from 'antd';
+import { AttributeSelector } from '@/features/attribute';
+import { AttributeType, BooleanFieldOption, Project, ProjectFilterQuery, StringFieldOption } from '@/graphql';
+import { Button, Col, Input, Radio, RadioChangeEvent, Row, Space, TableColumnProps } from 'antd';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { selectProjects, shouldFetch, updateFilter } from '..';
 
 interface ProjectFilterItemProps {
-    Component: typeof Input;
     value: any;
     onChange: (value: any) => void;
     onClear: () => void;
@@ -14,18 +15,11 @@ interface ProjectFilterItemProps {
     withTimer: boolean;
 }
 
-const ProjectFilterItem: FC<ProjectFilterItemProps> = ({
-    Component,
-    onChange,
-    value,
-    onClear,
-    disableClear,
-    withTimer,
-}) => {
+const ProjectFilterInput: FC<ProjectFilterItemProps> = ({ onChange, value, onClear, disableClear, withTimer }) => {
     let timer: NodeJS.Timeout;
     const dispatch = useAppDispatch();
 
-    const onChangeValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeValue = (evt: React.ChangeEvent<HTMLInputElement> | CheckboxChangeEvent) => {
         if (withTimer) clearTimeout(timer);
         onChange(evt.target.value);
         if (withTimer) timer = setTimeout(() => dispatch(shouldFetch(true)), 800);
@@ -38,9 +32,9 @@ const ProjectFilterItem: FC<ProjectFilterItemProps> = ({
     }, []);
 
     return (
-        <Row gutter={[4, 4]} style={{ padding: 4, width: 200 }}>
+        <Row gutter={[8, 8]} style={{ padding: 8, width: 250 }}>
             <Col xs={24}>
-                <Component value={value || ''} onChange={onChangeValue} />
+                <Input value={value || ''} onChange={onChangeValue} />
             </Col>
             <Col xs={24} style={{ display: 'flex', justifyContent: 'end' }}>
                 <Button
@@ -62,6 +56,69 @@ export const projectColumns = () => {
     const dispatch = useAppDispatch();
     const { filter } = useAppSelector(selectProjects);
 
+    const getAttributeFilter = (type: AttributeType, dataIndex: keyof ProjectFilterQuery) => () => {
+        const onChange = (value: string[]) => {
+            dispatch(
+                updateFilter({
+                    [dataIndex]: value?.length > 0 ? { in: value } : {},
+                    shouldFetch: true,
+                })
+            );
+        };
+
+        return (
+            <Space direction="horizontal" style={{ padding: 8 }} align="end">
+                <AttributeSelector
+                    type={type}
+                    value={(filter[dataIndex] as StringFieldOption)?.in || []}
+                    allowClear
+                    mode="multiple"
+                    onChange={onChange}
+                    onClear={() => dispatch(updateFilter({ [dataIndex]: {}, shouldFetch: true }))}
+                />
+            </Space>
+        );
+    };
+
+    const getYesNoFilter = (dataIndex: keyof ProjectFilterQuery) => () => {
+        const onChange = (e: RadioChangeEvent) => {
+            dispatch(
+                updateFilter({
+                    [dataIndex]: typeof e.target.value === 'boolean' ? { is: e.target.value } : {},
+                    shouldFetch: true,
+                })
+            );
+        };
+
+        const filterProp = filter[dataIndex] as BooleanFieldOption;
+
+        return (
+            <Row gutter={[8, 8]} style={{ padding: 8, width: 250 }} justify="space-between">
+                <Col flex="none">
+                    <Radio.Group
+                        value={typeof filterProp?.is === 'boolean' ? filterProp.is : undefined}
+                        onChange={onChange}
+                    >
+                        <Radio value={true}>Да</Radio>
+                        <Radio value={false}>Нет</Radio>
+                    </Radio.Group>
+                </Col>
+                <Col flex={1} style={{ display: 'flex', justifyContent: 'end' }}>
+                    <Button
+                        type="link"
+                        size="small"
+                        disabled={typeof filterProp?.is !== 'boolean'}
+                        onClick={(evt) => {
+                            dispatch(updateFilter({ [dataIndex]: {}, shouldFetch: true }));
+                        }}
+                    >
+                        Сбросить
+                    </Button>
+                </Col>
+            </Row>
+        );
+    };
+
     const projectColumns: TableColumnProps<Project>[] = [
         {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
@@ -70,8 +127,7 @@ export const projectColumns = () => {
             title: 'Название',
             filteredValue: filter?.name?.contains ? [filter.name.contains] : [],
             filterDropdown: () => (
-                <ProjectFilterItem
-                    Component={Input}
+                <ProjectFilterInput
                     disableClear={!filter.name?.contains}
                     onClear={() => dispatch(updateFilter({ name: {}, shouldFetch: true }))}
                     onChange={(value) =>
@@ -93,10 +149,8 @@ export const projectColumns = () => {
             dataIndex: 'internal',
             title: 'Внутренний',
             onHeaderCell: (record) => ({ dataIndex: 'internal' } as HTMLAttributes<any>),
-            filters: [
-                { text: 'Да', value: true },
-                { text: 'Нет', value: false },
-            ],
+            filteredValue: typeof filter.internal?.is === 'boolean' ? [filter.internal.is] : [],
+            filterDropdown: getYesNoFilter('internal'),
             filterMultiple: false,
             render: (_, { internal }) => (internal ? 'Да' : 'Нет'),
         },
@@ -104,10 +158,8 @@ export const projectColumns = () => {
             dataIndex: 'hasDesignDoc',
             title: 'Есть КД',
             onHeaderCell: (record) => ({ dataIndex: 'hasDesignDoc' } as HTMLAttributes<any>),
-            filters: [
-                { text: 'Да', value: true },
-                { text: 'Нет', value: false },
-            ],
+            filteredValue: typeof filter.hasDesignDoc?.is === 'boolean' ? [filter.hasDesignDoc.is] : [],
+            filterDropdown: getYesNoFilter('hasDesignDoc'),
             filterMultiple: false,
             render: (_, { hasDesignDoc }) => (hasDesignDoc ? 'Да' : 'Нет'),
         },
@@ -115,16 +167,22 @@ export const projectColumns = () => {
             dataIndex: 'dropNumber',
             title: 'Кол-во капель',
             onHeaderCell: (record) => ({ dataIndex: 'dropNumber' } as HTMLAttributes<any>),
+            filteredValue: Object.keys(filter.dropNumber || {}).length > 0 ? filter.dropNumber!.in : [],
+            filterDropdown: getAttributeFilter(AttributeType.DropNumber, 'dropNumber'),
         },
         {
             dataIndex: 'intercenter',
             title: 'Межцентровое',
             onHeaderCell: (record) => ({ dataIndex: 'intercenter' } as HTMLAttributes<any>),
+            filteredValue: Object.keys(filter.intercenter || {}).length > 0 ? filter.intercenter!.in : [],
+            filterDropdown: getAttributeFilter(AttributeType.Intercenter, 'intercenter'),
         },
         {
             dataIndex: 'sfm',
             title: 'СФМ',
             onHeaderCell: (record) => ({ dataIndex: 'sfm' } as HTMLAttributes<any>),
+            filteredValue: Object.keys(filter.sfm || {}).length > 0 ? filter.sfm!.in : [],
+            filterDropdown: getAttributeFilter(AttributeType.Sfm, 'sfm'),
         },
         {
             dataIndex: ['factory', 'id'],

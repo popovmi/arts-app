@@ -9,7 +9,7 @@ export const ProjectLayout: FC = ({ children }) => {
     return (
         <AntLayout>
             <ProjectHeader />
-            <Content>{children}</Content>
+            <Content style={{ padding: 8 }}>{children}</Content>
         </AntLayout>
     );
 };

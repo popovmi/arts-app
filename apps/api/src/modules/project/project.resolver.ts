@@ -20,6 +20,8 @@ export class ProjectResolver {
 
     @Query(() => ProjectResponse)
     async projects(@Args() args: FindProjectArgs) {
+		console.log(args);
+		
         return await this.projectService.getProjects(args);
     }
 

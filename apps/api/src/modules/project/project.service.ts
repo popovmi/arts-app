@@ -33,11 +33,10 @@ export class ProjectService {
         const query = filterQuery(this.projectRepository.createQueryBuilder('projects'), filter)
             .skip(skip)
             .take(take);
-        const count = await query.getCount();
 
         orderQuery(query, { ...order });
 
-        const projects = await query.getMany();
+        const [projects, count] = await query.getManyAndCount();
         const page = connectionFromArraySlice(projects, pagination, { arrayLength: count, sliceStart: skip || 0 });
 
         return { page, pageData: { count, take, skip } };

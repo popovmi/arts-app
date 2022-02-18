@@ -37,7 +37,7 @@ const traverseTree = (
             query = handleArgs(
                 query,
                 alias,
-                where as Field,
+                { [key]: where[key] } as Field,
                 upperOperator === LogicalOperator.AND ? 'andWhere' : 'orWhere'
             );
         }
@@ -56,81 +56,84 @@ const buildNewBrackets = (where: Where, alias: string, operator: LogicalOperator
 const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, andOr: 'andWhere' | 'orWhere') => {
     const whereArgs = Object.entries(where);
 
+    console.log(whereArgs);
     whereArgs.forEach((whereArg) => {
         const [fieldName, filters] = whereArg;
         const ops = Object.entries(filters);
+		let i = 1;
 
         ops.forEach((parameters) => {
             const [operation, value] = parameters;
+            const paramName = `${fieldName}${operation}Param${i++}`;
 
             switch (operation) {
                 case 'is': {
-                    query[andOr](`${alias}."${fieldName}" = :isvalue`, { isvalue: value });
+                    query[andOr](`${alias}."${fieldName}" = :${paramName} `, { [paramName]: value });
                     break;
                 }
                 case 'not': {
-                    query[andOr](`${alias}."${fieldName}" != :notvalue`, { notvalue: value });
+                    query[andOr](`${alias}."${fieldName}" != :${paramName}`, { [paramName]: value });
                     break;
                 }
                 case 'in': {
-                    query[andOr](`${alias}."${fieldName}" IN (:...invalue)`, { invalue: value });
+                    query[andOr](`${alias}."${fieldName}" IN (:...${paramName})`, { [paramName]: value });
                     break;
                 }
-                case 'not_in': {
-                    query[andOr](`${alias}."${fieldName}" NOT IN (:...notinvalue)`, {
-                        notinvalue: value,
+                case 'notIn': {
+                    query[andOr](`${alias}."${fieldName}" NOT IN (:...${paramName})`, {
+                        [paramName]: value,
                     });
                     break;
                 }
                 case 'lt': {
-                    query[andOr](`${alias}."${fieldName}" < :ltvalue`, { ltvalue: value });
+                    query[andOr](`${alias}."${fieldName}" < :${paramName}`, { [paramName]: value });
                     break;
                 }
                 case 'lte': {
-                    query[andOr](`${alias}."${fieldName}" <= :ltevalue`, { ltevalue: value });
+                    query[andOr](`${alias}."${fieldName}" <= :${paramName}`, { [paramName]: value });
                     break;
                 }
                 case 'gt': {
-                    query[andOr](`${alias}."${fieldName}" > :gtvalue`, { gtvalue: value });
+                    query[andOr](`${alias}."${fieldName}" > :${paramName}`, { [paramName]: value });
                     break;
                 }
                 case 'gte': {
-                    query[andOr](`${alias}."${fieldName}" >= :gtevalue`, { gtevalue: value });
+                    query[andOr](`${alias}."${fieldName}" >= :${paramName}`, { [paramName]: value });
                     break;
                 }
                 case 'contains': {
-                    query[andOr](`${alias}."${fieldName}" ILIKE :convalue`, {
-                        convalue: `%${value}%`,
+                    query[andOr](`${alias}."${fieldName}" ILIKE :${paramName}`, {
+                        [paramName]: `%${value}%`,
                     });
                     break;
                 }
                 case 'notContains': {
-                    query[andOr](`${alias}."${fieldName}" NOT ILIKE :notconvalue`, {
-                        notconvalue: `%${value}%`,
+                    query[andOr](`${alias}."${fieldName}" NOT ILIKE :${paramName}`, {
+                        [paramName]: `%${value}%`,
                     });
                     break;
                 }
                 case 'startsWith': {
-                    query[andOr](`${alias}."${fieldName}" ILIKE :swvalue`, {
-                        swvalue: `${value}%`,
+                    query[andOr](`${alias}."${fieldName}" ILIKE :${paramName}`, {
+                        [paramName]: `${value}%`,
                     });
                     break;
                 }
                 case 'notStartsWith': {
-                    query[andOr](`${alias}."${fieldName}" NOT ILIKE :nswvalue`, {
-                        nswvalue: `${value}%`,
+                    query[andOr](`${alias}."${fieldName}" NOT ILIKE :${paramName}`, {
+                        [paramName]: `${value}%`,
                     });
                     break;
                 }
                 case 'endsWith': {
-                    query[andOr](`${alias}."${fieldName}" ILIKE :ewvalue`, {
-                        ewvalue: `%${value}`,
+                    query[andOr](`${alias}."${fieldName}" ILIKE :${paramName}`, {
+                        [paramName]: `%${value}`,
                     });
                     break;
                 }
                 case 'notEndsWith': {
-                    query[andOr](`${alias}."${fieldName}" ILIKE :newvalue`, {
-                        newvalue: `%${value}`,
+                    query[andOr](`${alias}."${fieldName}" ILIKE :${paramName}`, {
+                        [paramName]: `%${value}`,
                     });
                     break;
                 }

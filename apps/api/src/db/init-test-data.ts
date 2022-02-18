@@ -62,9 +62,9 @@ export const initTestData = async (em: EntityManager) => {
             name: `PROJECT-${i}`,
             internal: Math.random() < 0.5,
             hasDesignDoc: Math.random() < 0.5,
-            sfm: attributesValues[Math.floor(random(1, 6)) - 1],
-            intercenter: attributesValues[Math.floor(random(1, 6)) - 1],
-            dropNumber: attributesValues[Math.floor(random(1, 6)) - 1],
+            sfm: attributesValues[Math.floor(random(1, 7)) - 1],
+            intercenter: attributesValues[Math.floor(random(1, 7)) - 1],
+            dropNumber: attributesValues[Math.floor(random(1, 7)) - 1],
             factoryId: factories[Math.floor(random(1, factories.length)) - 1].id,
             customerId: customers[Math.floor(random(1, customers.length)) - 1].id,
         });

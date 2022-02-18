@@ -19,7 +19,7 @@ export class FactoryService {
     }
 
     public async findAll() {
-        const factories = await this.factoryRepo.find({ order: { id: 'ASC' } });
+        const factories = await this.factoryRepo.find({ order: { createdAt: 'ASC' } });
 
         return factories;
     }

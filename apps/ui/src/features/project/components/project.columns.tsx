@@ -1,5 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { AttributeSelector } from '@/features/attribute';
+import { CustomerSelector } from '@/features/customer';
+import { FactorySelector } from '@/features/factory';
 import { AttributeType, BooleanFieldOption, Project, ProjectFilterQuery, StringFieldOption } from '@/graphql';
 import { Button, Col, Input, Radio, RadioChangeEvent, Row, Space, TableColumnProps } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -185,16 +187,62 @@ export const projectColumns = () => {
             filterDropdown: getAttributeFilter(AttributeType.Sfm, 'sfm'),
         },
         {
-            dataIndex: ['factory', 'id'],
-            title: 'Завод',
-            onHeaderCell: (record) => ({ dataIndex: 'factoryId' } as HTMLAttributes<any>),
-            render: (_, record) => record.customer?.name,
-        },
-        {
             dataIndex: ['customer', 'id'],
             title: 'Заказчик',
             onHeaderCell: (record) => ({ dataIndex: 'customerId' } as HTMLAttributes<any>),
+            render: (_, record) => record.customer?.name,
+            filteredValue: Object.keys(filter.customerId || {}).length > 0 ? filter.customerId!.in : [],
+            filterDropdown: () => {
+                const onChange = (value: string[]) => {
+                    dispatch(
+                        updateFilter({
+                            customerId: value?.length > 0 ? { in: value } : {},
+                            shouldFetch: true,
+                        })
+                    );
+                };
+
+                return (
+                    <Space direction="horizontal" style={{ padding: 8 }} align="end">
+                        <CustomerSelector
+                            value={(filter.customerId as StringFieldOption)?.in || []}
+                            allowClear
+                            mode="multiple"
+                            onChange={onChange}
+                            onClear={() => dispatch(updateFilter({ customerId: {}, shouldFetch: true }))}
+                        />
+                    </Space>
+                );
+            },
+        },
+        {
+            dataIndex: ['factory', 'id'],
+            title: 'Завод',
+            onHeaderCell: (record) => ({ dataIndex: 'factoryId' } as HTMLAttributes<any>),
             render: (_, record) => record.factory?.name,
+            filteredValue: Object.keys(filter.factoryId || {}).length > 0 ? filter.factoryId!.in : [],
+            filterDropdown: () => {
+                const onChange = (value: string[]) => {
+                    dispatch(
+                        updateFilter({
+                            factoryId: value?.length > 0 ? { in: value } : {},
+                            shouldFetch: true,
+                        })
+                    );
+                };
+
+                return (
+                    <Space direction="horizontal" style={{ padding: 8 }} align="end">
+                        <FactorySelector
+                            value={(filter.factoryId as StringFieldOption)?.in || []}
+                            allowClear
+                            mode="multiple"
+                            onChange={onChange}
+                            onClear={() => dispatch(updateFilter({ factoryId: {}, shouldFetch: true }))}
+                        />
+                    </Space>
+                );
+            },
         },
     ];
 

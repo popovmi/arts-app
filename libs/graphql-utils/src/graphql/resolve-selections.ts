@@ -29,22 +29,26 @@ export const resolveSelections = (
 
         if (field === '*') {
             const subFieldMap = getFieldMap(fieldMap, parent);
+
             resolvedSelections = [...resolvedSelections, ...Object.keys(subFieldMap)];
         } else if (field === '*.*') {
             const subFieldMap = getFieldMap(fieldMap, parent);
             const subFields = fieldMapToDot(subFieldMap);
+
             resolvedSelections = [...resolvedSelections, ...subFields];
         } else if (field === '**') {
             const subFieldMap = getFieldMap(fieldMap, parent);
             const objectSelections = Object.entries(subFieldMap)
                 .filter(([_, fieldMap]) => !!Object.keys(fieldMap).length)
                 .map(([key]) => key);
+
             resolvedSelections = [...resolvedSelections, ...objectSelections];
         } else if (field === '*.') {
             const subFieldMap = getFieldMap(fieldMap, parent);
             const objectSelections = Object.entries(subFieldMap)
                 .filter(([_, fieldMap]) => !Object.keys(fieldMap).length)
                 .map(([key]) => key);
+
             resolvedSelections = [...resolvedSelections, ...objectSelections];
         } else if (field === '**.**') {
             const subFieldMap = getFieldMap(fieldMap, parent);
@@ -57,6 +61,7 @@ export const resolveSelections = (
                     false
                 )
             );
+
             resolvedSelections = [...resolvedSelections, ...deepObjectsSelections];
         }
 
@@ -65,6 +70,7 @@ export const resolveSelections = (
         }
 
         const hasField = resolvedFields.reduce((hf, f) => hf || f.indexOf(field) !== -1, false);
+
         if (hasField) {
             if (selector) {
                 resolvedSelections = [...resolvedSelections, selector];

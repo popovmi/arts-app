@@ -1,7 +1,17 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { AttributeSelector } from '@/features/attribute';
 import { Art, ArtFilterQuery, AttributeType, BooleanFieldOption, StringFieldOption } from '@/graphql';
-import { Button, Col, Input, Radio, RadioChangeEvent, Row, Space, TableColumnProps } from 'antd';
+import {
+    Button,
+    Col,
+    Input,
+    Radio,
+    RadioChangeEvent,
+    Row,
+    Space,
+    TableColumnGroupType,
+    TableColumnType,
+} from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -119,7 +129,7 @@ export const artColumns = () => {
         );
     };
 
-    const projectColumns: TableColumnProps<Art>[] = [
+    const artColumns: Array<TableColumnType<Art> | TableColumnGroupType<Art>> = [
         {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'name',
@@ -212,7 +222,50 @@ export const artColumns = () => {
             filteredValue: Object.keys(filter.ringType || {}).length > 0 ? filter.ringType!.in : [],
             filterDropdown: getAttributeFilter(AttributeType.RingType, 'ringType'),
         },
+        {
+            title: 'Проект',
+            children: [
+                {
+                    title: 'Внутренний',
+                    dataIndex: ['project', 'internal'],
+                    render: (_, record) => (record.project && record.project.internal ? 'Да' : 'Нет'),
+                },
+                {
+                    title: 'Есть КД',
+                    dataIndex: ['project', 'hasDesignDoc'],
+                    render: (_, record) => (record.project && record.project.internal ? 'Да' : 'Нет'),
+                },
+                {
+                    title: 'Кол-во капель',
+                    dataIndex: ['project', 'dropNumber'],
+                },
+                {
+                    title: 'Межцентровое',
+                    dataIndex: ['project', 'intercenter'],
+                },
+                {
+                    title: 'СФМ',
+                    dataIndex: ['project', 'sfm'],
+                },
+                {
+                    title: 'Заказчик',
+                    dataIndex: ['project', 'customer', 'id'],
+                    render: (_, record) => record.project?.customer?.name,
+                },
+                {
+                    title: 'Завод',
+                    dataIndex: ['project', 'factory', 'id'],
+                    render: (_, record) => record.project?.factory?.name,
+                },
+                {
+                    dataIndex: ['project', 'id'],
+                    title: 'Название',
+                    render: (_, record) =>
+                        record.project && <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>,
+                },
+            ],
+        },
     ];
 
-    return projectColumns;
+    return artColumns;
 };

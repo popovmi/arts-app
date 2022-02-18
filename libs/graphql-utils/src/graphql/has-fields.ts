@@ -35,5 +35,6 @@ export const hasFields = (
             }
         }
     }
+
     return false;
 };

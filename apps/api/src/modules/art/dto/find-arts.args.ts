@@ -5,6 +5,7 @@ import ConnectionArgs from '@/common/connection-args.type';
 import { BooleanFieldOption, StringFieldOption } from '@/common/filter-input.type';
 import { LogicalOperator } from '@/shared/types';
 import { OrderDirection } from '@/shared/types/order';
+import { ProjectFilterQuery } from '@/modules/project/dto';
 
 @InputType()
 export class ArtFilterQuery {
@@ -49,6 +50,9 @@ export class ArtFilterQuery {
 
     @Field(() => StringFieldOption, { nullable: true })
     ringType?: StringFieldOption;
+
+    @Field(() => ProjectFilterQuery, { nullable: true })
+    project: ProjectFilterQuery;
 }
 
 @InputType()

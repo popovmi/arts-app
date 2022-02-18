@@ -12,6 +12,7 @@ export const resolveFieldMap = (
 
     if (parents.length) {
         const fieldNode = getFieldNode(info, parents);
+
         return resolveFieldMapRecursively(
             fieldNode?.selectionSet ? [...fieldNode.selectionSet.selections] : [],
             deep,
@@ -41,6 +42,7 @@ const resolveFieldMapRecursively = (
             }
         } else if (selectionNode.kind === 'FragmentSpread') {
             const fragment = fragments[selectionNode.name.value];
+
             fieldMap = resolveFieldMapRecursively(
                 [...fragment.selectionSet.selections],
                 deep,

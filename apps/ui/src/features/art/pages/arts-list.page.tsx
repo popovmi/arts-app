@@ -41,8 +41,9 @@ export const ArtsListPage: FC = () => {
                 components={{ header: { cell: HeaderCell, row: HeaderRow } }}
                 pagination={false}
                 loading={loading}
+                size="small"
                 bordered
-                scroll={{ x: 1000 }}
+                scroll={{ x: 2000 }}
                 sticky
                 title={() => (
                     <Space>

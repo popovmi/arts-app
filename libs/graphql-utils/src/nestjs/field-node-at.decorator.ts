@@ -7,6 +7,7 @@ export const FieldNodeAt = (path: string | string[] = []) => {
     return createParamDecorator<string | string[], ExecutionContext, FieldNode>((path, context) => {
         const ctx = GqlExecutionContext.create(context);
         const info = ctx.getInfo();
+
         return getFieldNode(info, path);
     })(path);
 };

@@ -13,6 +13,7 @@ export const FieldMap = (deep = true, parent: string | string[] = []) => {
     >(({ deep, parent }, context) => {
         const ctx = GqlExecutionContext.create(context);
         const info = ctx.getInfo();
+
         return resolveFieldMap(info, deep, parent);
     })({ deep, parent });
 };

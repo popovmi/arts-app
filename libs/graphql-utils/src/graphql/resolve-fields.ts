@@ -8,5 +8,6 @@ export const resolveFields = (
     parent: string | string[] = []
 ) => {
     const fieldMap = resolveFieldMap(info, deep, parent);
+
     return fieldMapToDot(fieldMap);
 };

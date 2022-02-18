@@ -27,7 +27,9 @@ export class ArtService {
 
     async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
-        const query = filterQuery(this.artRepository.createQueryBuilder('arts'), filter).skip(skip).take(take);
+        const query = filterQuery(this.artRepository.createQueryBuilder('arts'), 'arts', filter, ['project'])
+            .skip(skip)
+            .take(take);
         const count = await query.getCount();
 
         orderQuery(query, { ...order });

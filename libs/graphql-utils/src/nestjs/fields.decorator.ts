@@ -13,6 +13,7 @@ export const Fields = (deep = true, parent: string | string[] = []) => {
     >(({ deep, parent }, context) => {
         const ctx = GqlExecutionContext.create(context);
         const info = ctx.getInfo();
+
         return resolveFields(info, deep, parent);
     })({ deep, parent });
 };

@@ -284,6 +284,7 @@ input ArtFilterQuery {
   productType: StringFieldOption
   productionMethod: StringFieldOption
   ringType: StringFieldOption
+  project: ProjectFilterQuery
 }
 
 input ArtOrderQuery {

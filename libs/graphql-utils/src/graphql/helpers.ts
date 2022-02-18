@@ -47,5 +47,6 @@ export function fieldMapToDot(fieldMap: FieldMap, dots: string[] = [], parent: s
             dots = fieldMapToDot(fieldMap[key], dots, [...parent, key]);
         }
     }
+
     return dots;
 }

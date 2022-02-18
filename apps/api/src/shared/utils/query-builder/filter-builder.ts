@@ -14,11 +14,22 @@ export interface Field {
 export type Where = {
     [K in LogicalOperator]?: (Where | Field)[];
 };
-export const filterQuery = <T>(query: SelectQueryBuilder<T>, where: Where) => {
+export const filterQuery = <T>(
+    query: SelectQueryBuilder<T>,
+    alias: string,
+    where: Where,
+    relations: string[] = []
+) => {
     if (!where) {
         return query;
     } else {
-        return traverseTree(query, query.alias, where) as SelectQueryBuilder<T>;
+        Object.keys(where).forEach((key) => {
+            if (relations.includes(key)) {
+                query = filterQuery(query.leftJoin(`${query.alias}.${key}`, key), key, where[key]);
+            }
+        });
+
+        return traverseTree(query, alias, where) as SelectQueryBuilder<T>;
     }
 };
 
@@ -56,11 +67,10 @@ const buildNewBrackets = (where: Where, alias: string, operator: LogicalOperator
 const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, andOr: 'andWhere' | 'orWhere') => {
     const whereArgs = Object.entries(where);
 
-    console.log(whereArgs);
     whereArgs.forEach((whereArg) => {
         const [fieldName, filters] = whereArg;
         const ops = Object.entries(filters);
-		let i = 1;
+        let i = 1;
 
         ops.forEach((parameters) => {
             const [operation, value] = parameters;

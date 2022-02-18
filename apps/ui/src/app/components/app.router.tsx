@@ -16,11 +16,11 @@ export const AppRouter: FC = () => {
                     path: '/',
                     element: <AuthRoute />,
                     children: [
-                        { path: '/update', element: <PasswordUpdatePage /> },
                         {
                             path: '/',
                             element: <AppContainer />,
                             children: [
+                                { path: 'update', element: <PasswordUpdatePage /> },
                                 {
                                     path: 'projects',
                                     element: <ProjectsPage />,

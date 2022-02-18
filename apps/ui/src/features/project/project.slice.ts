@@ -52,6 +52,12 @@ const projectSlice = createSlice({
                 state.doFetch = true;
             }
         },
+        clearFilter: (state) => {
+            state.filter = {};
+            state.pagination.before = null;
+            state.pagination.after = null;
+            state.doFetch = true;
+        },
 
         shouldFetch: (state, action) => {
             state.doFetch = action.payload;
@@ -60,7 +66,7 @@ const projectSlice = createSlice({
 });
 
 export const projectReducer = projectSlice.reducer;
-export const { projectsLoaded, updateFilter, shouldFetch } = projectSlice.actions;
+export const { projectsLoaded, updateFilter, shouldFetch, clearFilter } = projectSlice.actions;
 
 export const selectProjects = (state: RootState) => {
     const { data, filter, hasMore, order, pagination, doFetch } = state.project;

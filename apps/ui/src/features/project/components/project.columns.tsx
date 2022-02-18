@@ -129,12 +129,14 @@ export const projectColumns = () => {
         {
             dataIndex: ['factory', 'id'],
             title: 'Завод',
-            onHeaderCell: (record) => ({ dataIndex: ['factory', 'id'] } as HTMLAttributes<any>),
+            onHeaderCell: (record) => ({ dataIndex: 'factoryId' } as HTMLAttributes<any>),
+            render: (_, record) => record.customer?.name,
         },
         {
             dataIndex: ['customer', 'id'],
             title: 'Заказчик',
-            onHeaderCell: (record) => ({ dataIndex: ['customer', 'id'] } as HTMLAttributes<any>),
+            onHeaderCell: (record) => ({ dataIndex: 'customerId' } as HTMLAttributes<any>),
+            render: (_, record) => record.factory?.name,
         },
     ];
 

@@ -17,18 +17,21 @@ export class ProjectLoader {
     public readonly batchArts = new DataLoader(async (projectIds: string[]) => {
         const projects = await this.projectService.loadProjectsArts(projectIds);
         const projectsMap = new Map(projects.map((projects) => [projects.id, projects.arts]));
+
         return projectIds.map((projectId) => projectsMap.get(projectId));
     });
 
     public readonly batchFactories = new DataLoader(async (factoriesIds: string[]) => {
         const factories = await this.factoryService.getByIds(factoriesIds);
         const factoriesMap = new Map(factories.map((factory) => [factory.id, factory]));
+
         return factoriesIds.map((factoryId) => factoriesMap.get(factoryId));
     });
 
     public readonly batchCustomers = new DataLoader(async (customersIds: string[]) => {
         const customers = await this.customerService.getByIds(customersIds);
         const customersMap = new Map(customers.map((customer) => [customer.id, customer]));
+
         return customersIds.map((customerId) => customersMap.get(customerId));
     });
 }

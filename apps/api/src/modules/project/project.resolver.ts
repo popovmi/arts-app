@@ -30,12 +30,12 @@ export class ProjectResolver {
 
     @ResolveField('customer', () => CustomerType, { nullable: true })
     public async getProjectsCustomers(@Parent() project: ProjectType) {
-        return await this.projectLoader.batchCustomers.load(project.id);
+        return await this.projectLoader.batchCustomers.load(project.customerId);
     }
 
     @ResolveField('factory', () => FactoryType, { nullable: true })
     public async getProjectsFactories(@Parent() project: ProjectType) {
-        return await this.projectLoader.batchFactories.load(project.id);
+        return await this.projectLoader.batchFactories.load(project.factoryId);
     }
 
     @Mutation(() => ProjectType)

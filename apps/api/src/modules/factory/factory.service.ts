@@ -14,23 +14,28 @@ export class FactoryService {
 
     public async create(input: CreateFactoryInput) {
         const factory = await this.factoryRepo.save(input);
+
         return factory;
     }
 
     public async findAll() {
         const factories = await this.factoryRepo.find({ order: { id: 'ASC' } });
+
         return factories;
     }
 
     public async findOne(id: string) {
         const factories = await this.factoryRepo.findOne({ id });
+
         return factories;
     }
 
     public async update({ id, ...input }: UpdateFactoryInput) {
         const factory = await this.factoryRepo.findOneOrFail({ id });
+
         Object.assign(factory, input);
         await this.factoryRepo.save(factory);
+
         return factory;
     }
 

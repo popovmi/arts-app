@@ -36,10 +36,10 @@ export class ProjectType {
     customer: CustomerType;
 
     @Field(() => String, { nullable: true })
-    factoryId: number;
+    factoryId: string;
 
     @Field(() => String, { nullable: true })
-    customerId: number;
+    customerId: string;
 
     @Field(() => Date)
     createdAt: Date;

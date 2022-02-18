@@ -1,11 +1,11 @@
-import { tabsReducer } from '@/features/tabs';
+import { projectReducer } from '@/features/project/project.slice';
 import { api } from '@/graphql';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const appReducer = combineReducers({
     [api.reducerPath]: api.reducer,
-    tabs: tabsReducer,
+    project: projectReducer,
 });
 
 export type RootState = ReturnType<typeof appReducer>;

@@ -1,4 +1,5 @@
-import { AuthRoute, LoginPage, PasswordUpdatePage, AdminRoute } from '@/features/auth';
+import { AdminRoute, AuthRoute, LoginPage, PasswordUpdatePage } from '@/features/auth';
+import { ProjectPage, ProjectsListPage, ProjectsPage } from '@/features/project';
 import { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { AppContainer } from './app.container';
@@ -22,7 +23,12 @@ export const AppRouter: FC = () => {
                             children: [
                                 {
                                     path: 'projects',
-                                    element: <>projects</>,
+                                    element: <ProjectsPage />,
+                                    children: [
+                                        { index: true, element: <ProjectsListPage /> },
+                                        //   { path: 'create', element: <CreateProjectPage /> },
+                                        { path: ':projectId', element: <ProjectPage /> },
+                                    ],
                                 },
                                 {
                                     path: 'arts',

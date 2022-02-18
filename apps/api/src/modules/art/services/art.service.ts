@@ -65,6 +65,7 @@ export class ArtService {
             select: ['id'],
             relations: ['files'],
         });
+
         return arts;
     }
 }

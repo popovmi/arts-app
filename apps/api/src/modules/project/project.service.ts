@@ -30,11 +30,14 @@ export class ProjectService {
 
     async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
-        const query = filterQuery(this.projectRepository.createQueryBuilder(), filter).skip(skip).take(take);
+        const query = filterQuery(this.projectRepository.createQueryBuilder('projects'), filter)
+            .skip(skip)
+            .take(take);
+        const count = await query.getCount();
 
         orderQuery(query, { ...order });
 
-        const [projects, count] = await query.getManyAndCount();
+        const projects = await query.getMany();
         const page = connectionFromArraySlice(projects, pagination, { arrayLength: count, sliceStart: skip || 0 });
 
         return { page, pageData: { count, take, skip } };

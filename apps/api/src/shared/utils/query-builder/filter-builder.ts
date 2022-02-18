@@ -55,12 +55,14 @@ const buildNewBrackets = (where: Where, alias: string, operator: LogicalOperator
 
 const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, andOr: 'andWhere' | 'orWhere') => {
     const whereArgs = Object.entries(where);
+
     whereArgs.forEach((whereArg) => {
         const [fieldName, filters] = whereArg;
         const ops = Object.entries(filters);
 
         ops.forEach((parameters) => {
             const [operation, value] = parameters;
+
             switch (operation) {
                 case 'is': {
                     query[andOr](`${alias}."${fieldName}" = :isvalue`, { isvalue: value });
@@ -102,31 +104,31 @@ const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, 
                     });
                     break;
                 }
-                case 'not_contains': {
+                case 'notContains': {
                     query[andOr](`${alias}."${fieldName}" NOT ILIKE :notconvalue`, {
                         notconvalue: `%${value}%`,
                     });
                     break;
                 }
-                case 'starts_with': {
+                case 'startsWith': {
                     query[andOr](`${alias}."${fieldName}" ILIKE :swvalue`, {
                         swvalue: `${value}%`,
                     });
                     break;
                 }
-                case 'not_starts_with': {
+                case 'notStartsWith': {
                     query[andOr](`${alias}."${fieldName}" NOT ILIKE :nswvalue`, {
                         nswvalue: `${value}%`,
                     });
                     break;
                 }
-                case 'ends_with': {
+                case 'endsWith': {
                     query[andOr](`${alias}."${fieldName}" ILIKE :ewvalue`, {
                         ewvalue: `%${value}`,
                     });
                     break;
                 }
-                case 'not_ends_with': {
+                case 'notEndsWith': {
                     query[andOr](`${alias}."${fieldName}" ILIKE :newvalue`, {
                         newvalue: `%${value}`,
                     });

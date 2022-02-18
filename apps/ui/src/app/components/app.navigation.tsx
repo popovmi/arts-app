@@ -1,22 +1,15 @@
-import { useAppDispatch } from '@/app/store';
-import { addTab } from '@/features/tabs';
 import { Role, useWhoAmIQuery } from '@/graphql';
 import { Menu } from 'antd';
 import { FC } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const { Item, SubMenu } = Menu;
 
 export const AppNavigation: FC = () => {
-    const dispatch = useAppDispatch();
     const location = useLocation();
     const { data } = useWhoAmIQuery();
     const isAdmin = data?.whoAmI?.role === Role.Admin;
     const selectedKeys = location.pathname.slice(1);
-
-    const onItem = (path: string, label: string) => {
-        dispatch(addTab({ path, label }));
-    };
 
     return (
         <Menu
@@ -25,44 +18,24 @@ export const AppNavigation: FC = () => {
             mode={'inline'}
             defaultSelectedKeys={[]}
             selectedKeys={[selectedKeys]}
-            // inlineCollapsed={true}
+            inlineCollapsed={true}
         >
-            <Item key={'projects'} onClick={() => onItem('projects', 'Проекты')}>
-                Проекты
+            <Item key={'projects'}>
+                <Link to={'projects'}>Проекты</Link>
             </Item>
-            <Item
-                key={'arts'}
-                onClick={() => {
-                    onItem('arts', 'ART-ы');
-                }}
-            >
-                ART-ы
+            <Item key={'arts'}>
+                <Link to={'arts'}>ART-ы</Link>
             </Item>
             {isAdmin && (
                 <SubMenu key="admin" title="Админ">
-                    <Item
-                        key={'admin/users'}
-                        onClick={() => {
-                            onItem('admin/users', 'Пользователи');
-                        }}
-                    >
-                        Пользователи
+                    <Item key={'admin/users'}>
+                        <Link to={'admin/users'}>Пользователи</Link>
                     </Item>
-                    <Item
-                        key={'admin/companies'}
-                        onClick={() => {
-                            onItem('admin/companies', 'Организации	');
-                        }}
-                    >
-                        Организации
+                    <Item key={'admin/companies'}>
+                        <Link to={'admin/companies'}>Организации</Link>
                     </Item>
-                    <Item
-                        key={'admin/attributes'}
-                        onClick={() => {
-                            onItem('admin/attributes', 'Теги');
-                        }}
-                    >
-                        Теги
+                    <Item key={'admin/attributes'}>
+                        <Link to={'admin/attributes'}>Теги</Link>
                     </Item>
                 </SubMenu>
             )}

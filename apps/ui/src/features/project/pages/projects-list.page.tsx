@@ -11,6 +11,7 @@ export const ProjectsListPage: FC = () => {
     const dispatch = useAppDispatch();
     const { filter, order, pagination, projects, hasMore, doFetch } = useAppSelector(selectProjects);
     const [load, { isLoading, isFetching }] = useLazyProjectsQuery();
+	const loading = isLoading || isFetching;
 
     const fetchProjects = () => {
         load({ filter, order, pagination }).then(
@@ -22,26 +23,28 @@ export const ProjectsListPage: FC = () => {
         if (doFetch) fetchProjects();
     }, [doFetch]);
 
-    const [sentryRef] = useInfiniteScroll({
-        loading: isLoading || isFetching,
+    const [sentryRef, root] = useInfiniteScroll({
+        loading,
         hasNextPage: hasMore,
         onLoadMore: fetchProjects,
+        rootMargin: '200px',
+		delayInMs: 500,
     });
 
     return (
-        <Row style={{ overflow: 'auto', overflowX: 'hidden', height: '100%' }}>
+        <Row style={{ overflow: 'auto', overflowX: 'hidden', height: '100%' }} ref={root.rootRef}>
             <Table
                 dataSource={projects}
                 rowKey="id"
                 columns={projectColumns()}
                 components={{ header: { cell: HeaderCell, row: HeaderRow } }}
                 pagination={false}
+				loading={loading}
                 bordered
-                loading={isLoading || isFetching}
                 scroll={{ x: 1000 }}
                 sticky
             ></Table>
-            {projects.length > 0 && (isLoading || isFetching || hasMore) && (
+            {projects.length > 0 && hasMore && (
                 <Col span={24} ref={sentryRef}>
                     <CenteredSpin />
                 </Col>

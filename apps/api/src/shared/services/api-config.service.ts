@@ -73,10 +73,18 @@ export class ApiConfigService {
 
             formatError: (error) => {
                 console.log(error);
-                const graphQLFormattedError: GraphQLFormattedError = {
-                    message: error.extensions?.response?.message || error.message,
+                const { message, statusCode } = (error.extensions?.response as any) || {
+                    message: null,
+                    statusCode: null,
                 };
+
+                const graphQLFormattedError: GraphQLFormattedError = {
+                    message: message || error.message,
+                    ...(statusCode && { status: statusCode }),
+                };
+
                 console.log(graphQLFormattedError);
+
                 return graphQLFormattedError;
             },
         };

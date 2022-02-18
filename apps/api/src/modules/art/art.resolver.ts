@@ -24,12 +24,14 @@ export class ArtResolver {
     @ResolveField('project', () => ProjectType, { nullable: true })
     public async getProject(@Parent() art: ArtType) {
         const { projectId } = art;
+
         return projectId ? await this.artLoader.batchProjects.load(projectId) : null;
     }
 
     @ResolveField('files', () => [ArtFileType], { nullable: true })
     public async getFiles(@Parent() art: ArtType) {
         const { id } = art;
+
         return await this.artLoader.batchArtsFiles.load(id);
     }
 

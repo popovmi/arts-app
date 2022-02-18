@@ -2,6 +2,7 @@ import { projectReducer } from '@/features/project/project.slice';
 import { api } from '@/graphql';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { message } from 'antd';
 
 const appReducer = combineReducers({
     [api.reducerPath]: api.reducer,
@@ -13,6 +14,12 @@ export type AppStore = typeof store;
 export type AppDispatch = AppStore['dispatch'];
 
 const rootReducer: Reducer<RootState, AnyAction> = (state, action) => {
+    if (action['meta']?.arg?.endpointName !== 'whoAmI' && action['payload']?.data?.[0]?.status === 401) {
+        message.error('Сессия истекла. Необходимо авторизоваться!');
+
+        return appReducer({} as RootState, action);
+    }
+
     return appReducer(state, action);
 };
 

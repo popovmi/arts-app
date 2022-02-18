@@ -255,6 +255,8 @@ input ProjectFilterQuery {
   dropNumber: StringFieldOption
   intercenter: StringFieldOption
   sfm: StringFieldOption
+  customerId: StringFieldOption
+  factoryId: StringFieldOption
 }
 
 input ProjectOrderQuery {

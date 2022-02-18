@@ -32,6 +32,12 @@ export class ProjectFilterQuery {
 
     @Field(() => StringFieldOption, { nullable: true })
     sfm?: StringFieldOption;
+	
+    @Field(() => StringFieldOption, { nullable: true })
+    customerId?: StringFieldOption;
+	
+    @Field(() => StringFieldOption, { nullable: true })
+    factoryId?: StringFieldOption;
 }
 
 @InputType()

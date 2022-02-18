@@ -27,6 +27,19 @@ query arts($filter: ArtFilterQuery, $pagination: ConnectionArgs, $order: ArtOrde
                     project {
                         id
                         name
+                        internal
+                        hasDesignDoc
+                        sfm
+                        dropNumber
+                        intercenter
+                        factory {
+                            id
+                            name
+                        }
+                        customer {
+                            id
+                            name
+                        }
                     }
                 }
             }

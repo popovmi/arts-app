@@ -1,4 +1,5 @@
 import { projectReducer } from '@/features/project/project.slice';
+import { artReducer } from '@/features/art/art.slice';
 import { api } from '@/graphql';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import { message } from 'antd';
 const appReducer = combineReducers({
     [api.reducerPath]: api.reducer,
     project: projectReducer,
+    art: artReducer,
 });
 
 export type RootState = ReturnType<typeof appReducer>;

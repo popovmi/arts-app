@@ -3,3 +3,4 @@ export * from './art.header';
 export * from './art.layout';
 export * from './art.navigation';
 export * from './table-components';
+export * from './art.columns-menu';

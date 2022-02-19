@@ -17,6 +17,7 @@ export const HeaderCell: FC<HeaderCellProps> = ({ children, style, dataIndex, ..
     const filterField = Array.isArray(dataIndex)
         ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
         : filter[dataIndex];
+
     const cellStyle = {
         ...style,
         ...(Object.keys(filterField || {}).length > 0 ? { backgroundColor: 'rgba(190,245,255,0.9)' } : {}),

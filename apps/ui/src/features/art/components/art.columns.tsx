@@ -4,15 +4,15 @@ import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
 import { Art, ArtFilterQuery, AttributeType, StringFieldOption } from '@/graphql';
 import {
-	Button,
-	Col,
-	Input,
-	Radio,
-	RadioChangeEvent,
-	Row,
-	Space,
-	TableColumnGroupType,
-	TableColumnType
+    Button,
+    Col,
+    Input,
+    Radio,
+    RadioChangeEvent,
+    Row,
+    Space,
+    TableColumnGroupType,
+    TableColumnType,
 } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
@@ -25,6 +25,23 @@ interface ArtFilterItemProps {
     onClear: () => void;
     disableClear: boolean;
     withTimer: boolean;
+}
+
+function arraysEqual(a: any[], b: any[]) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+
+    for (let i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+
+    return true;
 }
 
 const ArtFilterInput: FC<ArtFilterItemProps> = ({ onChange, value, onClear, disableClear, withTimer }) => {
@@ -66,26 +83,28 @@ const ArtFilterInput: FC<ArtFilterItemProps> = ({ onChange, value, onClear, disa
 
 export const artColumns = () => {
     const dispatch = useAppDispatch();
-    const { filter } = useAppSelector(selectArts);
+    const { filter, showDataIndexes } = useAppSelector(selectArts);
+
+    const buildFilterObject = (dataIndex: string | string[], value: any) => {
+        let filterField: any = {};
+
+        if (Array.isArray(dataIndex)) {
+            for (let i = dataIndex.length - 1; i >= 0; i--) {
+                if (i === dataIndex.length - 1) filterField = { [dataIndex[i]]: value };
+                else filterField = { [dataIndex[i]]: { ...filterField } };
+            }
+        } else {
+            Object.assign(filterField, { [dataIndex]: value });
+        }
+
+        return filterField;
+    };
 
     const getAttributeFilter = (type: AttributeType, dataIndex: any) => () => {
         const onChange = (value: string[]) => {
             const filterValue = value?.length > 0 ? { in: value } : {};
 
-            const filterField = Array.isArray(dataIndex)
-                ? dataIndex.reduce((ff, idxPart, i, arr) => {
-                      if (i === arr.length - 1) return { [idxPart]: filterValue };
-
-                      return { [idxPart]: ff[idxPart] || {} };
-                  }, filter)
-                : { [dataIndex]: filterValue };
-
-            dispatch(
-                updateFilter({
-                    ...filterField,
-                    shouldFetch: true,
-                })
-            );
+            dispatch(updateFilter({ ...buildFilterObject(dataIndex, filterValue), shouldFetch: true }));
         };
 
         const filterProp = Array.isArray(dataIndex)
@@ -100,7 +119,9 @@ export const artColumns = () => {
                     allowClear
                     mode="multiple"
                     onChange={onChange}
-                    onClear={() => dispatch(updateFilter({ [dataIndex]: {}, shouldFetch: true }))}
+                    onClear={() =>
+                        dispatch(updateFilter({ ...buildFilterObject(dataIndex, {}), shouldFetch: true }))
+                    }
                 />
             </Space>
         );
@@ -109,20 +130,8 @@ export const artColumns = () => {
     const getYesNoFilter = (dataIndex: any) => () => {
         const onChange = (e: RadioChangeEvent) => {
             const value = typeof e.target.value === 'boolean' ? { is: e.target.value } : {};
-            const filterField = Array.isArray(dataIndex)
-                ? dataIndex.reduce((ff, idxPart, i, arr) => {
-                      if (i === arr.length - 1) return { [idxPart]: value };
 
-                      return { [idxPart]: ff[idxPart] || {} };
-                  }, filter)
-                : { [dataIndex]: value };
-
-            dispatch(
-                updateFilter({
-                    ...filterField,
-                    shouldFetch: true,
-                })
-            );
+            dispatch(updateFilter({ ...buildFilterObject(dataIndex, value), shouldFetch: true }));
         };
 
         const filterProp = Array.isArray(dataIndex)
@@ -146,7 +155,7 @@ export const artColumns = () => {
                         size="small"
                         disabled={typeof filterProp?.is !== 'boolean'}
                         onClick={(evt) => {
-                            dispatch(updateFilter({ [dataIndex]: {}, shouldFetch: true }));
+                            dispatch(updateFilter({ ...buildFilterObject(dataIndex, {}), shouldFetch: true }));
                         }}
                     >
                         Сбросить
@@ -251,9 +260,10 @@ export const artColumns = () => {
         },
         {
             title: 'Проект',
+            key: 'project',
             children: [
                 {
-                    dataIndex: ['project', 'id'],
+                    dataIndex: ['project', 'name'],
                     title: 'Название',
                     render: (_, record) =>
                         record.project && <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>,
@@ -296,10 +306,10 @@ export const artColumns = () => {
                         typeof filter.project?.hasDesignDoc?.is === 'boolean'
                             ? [filter.project?.hasDesignDoc.is]
                             : [],
-                    filterDropdown: getYesNoFilter('hasDesignDoc'),
+                    filterDropdown: getYesNoFilter(['project', 'hasDesignDoc']),
                     filterMultiple: false,
                     render: (_, { project }) =>
-                        typeof project?.hasDesignDoc === 'boolean' ? (project.internal ? 'Да' : 'Нет') : '',
+                        typeof project?.hasDesignDoc === 'boolean' ? (project.hasDesignDoc ? 'Да' : 'Нет') : '',
                 },
                 {
                     dataIndex: ['project', 'dropNumber'],
@@ -330,10 +340,9 @@ export const artColumns = () => {
                     filterDropdown: getAttributeFilter(AttributeType.Sfm, ['project', 'sfm']),
                 },
                 {
-                    dataIndex: ['customer', 'id'],
+                    dataIndex: ['project', 'customer', 'id'],
                     title: 'Заказчик',
-                    onHeaderCell: (record) =>
-                        ({ dataIndex: ['project', 'customer', 'id'] } as HTMLAttributes<any>),
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'customerId'] } as HTMLAttributes<any>),
                     render: (_, record) => record.project?.customer?.name,
                     filteredValue:
                         Object.keys(filter.project?.customerId || {}).length > 0
@@ -365,9 +374,9 @@ export const artColumns = () => {
                     },
                 },
                 {
-                    dataIndex: ['factory', 'id'],
+                    dataIndex: ['project', 'factory', 'id'],
                     title: 'Завод',
-                    onHeaderCell: (record) => ({ dataIndex: ['project', 'factory', 'id'] } as HTMLAttributes<any>),
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'factoryId'] } as HTMLAttributes<any>),
                     render: (_, record) => record.project?.factory?.name,
                     filteredValue:
                         Object.keys(filter.project?.factoryId || {}).length > 0
@@ -402,5 +411,33 @@ export const artColumns = () => {
         },
     ];
 
-    return artColumns;
+    return artColumns.filter((column) => {
+        if ((column as TableColumnType<Art>).dataIndex) {
+            return showDataIndexes.includes((column as TableColumnType<Art>).dataIndex as string);
+        }
+
+        const artColumn = column as TableColumnGroupType<Art>;
+
+        if (artColumn.children) {
+            artColumn.children = artColumn.children.filter((childColumn) => {
+                const artChildColumn = childColumn as TableColumnType<Art>;
+
+                if (typeof artChildColumn.dataIndex === 'string') {
+                    return showDataIndexes.includes(artChildColumn.dataIndex);
+                }
+
+                if (Array.isArray(artChildColumn.dataIndex)) {
+                    return !!showDataIndexes.find((showIndex) => {
+                        if (Array.isArray(showIndex)) {
+                            return arraysEqual(showIndex, artChildColumn.dataIndex as string[]);
+                        } else return (artChildColumn.dataIndex as string[])[0] === showIndex;
+                    });
+                }
+
+                return false;
+            });
+        }
+
+        return !!artColumn.children.length;
+    });
 };

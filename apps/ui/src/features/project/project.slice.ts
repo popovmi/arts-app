@@ -1,11 +1,7 @@
 import { RootState } from '@/app/store';
 import {
-    ProjectFilterQuery,
-    ProjectOrderQuery,
-    ConnectionArgs,
-    ProjectTypeEdge,
-    ProjectResponse,
-    Project,
+	ConnectionArgs, Project, ProjectFilterQuery,
+	ProjectOrderQuery, ProjectResponse, ProjectTypeEdge
 } from '@/graphql';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -58,7 +54,6 @@ const projectSlice = createSlice({
             state.pagination.after = null;
             state.doFetch = true;
         },
-
         shouldFetch: (state, action) => {
             state.doFetch = action.payload;
         },

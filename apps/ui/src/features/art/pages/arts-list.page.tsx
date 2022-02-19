@@ -5,8 +5,8 @@ import { ClearOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Space, Table } from 'antd';
 import { FC, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
-import { artsLoaded, selectArts, clearFilter } from '..';
-import { HeaderCell, HeaderRow, artColumns, TableBody } from '../components';
+import { artsLoaded, clearFilter, selectArts } from '..';
+import { artColumns, ArtColumnsMenu, HeaderCell, HeaderRow, TableBody } from '../components';
 
 export const ArtsListPage: FC = () => {
     const dispatch = useAppDispatch();
@@ -51,7 +51,7 @@ export const ArtsListPage: FC = () => {
                 scroll={{ x: 2500 }}
                 sticky
                 title={() => (
-                    <Space>
+                    <Space style={{ width: '100%' }}>
                         <Button
                             size="small"
                             icon={<ClearOutlined />}
@@ -59,6 +59,7 @@ export const ArtsListPage: FC = () => {
                                 dispatch(clearFilter());
                             }}
                         />
+                        <ArtColumnsMenu />
                     </Space>
                 )}
             />

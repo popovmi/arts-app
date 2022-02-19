@@ -1,5 +1,5 @@
 import { RootState } from '@/app/store';
-import { ArtFilterQuery, ArtOrderQuery, ConnectionArgs, ArtTypeEdge, ArtResponse, Art } from '@/graphql';
+import { Art, ArtFilterQuery, ArtOrderQuery, ArtResponse, ArtTypeEdge, ConnectionArgs } from '@/graphql';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type ArtsState = {
@@ -9,6 +9,7 @@ type ArtsState = {
     pagination: ConnectionArgs;
     hasMore: boolean;
     doFetch: boolean;
+    showColumns: string[];
 };
 
 const artSlice = createSlice({
@@ -20,6 +21,19 @@ const artSlice = createSlice({
         pagination: { first: 50 },
         hasMore: true,
         doFetch: true,
+        showColumns: [
+            'name',
+            'internal',
+            'artClass',
+            'bottomForm',
+            'form',
+            'height',
+            'nominalVolume',
+            'productionMethod',
+            'productType',
+            'ringType',
+            'project',
+        ],
     } as ArtsState,
     reducers: {
         artsLoaded: (state, action: PayloadAction<ArtResponse>) => {
@@ -36,7 +50,7 @@ const artSlice = createSlice({
             const { shouldFetch, ...payload } = action.payload;
             let filter = state.filter;
 
-            filter = { ...filter, ...payload };
+            filter = { ...filter, ...payload, project: { ...(filter.project || {}), ...(payload.project || {}) } };
 
             state.filter = filter;
             state.pagination.before = null;
@@ -55,15 +69,28 @@ const artSlice = createSlice({
         shouldFetch: (state, action) => {
             state.doFetch = action.payload;
         },
+        setShowColumns: (state, action) => {
+            state.showColumns = action.payload;
+        },
     },
 });
 
 export const artReducer = artSlice.reducer;
-export const { artsLoaded, updateFilter, shouldFetch, clearFilter } = artSlice.actions;
+export const { artsLoaded, updateFilter, shouldFetch, clearFilter, setShowColumns } = artSlice.actions;
 
 export const selectArts = (state: RootState) => {
-    const { data, filter, hasMore, order, pagination, doFetch } = state.art;
+    const { data, filter, hasMore, order, pagination, doFetch, showColumns } = state.art;
     const arts: Art[] = data!.map((edge) => edge!.node!);
 
-    return { arts, filter, hasMore, order, pagination, doFetch };
+    const showDataIndexes = showColumns.map((column) => {
+        let dataIndex: string | string[] = column;
+
+        if (column.indexOf('.') > -1) {
+            dataIndex = column.split('.');
+        }
+
+        return dataIndex;
+    });
+
+    return { arts, filter, hasMore, order, pagination, doFetch, showColumns, showDataIndexes };
 };

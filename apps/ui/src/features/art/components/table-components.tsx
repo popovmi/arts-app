@@ -14,9 +14,12 @@ interface HeaderCellProps {
 
 export const HeaderCell: FC<HeaderCellProps> = ({ children, style, dataIndex, ...props }) => {
     const { filter } = useAppSelector(selectArts);
+    const filterField = Array.isArray(dataIndex)
+        ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
+        : filter[dataIndex];
     const cellStyle = {
         ...style,
-        ...(Object.keys(filter[dataIndex] || {}).length > 0 ? { backgroundColor: 'rgba(190,245,255,0.9)' } : {}),
+        ...(Object.keys(filterField || {}).length > 0 ? { backgroundColor: 'rgba(190,245,255,0.9)' } : {}),
     };
 
     return (
@@ -25,3 +28,13 @@ export const HeaderCell: FC<HeaderCellProps> = ({ children, style, dataIndex, ..
         </th>
     );
 };
+
+interface TableBodyProps {
+    [key: string]: any;
+}
+
+export const TableBody: FC<TableBodyProps> = ({ children, style, ...props }) => (
+    <tbody style={{ ...style, overflow: 'hidden' }} {...props}>
+        {children}
+    </tbody>
+);

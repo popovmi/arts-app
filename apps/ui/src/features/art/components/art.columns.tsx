@@ -1,16 +1,18 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { AttributeSelector } from '@/features/attribute';
-import { Art, ArtFilterQuery, AttributeType, BooleanFieldOption, StringFieldOption } from '@/graphql';
+import { CustomerSelector } from '@/features/customer';
+import { FactorySelector } from '@/features/factory';
+import { Art, ArtFilterQuery, AttributeType, StringFieldOption } from '@/graphql';
 import {
-    Button,
-    Col,
-    Input,
-    Radio,
-    RadioChangeEvent,
-    Row,
-    Space,
-    TableColumnGroupType,
-    TableColumnType,
+	Button,
+	Col,
+	Input,
+	Radio,
+	RadioChangeEvent,
+	Row,
+	Space,
+	TableColumnGroupType,
+	TableColumnType
 } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
@@ -66,21 +68,35 @@ export const artColumns = () => {
     const dispatch = useAppDispatch();
     const { filter } = useAppSelector(selectArts);
 
-    const getAttributeFilter = (type: AttributeType, dataIndex: keyof ArtFilterQuery) => () => {
+    const getAttributeFilter = (type: AttributeType, dataIndex: any) => () => {
         const onChange = (value: string[]) => {
+            const filterValue = value?.length > 0 ? { in: value } : {};
+
+            const filterField = Array.isArray(dataIndex)
+                ? dataIndex.reduce((ff, idxPart, i, arr) => {
+                      if (i === arr.length - 1) return { [idxPart]: filterValue };
+
+                      return { [idxPart]: ff[idxPart] || {} };
+                  }, filter)
+                : { [dataIndex]: filterValue };
+
             dispatch(
                 updateFilter({
-                    [dataIndex]: value?.length > 0 ? { in: value } : {},
+                    ...filterField,
                     shouldFetch: true,
                 })
             );
         };
 
+        const filterProp = Array.isArray(dataIndex)
+            ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
+            : filter[dataIndex as keyof ArtFilterQuery];
+
         return (
             <Space direction="horizontal" style={{ padding: 8 }} align="end">
                 <AttributeSelector
                     type={type}
-                    value={(filter[dataIndex] as StringFieldOption)?.in || []}
+                    value={(filterProp as StringFieldOption)?.in || []}
                     allowClear
                     mode="multiple"
                     onChange={onChange}
@@ -90,17 +106,28 @@ export const artColumns = () => {
         );
     };
 
-    const getYesNoFilter = (dataIndex: keyof ArtFilterQuery) => () => {
+    const getYesNoFilter = (dataIndex: any) => () => {
         const onChange = (e: RadioChangeEvent) => {
+            const value = typeof e.target.value === 'boolean' ? { is: e.target.value } : {};
+            const filterField = Array.isArray(dataIndex)
+                ? dataIndex.reduce((ff, idxPart, i, arr) => {
+                      if (i === arr.length - 1) return { [idxPart]: value };
+
+                      return { [idxPart]: ff[idxPart] || {} };
+                  }, filter)
+                : { [dataIndex]: value };
+
             dispatch(
                 updateFilter({
-                    [dataIndex]: typeof e.target.value === 'boolean' ? { is: e.target.value } : {},
+                    ...filterField,
                     shouldFetch: true,
                 })
             );
         };
 
-        const filterProp = filter[dataIndex] as BooleanFieldOption;
+        const filterProp = Array.isArray(dataIndex)
+            ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
+            : filter[dataIndex as keyof ArtFilterQuery];
 
         return (
             <Row gutter={[8, 8]} style={{ padding: 8, width: 250 }} justify="space-between">
@@ -226,42 +253,150 @@ export const artColumns = () => {
             title: 'Проект',
             children: [
                 {
-                    title: 'Внутренний',
-                    dataIndex: ['project', 'internal'],
-                    render: (_, record) => (record.project && record.project.internal ? 'Да' : 'Нет'),
-                },
-                {
-                    title: 'Есть КД',
-                    dataIndex: ['project', 'hasDesignDoc'],
-                    render: (_, record) => (record.project && record.project.internal ? 'Да' : 'Нет'),
-                },
-                {
-                    title: 'Кол-во капель',
-                    dataIndex: ['project', 'dropNumber'],
-                },
-                {
-                    title: 'Межцентровое',
-                    dataIndex: ['project', 'intercenter'],
-                },
-                {
-                    title: 'СФМ',
-                    dataIndex: ['project', 'sfm'],
-                },
-                {
-                    title: 'Заказчик',
-                    dataIndex: ['project', 'customer', 'id'],
-                    render: (_, record) => record.project?.customer?.name,
-                },
-                {
-                    title: 'Завод',
-                    dataIndex: ['project', 'factory', 'id'],
-                    render: (_, record) => record.project?.factory?.name,
-                },
-                {
                     dataIndex: ['project', 'id'],
                     title: 'Название',
                     render: (_, record) =>
                         record.project && <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>,
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'name'] } as HTMLAttributes<any>),
+                    filteredValue: filter?.project?.name?.contains ? [filter.project?.name.contains] : [],
+                    filterDropdown: () => (
+                        <ArtFilterInput
+                            disableClear={!filter.project?.name?.contains}
+                            onClear={() => dispatch(updateFilter({ project: { name: {} }, shouldFetch: true }))}
+                            onChange={(value) =>
+                                dispatch(
+                                    updateFilter({
+                                        project: { name: value ? { contains: value } : {} },
+                                        shouldFetch: false,
+                                    })
+                                )
+                            }
+                            value={filter?.project?.name?.contains || ''}
+                            withTimer={true}
+                        />
+                    ),
+                    filterMultiple: false,
+                },
+                {
+                    dataIndex: ['project', 'internal'],
+                    title: 'Внутренний',
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'internal'] } as HTMLAttributes<any>),
+                    filteredValue:
+                        typeof filter.project?.internal?.is === 'boolean' ? [filter.project?.internal.is] : [],
+                    filterDropdown: getYesNoFilter(['project', 'internal']),
+                    filterMultiple: false,
+                    render: (_, { project }) =>
+                        typeof project?.internal === 'boolean' ? (project.internal ? 'Да' : 'Нет') : '',
+                },
+                {
+                    dataIndex: ['project', 'hasDesignDoc'],
+                    title: 'Есть КД',
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'hasDesignDoc'] } as HTMLAttributes<any>),
+                    filteredValue:
+                        typeof filter.project?.hasDesignDoc?.is === 'boolean'
+                            ? [filter.project?.hasDesignDoc.is]
+                            : [],
+                    filterDropdown: getYesNoFilter('hasDesignDoc'),
+                    filterMultiple: false,
+                    render: (_, { project }) =>
+                        typeof project?.hasDesignDoc === 'boolean' ? (project.internal ? 'Да' : 'Нет') : '',
+                },
+                {
+                    dataIndex: ['project', 'dropNumber'],
+                    title: 'Кол-во капель',
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'dropNumber'] } as HTMLAttributes<any>),
+                    filteredValue:
+                        Object.keys(filter.project?.dropNumber || {}).length > 0
+                            ? filter.project?.dropNumber!.in
+                            : [],
+                    filterDropdown: getAttributeFilter(AttributeType.DropNumber, ['project', 'dropNumber']),
+                },
+                {
+                    dataIndex: ['project', 'intercenter'],
+                    title: 'Межцентровое',
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'intercenter'] } as HTMLAttributes<any>),
+                    filteredValue:
+                        Object.keys(filter.project?.intercenter || {}).length > 0
+                            ? filter.project?.intercenter!.in
+                            : [],
+                    filterDropdown: getAttributeFilter(AttributeType.Intercenter, ['project', 'intercenter']),
+                },
+                {
+                    dataIndex: ['project', 'sfm'],
+                    title: 'СФМ',
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'sfm'] } as HTMLAttributes<any>),
+                    filteredValue:
+                        Object.keys(filter.project?.sfm || {}).length > 0 ? filter.project?.sfm!.in : [],
+                    filterDropdown: getAttributeFilter(AttributeType.Sfm, ['project', 'sfm']),
+                },
+                {
+                    dataIndex: ['customer', 'id'],
+                    title: 'Заказчик',
+                    onHeaderCell: (record) =>
+                        ({ dataIndex: ['project', 'customer', 'id'] } as HTMLAttributes<any>),
+                    render: (_, record) => record.project?.customer?.name,
+                    filteredValue:
+                        Object.keys(filter.project?.customerId || {}).length > 0
+                            ? filter.project?.customerId!.in
+                            : [],
+                    filterDropdown: () => {
+                        const onChange = (value: string[]) => {
+                            dispatch(
+                                updateFilter({
+                                    project: { customerId: value?.length > 0 ? { in: value } : {} },
+                                    shouldFetch: true,
+                                })
+                            );
+                        };
+
+                        return (
+                            <Space direction="horizontal" style={{ padding: 8 }} align="end">
+                                <CustomerSelector
+                                    value={(filter.project?.customerId as StringFieldOption)?.in || []}
+                                    allowClear
+                                    mode="multiple"
+                                    onChange={onChange}
+                                    onClear={() =>
+                                        dispatch(updateFilter({ project: { customerId: {} }, shouldFetch: true }))
+                                    }
+                                />
+                            </Space>
+                        );
+                    },
+                },
+                {
+                    dataIndex: ['factory', 'id'],
+                    title: 'Завод',
+                    onHeaderCell: (record) => ({ dataIndex: ['project', 'factory', 'id'] } as HTMLAttributes<any>),
+                    render: (_, record) => record.project?.factory?.name,
+                    filteredValue:
+                        Object.keys(filter.project?.factoryId || {}).length > 0
+                            ? filter.project?.factoryId!.in
+                            : [],
+                    filterDropdown: () => {
+                        const onChange = (value: string[]) => {
+                            dispatch(
+                                updateFilter({
+                                    project: { factoryId: value?.length > 0 ? { in: value } : {} },
+                                    shouldFetch: true,
+                                })
+                            );
+                        };
+
+                        return (
+                            <Space direction="horizontal" style={{ padding: 8 }} align="end">
+                                <FactorySelector
+                                    value={(filter.project?.factoryId as StringFieldOption)?.in || []}
+                                    allowClear
+                                    mode="multiple"
+                                    onChange={onChange}
+                                    onClear={() =>
+                                        dispatch(updateFilter({ project: { factoryId: {} }, shouldFetch: true }))
+                                    }
+                                />
+                            </Space>
+                        );
+                    },
                 },
             ],
         },

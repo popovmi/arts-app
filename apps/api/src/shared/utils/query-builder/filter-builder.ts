@@ -25,7 +25,11 @@ export const filterQuery = <T>(
     } else {
         Object.keys(where).forEach((key) => {
             if (relations.includes(key)) {
-                query = filterQuery(query.leftJoin(`${query.alias}.${key}`, key), key, where[key]);
+                const wherePart = where[key];
+
+                delete where[key];
+
+                query = filterQuery(query.leftJoin(`${query.alias}.${key}`, key), key, wherePart);
             }
         });
 
@@ -74,6 +78,8 @@ const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, 
 
         ops.forEach((parameters) => {
             const [operation, value] = parameters;
+
+            console.log({ alias, fieldName, operation, value });
             const paramName = `${fieldName}${operation}Param${i++}`;
 
             switch (operation) {

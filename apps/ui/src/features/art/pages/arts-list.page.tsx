@@ -6,7 +6,7 @@ import { Button, Col, Row, Space, Table } from 'antd';
 import { FC, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { artsLoaded, selectArts, clearFilter } from '..';
-import { HeaderCell, HeaderRow, artColumns } from '../components';
+import { HeaderCell, HeaderRow, artColumns, TableBody } from '../components';
 
 export const ArtsListPage: FC = () => {
     const dispatch = useAppDispatch();
@@ -33,21 +33,27 @@ export const ArtsListPage: FC = () => {
     });
 
     return (
-        <Row style={{ overflow: 'auto', overflowX: 'hidden', height: '100%' }} ref={root.rootRef}>
+        <Row style={{ overflowY: 'auto', overflowX: 'hidden', height: '100%' }} ref={root.rootRef}>
             <Table
                 dataSource={arts}
                 rowKey="id"
                 columns={artColumns()}
-                components={{ header: { cell: HeaderCell, row: HeaderRow } }}
+                components={{
+                    header: { cell: HeaderCell, row: HeaderRow },
+                    body: {
+                        wrapper: TableBody,
+                    },
+                }}
                 pagination={false}
                 loading={loading}
                 size="small"
                 bordered
-                scroll={{ x: 2000 }}
+                scroll={{ x: 2500 }}
                 sticky
                 title={() => (
                     <Space>
                         <Button
+                            size="small"
                             icon={<ClearOutlined />}
                             onClick={() => {
                                 dispatch(clearFilter());

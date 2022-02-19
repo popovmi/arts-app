@@ -10,7 +10,7 @@ import { artColumns, ArtColumnsMenu, HeaderCell, HeaderRow, TableBody } from '..
 
 export const ArtsListPage: FC = () => {
     const dispatch = useAppDispatch();
-    const { filter, order, pagination, arts, hasMore, doFetch } = useAppSelector(selectArts);
+    const { filter, order, pagination, arts, hasMore, doFetch, showColumns } = useAppSelector(selectArts);
     const [load, { isLoading, isFetching }] = useLazyArtsQuery();
     const loading = isLoading || isFetching;
 
@@ -32,6 +32,8 @@ export const ArtsListPage: FC = () => {
         delayInMs: 500,
     });
 
+    const scroll = { x: showColumns.find((col) => col === 'project') ? 2500 : showColumns.length * 130 };
+
     return (
         <Row style={{ overflowY: 'auto', overflowX: 'hidden', height: '100%' }} ref={root.rootRef}>
             <Table
@@ -48,7 +50,7 @@ export const ArtsListPage: FC = () => {
                 loading={loading}
                 size="small"
                 bordered
-                scroll={{ x: 2500 }}
+                scroll={scroll}
                 sticky
                 title={() => (
                     <Space style={{ width: '100%' }}>

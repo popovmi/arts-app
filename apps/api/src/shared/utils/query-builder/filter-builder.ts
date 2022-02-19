@@ -79,7 +79,7 @@ const handleArgs = (query: WhereExpressionBuilder, alias: string, where: Where, 
         ops.forEach((parameters) => {
             const [operation, value] = parameters;
 
-            const paramName = `${fieldName}${operation}Param${i++}`;
+            const paramName = `${alias}${fieldName}${operation}Param${i++}`;
 
             switch (operation) {
                 case 'is': {

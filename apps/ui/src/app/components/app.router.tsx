@@ -1,6 +1,6 @@
 import { ArtPage, ArtsListPage, CreateArtPage } from '@/features/art';
 import { AdminRoute, AuthRoute, LoginPage, PasswordUpdatePage } from '@/features/auth';
-import { ProjectPage, ProjectsListPage, ProjectsPage } from '@/features/project';
+import { ProjectPage, ProjectsListPage, CreateProjectPage } from '@/features/project';
 import { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { AppContainer } from './app.container';
@@ -24,10 +24,9 @@ export const AppRouter: FC = () => {
                                 { path: 'update', element: <PasswordUpdatePage /> },
                                 {
                                     path: 'projects',
-                                    element: <ProjectsPage />,
                                     children: [
                                         { index: true, element: <ProjectsListPage /> },
-                                        //   { path: 'create', element: <CreateProjectPage /> },
+                                        { path: 'create', element: <CreateProjectPage /> },
                                         { path: ':projectId', element: <ProjectPage /> },
                                     ],
                                 },

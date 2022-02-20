@@ -40,10 +40,10 @@ export class Project {
     arts: Art[];
 
     @Column({ nullable: true })
-    factoryId: number;
+    factoryId: string;
 
     @Column({ nullable: true })
-    customerId: number;
+    customerId: string;
 
     @CreateDateColumn()
     createdAt: Date;

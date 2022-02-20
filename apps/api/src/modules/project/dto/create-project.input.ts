@@ -7,7 +7,7 @@ export class CreateProjectInput {
     @Field(() => String)
     name: string;
 
-    @IsString()
+    @IsBoolean()
     @IsOptional()
     @Field(() => Boolean, { nullable: true })
     internal: boolean;
@@ -31,6 +31,16 @@ export class CreateProjectInput {
     @IsOptional()
     @Field(() => String, { nullable: true })
     sfm: string;
+
+	@IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    customerId: string;
+
+	@IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    factoryId: string;
 
     format() {
         return {

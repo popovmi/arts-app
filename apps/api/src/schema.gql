@@ -358,6 +358,8 @@ input CreateProjectInput {
   dropNumber: String
   intercenter: String
   sfm: String
+  customerId: String
+  factoryId: String
 }
 
 input UpdateProjectInput {

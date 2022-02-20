@@ -20,8 +20,6 @@ export class ProjectResolver {
 
     @Query(() => ProjectResponse)
     async projects(@Args() args: FindProjectArgs) {
-		console.log(args);
-		
         return await this.projectService.getProjects(args);
     }
 
@@ -31,13 +29,13 @@ export class ProjectResolver {
     }
 
     @ResolveField('customer', () => CustomerType, { nullable: true })
-    public async getProjectsCustomers(@Parent() project: ProjectType) {
-        return await this.projectLoader.batchCustomers.load(project.customerId);
+    public async getProjectsCustomers(@Parent() { customerId }: ProjectType) {
+        return customerId ? await this.projectLoader.batchCustomers.load(customerId) : null;
     }
 
     @ResolveField('factory', () => FactoryType, { nullable: true })
-    public async getProjectsFactories(@Parent() project: ProjectType) {
-        return await this.projectLoader.batchFactories.load(project.factoryId);
+    public async getProjectsFactories(@Parent() { factoryId }: ProjectType) {
+        return factoryId ? await this.projectLoader.batchFactories.load(factoryId) : null;
     }
 
     @Mutation(() => ProjectType)

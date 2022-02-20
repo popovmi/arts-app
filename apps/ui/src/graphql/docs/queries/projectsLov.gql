@@ -1,0 +1,12 @@
+query projectsLov($filter: ProjectFilterQuery, $pagination: ConnectionArgs) {
+    projects(filter: $filter, pagination: $pagination) {
+        page {
+            edges {
+                node {
+                    id
+                    name
+                }
+            }
+        }
+    }
+}

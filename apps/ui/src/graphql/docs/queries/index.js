@@ -6,6 +6,7 @@ module.exports.users = fs.readFileSync(path.join(__dirname, 'users.gql'), 'utf8'
 module.exports.whoAmI = fs.readFileSync(path.join(__dirname, 'whoAmI.gql'), 'utf8');
 module.exports.project = fs.readFileSync(path.join(__dirname, 'project.gql'), 'utf8');
 module.exports.projects = fs.readFileSync(path.join(__dirname, 'projects.gql'), 'utf8');
+module.exports.projectsLov = fs.readFileSync(path.join(__dirname, 'projectsLov.gql'), 'utf8');
 module.exports.art = fs.readFileSync(path.join(__dirname, 'art.gql'), 'utf8');
 module.exports.arts = fs.readFileSync(path.join(__dirname, 'arts.gql'), 'utf8');
 module.exports.attributes = fs.readFileSync(path.join(__dirname, 'attributes.gql'), 'utf8');

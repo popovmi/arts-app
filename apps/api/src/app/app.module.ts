@@ -1,8 +1,3 @@
-import { ApolloDriver } from '@nestjs/apollo';
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
-import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
 import { initTestData } from '@/db/init-test-data';
 import { ArtModule } from '@/modules/art/art.module';
 import { AttributeModule } from '@/modules/attribute/attribute.module';
@@ -12,6 +7,13 @@ import { FactoryModule } from '@/modules/factory/factory.module';
 import { ProjectModule } from '@/modules/project/project.module';
 import { UserModule } from '@/modules/user';
 import { ApiConfigService, SharedModule } from '@/shared';
+import { ApolloDriver } from '@nestjs/apollo';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { EntityManager } from 'typeorm';
 
 @Module({
@@ -29,6 +31,21 @@ import { EntityManager } from 'typeorm';
             driver: ApolloDriver,
             inject: [ApiConfigService],
             useFactory: (config: ApiConfigService) => config.graphQLConfig,
+        }),
+
+        ServeStaticModule.forRootAsync({
+            inject: [ApiConfigService],
+            useFactory: async (config: ApiConfigService) => [
+                {
+                    exclude: ['/graphql'],
+                    rootPath: './upload',
+                    serveRoot: '/upload',
+                },
+                {
+                    exclude: ['/graphql'],
+                    rootPath: join(__dirname, '..', 'ui'),
+                },
+            ],
         }),
 
         UserModule,

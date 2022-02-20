@@ -189,7 +189,7 @@ export const artColumns = () => {
                 />
             ),
             filterMultiple: false,
-            render: (_, record) => <Link to={`/projects/${record.id}`}>{record.name}</Link>,
+            render: (_, record) => <Link to={`/arts/${record.id}`}>{record.name}</Link>,
         },
         {
             dataIndex: 'internal',

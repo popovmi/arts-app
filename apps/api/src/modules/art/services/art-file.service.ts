@@ -1,10 +1,11 @@
+import { ApiConfigService } from '@/shared';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { existsSync } from 'fs';
 import { copyFile, mkdir, rm } from 'fs/promises';
 import * as Jimp from 'jimp';
 import { Poppler } from 'node-poppler';
-import { dirname, resolve } from 'path';
+import { dirname, join, resolve } from 'path';
 import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { ArtFile } from '../entity/art-file.entity';
@@ -12,17 +13,18 @@ import { Art } from '../entity/art.entity';
 
 @Injectable()
 export class ArtFileService {
-    private originalStoragePath = './test-files/original';
-    private watermarkStoragePath = './test-files/watermark';
-
     private _poppler: Poppler;
 
-    constructor(@InjectRepository(ArtFile) private artFileRepository: Repository<ArtFile>) {
+    constructor(
+        @InjectRepository(ArtFile) private artFileRepository: Repository<ArtFile>,
+        private config: ApiConfigService
+    ) {
         this._poppler = process.platform === 'linux' ? new Poppler('./.apt/usr/bin') : new Poppler();
     }
 
     private async checkDir(path: string) {
         const dir = dirname(path);
+
         if (!existsSync(dir)) await mkdir(dir, { recursive: true });
     }
 
@@ -34,6 +36,7 @@ export class ArtFileService {
             singleFile: true,
         };
         const res = await this._poppler.pdfToCairo(src, dest, options);
+
         if (res instanceof Error) throw res;
     }
 
@@ -41,6 +44,7 @@ export class ArtFileService {
         const LOGO = './watermark/1200px-Australian_Defence_Force_Academy_coat_of_arms.svg.png';
         const image = await Jimp.read(src);
         const logo = await Jimp.read(LOGO);
+
         logo.resize(image.bitmap.width * 0.9, image.bitmap.height * 0.9);
         const X = (image.bitmap.width - logo.bitmap.width) / 2;
         const Y = (image.bitmap.height - logo.bitmap.height) / 2;
@@ -49,13 +53,14 @@ export class ArtFileService {
             opacitySource: 0.4,
             opacityDest: 1,
         });
+
         await composed.writeAsync(dest);
     }
 
     private async saveWatemark(filePath: string, art: Art) {
         const fileName = resolve(filePath).split('/').pop();
         const fileExtension = fileName.split('.')[1];
-        let watermarkPath = `${this.watermarkStoragePath}/${art.name}`;
+        let watermarkPath = resolve(this.config.fileStoragePath, 'watermark', art.name);
 
         await this.checkDir(watermarkPath);
 
@@ -75,18 +80,18 @@ export class ArtFileService {
                 throw new Error('Некорректный формат файла');
         }
 
-        return watermarkPath;
+        return join('watermark', art.name + '.jpg');
     }
 
     private async saveOriginal(filePath: string, art: Art) {
         const fileName = resolve(filePath).split('/').pop();
         const fileExtension = fileName.split('.')[1];
-        const originalFilePath = `${this.originalStoragePath}/${art.name}.${fileExtension}`;
+        const originalFilePath = join(this.config.fileStoragePath, 'original', `${art.name}.${fileExtension}`);
 
         await this.checkDir(originalFilePath);
         await copyFile(filePath, originalFilePath);
 
-        return originalFilePath;
+        return join('original', `${art.name}.${fileExtension}`);
     }
 
     @Transactional()

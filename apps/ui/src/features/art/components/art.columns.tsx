@@ -11,6 +11,7 @@ import {
     RadioChangeEvent,
     Row,
     Space,
+    Image,
     TableColumnGroupType,
     TableColumnType,
 } from 'antd';
@@ -189,7 +190,14 @@ export const artColumns = () => {
                 />
             ),
             filterMultiple: false,
-            render: (_, record) => <Link to={`/arts/${record.id}`}>{record.name}</Link>,
+            render: (_, record) => (
+                <Space>
+                    <Link to={`/arts/${record.id}`}>{record.name}</Link>
+                    {record.files && record.files?.length > 0 && (
+                        <Image src={`/static/${record.files![0].watermarkPath}`} />
+                    )}
+                </Space>
+            ),
         },
         {
             dataIndex: 'internal',

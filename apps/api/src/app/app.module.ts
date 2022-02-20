@@ -14,6 +14,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { resolve } from 'path/posix';
 import { EntityManager } from 'typeorm';
 
 @Module({
@@ -36,6 +37,11 @@ import { EntityManager } from 'typeorm';
         ServeStaticModule.forRootAsync({
             inject: [ApiConfigService],
             useFactory: async (config: ApiConfigService) => [
+                {
+                    exclude: ['/graphql'],
+                    rootPath: resolve(config.fileStoragePath),
+                    serveRoot: '/static',
+                },
                 {
                     exclude: ['/graphql'],
                     rootPath: './upload',

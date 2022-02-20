@@ -11,6 +11,10 @@ import { join } from 'path';
 export class ApiConfigService {
     constructor(readonly config: ConfigService) {}
 
+    get fileStoragePath(): string {
+        return this.getString('FILE_STORAGE_PATH');
+    }
+
     get isDevelopment(): boolean {
         return this.nodeEnv === 'development';
     }

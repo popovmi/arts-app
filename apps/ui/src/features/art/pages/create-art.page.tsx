@@ -7,7 +7,9 @@ import { CreateArtForm } from '../components';
 export const CreateArtPage: FC = () => {
     const navigate = useNavigate();
 
-    const [_, { isSuccess, data, reset }] = useCreateArtMutation({ fixedCacheKey: 'createArt' });
+    const [_, { isSuccess, data, reset }] = useCreateArtMutation({
+        fixedCacheKey: 'createArt',
+    });
 
     useEffect(() => {
         return () => reset();

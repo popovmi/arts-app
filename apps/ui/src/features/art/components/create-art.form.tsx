@@ -1,15 +1,17 @@
-import { artAttributesTypes } from '@/features/art/art-attribute.types';
-import { ArtFileUpload } from '@/features/art/components';
+import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { ProjectsSelector } from '@/features/project/components';
 import { CreateArtInput, useCreateArtMutation } from '@/graphql';
-import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Col, Form, Input, Row, Space, Spin, Typography } from 'antd';
 import { useState } from 'react';
-import { AttributesLabels } from '../../attribute';
-import { AttributeSelector } from '../../attribute/components';
+import { artAttributesTypes } from '../art-attribute.types';
+import { ArtFileUpload } from '../components';
 
 const { Item } = Form;
+const { Text } = Typography;
 
 export const CreateArtForm = () => {
+    const [createArt, { isLoading, error, isError, reset }] = useCreateArtMutation({ fixedCacheKey: 'createArt' });
     const [form] = Form.useForm<CreateArtInput>();
     const [fileExtension, setFileExtension] = useState('');
     const onUpload = ({ filePath, fileName }: { filePath: string; fileName: string }) => {
@@ -18,7 +20,6 @@ export const CreateArtForm = () => {
         form.setFieldsValue({ name, filePath });
         setFileExtension(extension);
     };
-    const [createArt] = useCreateArtMutation({ fixedCacheKey: 'createArt' });
 
     const onFormFinish = (createArtInput: CreateArtInput) => {
         createArt({ createArtInput });
@@ -28,6 +29,14 @@ export const CreateArtForm = () => {
 
     return (
         <Row gutter={[8, 8]} justify="center">
+            <Col xs={24}>
+                {isError && (
+                    <Space>
+                        <Text type="danger">{error?.message}</Text>
+                        <Button size="small" type="link" danger icon={<CloseOutlined />} onClick={reset} />
+                    </Space>
+                )}
+            </Col>
             <Col xs={24} md={8}>
                 <Form
                     labelCol={{ span: 8 }}
@@ -37,39 +46,41 @@ export const CreateArtForm = () => {
                     onFinish={onFormFinish}
                     labelAlign="left"
                 >
-                    <Row gutter={8}>
-                        <Col flex={1}>
-                            <Item
-                                label="Наименование"
-                                name="name"
-                                rules={[{ required: true, message: 'Необходимо загрузить файл!' }]}
-                            >
-                                <Input readOnly />
-                            </Item>
-                        </Col>
-                        <Col flex={'none'}>
-                            <ArtFileUpload onSuccess={onUpload} />
-                        </Col>
-                    </Row>
-                    <Item label="Внутренний" name="internal" valuePropName="checked" initialValue={true}>
-                        <Checkbox />
-                    </Item>
-                    <Item label="Проект" name="projectId">
-                        <ProjectsSelector allowClear />
-                    </Item>
-                    {artAttributesTypes.map((type) => (
-                        <Item key={type} label={AttributesLabels[type]} name={type}>
-                            <AttributeSelector active type={type} allowClear />
+                    <Spin spinning={isLoading}>
+                        <Row gutter={8}>
+                            <Col flex={1}>
+                                <Item
+                                    label="Название"
+                                    name="name"
+                                    rules={[{ required: true, message: 'Необходимо загрузить файл!' }]}
+                                >
+                                    <Input readOnly />
+                                </Item>
+                            </Col>
+                            <Col flex={'none'}>
+                                <ArtFileUpload onSuccess={onUpload} />
+                            </Col>
+                        </Row>
+                        <Item label="Внутренний" name="internal" valuePropName="checked" initialValue={true}>
+                            <Checkbox />
                         </Item>
-                    ))}
-                    <Item>
-                        <Button type="primary" htmlType="submit">
-                            Сохранить
-                        </Button>
-                    </Item>
-                    <Item name="filePath" style={{ height: 0 }}>
-                        <Input readOnly style={{ display: 'none' }} />
-                    </Item>
+                        <Item label="Проект" name="projectId">
+                            <ProjectsSelector allowClear />
+                        </Item>
+                        {artAttributesTypes.map((type) => (
+                            <Item key={type} label={AttributesLabels[type]} name={type}>
+                                <AttributeSelector active type={type} allowClear />
+                            </Item>
+                        ))}
+                        <Item>
+                            <Button type="primary" htmlType="submit">
+                                Сохранить
+                            </Button>
+                        </Item>
+                        <Item name="filePath" style={{ height: 0 }}>
+                            <Input readOnly style={{ display: 'none' }} />
+                        </Item>
+                    </Spin>
                 </Form>
             </Col>
             <Col xs={24} md={16}>

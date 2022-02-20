@@ -175,7 +175,9 @@ export type CreateFactoryInput = {
 };
 
 export type CreateProjectInput = {
+  customerId?: InputMaybe<Scalars['String']>;
   dropNumber?: InputMaybe<Scalars['String']>;
+  factoryId?: InputMaybe<Scalars['String']>;
   hasDesignDoc?: InputMaybe<Scalars['Boolean']>;
   intercenter?: InputMaybe<Scalars['String']>;
   internal?: InputMaybe<Scalars['Boolean']>;

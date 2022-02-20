@@ -1,3 +1,4 @@
+import { ArtFile } from '@/modules/art/entity/art-file.entity';
 import { Art } from '@/modules/art/entity/art.entity';
 import * as AttrEntities from '@/modules/attribute/entities';
 import { Customer } from '@/modules/customer/entities/customer.entity';
@@ -16,6 +17,7 @@ export const initTestData = async (em: EntityManager) => {
     const projects = [];
     const arts = [];
     const attributesValues = ['qq', 'ww', 'ee', 'rr', 'tt', 'yy'];
+    const artsFiles = [];
 
     users.push({
         username: `ADMIN`,
@@ -88,6 +90,11 @@ export const initTestData = async (em: EntityManager) => {
         });
     }
     await em.save(Art, arts);
+
+    arts.forEach((art) => {
+        artsFiles.push({ artId: art.id, watermarkPath: 'Scan_0001.jpg', originalPath: 'Scan_0001.jpg' });
+    });
+    await em.save(ArtFile, artsFiles);
 };
 
 function random(min, max) {

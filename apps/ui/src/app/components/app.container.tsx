@@ -12,7 +12,6 @@ export const AppContainer: FC = () => {
                 theme={'light'}
                 collapsible={true}
                 collapsedWidth={0}
-                breakpoint={'sm'}
                 style={{ height: '100%' }}
             >
                 <AppNavigation />

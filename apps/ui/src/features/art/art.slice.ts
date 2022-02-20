@@ -32,7 +32,7 @@ const artSlice = createSlice({
             'productionMethod',
             'productType',
             'ringType',
-            'project',
+            // 'project',
         ],
     } as ArtsState,
     reducers: {

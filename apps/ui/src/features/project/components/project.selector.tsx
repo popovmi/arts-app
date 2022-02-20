@@ -7,7 +7,7 @@ interface ProjectsSelectorProps {
     value?: string;
     onChange?: (value: any) => void;
     allowClear?: boolean;
-    currentProject?: Project;
+    currentProject?: Project | undefined | null;
     disabled?: boolean;
 }
 
@@ -60,7 +60,7 @@ export const ProjectsSelector: FC<ProjectsSelectorProps> = ({
     return (
         <Select
             {...props}
-            style={{ minWidth: 200 }}
+            style={{ minWidth: 100, width: '100%', maxWidth: 300 }}
             options={options}
             showSearch={true}
             loading={loading}

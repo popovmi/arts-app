@@ -35,7 +35,7 @@ export const AppRouter: FC = () => {
                                     children: [
                                         { index: true, element: <ArtsListPage /> },
                                         { path: 'create', element: <CreateArtPage /> },
-                                        { path: ':projectId', element: <ArtPage /> },
+                                        { path: ':artId', element: <ArtPage /> },
                                     ],
                                 },
                                 {

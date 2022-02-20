@@ -1,6 +1,7 @@
 export * from './art-file.upload';
 export * from './art.columns';
 export * from './art.columns-menu';
+export * from './art.descriptions';
 export * from './art.header';
 export * from './art.layout';
 export * from './art.navigation';

@@ -1,15 +1,17 @@
 import { useState } from 'react';
 
-export const useToggle = () => {
-    const [toggle, setToggled] = useState(false);
+type UseToggleResult = [boolean, (isToggled?: boolean) => void];
+
+export const useToggle = (): UseToggleResult => {
+    const [toggle, setToggled] = useState<boolean>(false);
 
     const setToggle = (isToggled?: boolean): void => {
-        if (isToggled !== null && isToggled !== undefined) {
+        if (typeof isToggled === 'boolean') {
             setToggled(isToggled);
         } else {
             setToggled(!toggle);
         }
     };
 
-    return { toggle, setToggle };
+    return [toggle, setToggle];
 };

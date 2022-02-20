@@ -41,7 +41,7 @@ export const FactorySelector: FC<FactorySelectorProps> = ({
 
     return (
         <Select
-            style={{ width: 250 }}
+            style={{ minWidth: 100, width: '100%', maxWidth: 300 }}
             filterOption={(val, opt) => opt!.label.toLowerCase().indexOf(val.toLowerCase()) > -1}
             showSearch
             options={options}

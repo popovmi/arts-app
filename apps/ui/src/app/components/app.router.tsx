@@ -1,4 +1,4 @@
-import { ArtPage, ArtsListPage, ArtsPage, CreateArtPage } from '@/features/art';
+import { ArtPage, ArtsListPage, CreateArtPage } from '@/features/art';
 import { AdminRoute, AuthRoute, LoginPage, PasswordUpdatePage } from '@/features/auth';
 import { ProjectPage, ProjectsListPage, ProjectsPage } from '@/features/project';
 import { FC } from 'react';
@@ -33,7 +33,6 @@ export const AppRouter: FC = () => {
                                 },
                                 {
                                     path: 'arts',
-                                    element: <ArtsPage />,
                                     children: [
                                         { index: true, element: <ArtsListPage /> },
                                         { path: 'create', element: <CreateArtPage /> },

@@ -1,15 +1,17 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { ArtResponse, useLazyArtsQuery } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { ClearOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Space, Table } from 'antd';
+import { ClearOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, Row, Space, Table, Tooltip } from 'antd';
 import { FC, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
+import { useNavigate } from 'react-router-dom';
 import { artsLoaded, clearFilter, selectArts } from '..';
 import { artColumns, ArtColumnsMenu, HeaderCell, HeaderRow, TableBody } from '../components';
 
 export const ArtsListPage: FC = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { filter, order, pagination, arts, hasMore, doFetch, showColumns } = useAppSelector(selectArts);
     const [load, { isLoading, isFetching }] = useLazyArtsQuery();
     const loading = isLoading || isFetching;
@@ -54,14 +56,28 @@ export const ArtsListPage: FC = () => {
                 sticky
                 title={() => (
                     <Space style={{ width: '100%' }}>
-                        <Button
-                            size="small"
-                            icon={<ClearOutlined />}
-                            onClick={() => {
-                                dispatch(clearFilter());
-                            }}
-                        />
-                        <ArtColumnsMenu />
+                        <Tooltip title="Создать ART">
+                            <Button
+                                size="small"
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                onClick={() => {
+                                    navigate('/arts/create');
+                                }}
+                            />
+                        </Tooltip>
+                        <Tooltip title="Сбросить фильтры">
+                            <Button
+                                size="small"
+                                icon={<ClearOutlined />}
+                                onClick={() => {
+                                    dispatch(clearFilter());
+                                }}
+                            />
+                        </Tooltip>
+                        <Tooltip title="Показать/скрыть столбцы">
+                            <ArtColumnsMenu />
+                        </Tooltip>
                     </Space>
                 )}
             />

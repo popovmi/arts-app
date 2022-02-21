@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { ArtFileUpload, ArtUploadFileView } from '.';
 import { clearFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
+import { CloseOutlined } from '@ant-design/icons';
 
 const { Item: DItem } = Descriptions;
 const { Item: FItem, useForm } = Form;
@@ -23,28 +24,19 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
     const dispatch = useAppDispatch();
     const [edit, toggleEdit] = useToggle();
     const [form] = useForm<UpdateArtInput>();
-    const [update, { data, isLoading, isSuccess, reset }] = useUpdateArtMutation({ fixedCacheKey: 'updateArt' });
+    const [update, { isLoading, isSuccess, reset }] = useUpdateArtMutation({ fixedCacheKey: 'updateArt' });
     const [fileInfo, setFileInfo] = useState({ filePath: '', fileExtension: '' });
     const onUpload = ({ filePath, fileName }: { filePath: string; fileName: string }) => {
         const fileParts = fileName.split('.');
         const fileExtension = fileParts.pop()?.toLowerCase() || '';
-        const name = fileParts.join('.');
 
-        form.setFieldsValue({ name, filePath });
+        form.setFieldsValue({ filePath });
         setFileInfo({ filePath, fileExtension });
     };
 
     useEffect(() => {
         return () => form.resetFields();
     }, []);
-
-    const onFinish = async () => {
-        const values = await form.validateFields();
-
-        Object.assign(values, { id: art.id });
-        console.log(values);
-        update({ updateArtInput: values }).then((res) => 'data' in res && dispatch(clearFilter()));
-    };
 
     useEffect(() => {
         if (isSuccess) {
@@ -53,6 +45,18 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
             form.resetFields();
         }
     }, [isSuccess]);
+
+    const onFinish = async () => {
+        const values = await form.validateFields();
+
+        Object.assign(values, { id: art.id });
+        update({ updateArtInput: values }).then((res) => 'data' in res && dispatch(clearFilter()));
+    };
+
+    const cancelFile = () => {
+        form.setFieldsValue({ filePath: undefined });
+        setFileInfo({ filePath: '', fileExtension: '' });
+    };
 
     return (
         <Form initialValues={{ ...art }} form={form} component={false}>
@@ -120,8 +124,8 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
                             <Row gutter={8}>
                                 <Col flex={'none'}>
                                     <Space direction="vertical">
-                                        {' '}
                                         <ArtFileUpload onSuccess={onUpload} />
+                                        {fileInfo.filePath && <Button icon={<CloseOutlined />} onClick={cancelFile} />}
                                     </Space>
                                 </Col>
                                 <Col flex={1}>

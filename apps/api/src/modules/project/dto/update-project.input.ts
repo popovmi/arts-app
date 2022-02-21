@@ -25,27 +25,27 @@ export class UpdateProjectInput {
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    dropNumber?: string;
+    dropNumber?: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    intercenter?: string;
+    intercenter?: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    sfm?: string;
+    sfm?: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    customerId: string;
+    customerId: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    factoryId: string;
+    factoryId: string = null;
 
     format() {
         return {

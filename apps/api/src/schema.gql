@@ -367,11 +367,11 @@ input UpdateProjectInput {
   name: String
   internal: Boolean
   hasDesignDoc: Boolean
-  dropNumber: String
-  intercenter: String
-  sfm: String
-  customerId: String
-  factoryId: String
+  dropNumber: String = null
+  intercenter: String = null
+  sfm: String = null
+  customerId: String = null
+  factoryId: String = null
 }
 
 input CreateArtInput {

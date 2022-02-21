@@ -186,10 +186,10 @@ export type CreateProjectInput = {
 };
 
 export type CreateUserInput = {
-  active: Scalars['Boolean'];
+  active?: InputMaybe<Scalars['Boolean']>;
   fullName: Scalars['String'];
   password: Scalars['String'];
-  role: Role;
+  role?: InputMaybe<Role>;
   username: Scalars['String'];
 };
 

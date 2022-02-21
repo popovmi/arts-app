@@ -1,6 +1,7 @@
 import { ArtPage, ArtsListPage, CreateArtPage } from '@/features/art';
 import { AdminRoute, AuthRoute, LoginPage, PasswordUpdatePage } from '@/features/auth';
 import { ProjectPage, ProjectsListPage, CreateProjectPage } from '@/features/project';
+import { UsersListPage } from '@/features/user';
 import { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { AppContainer } from './app.container';
@@ -44,7 +45,7 @@ export const AppRouter: FC = () => {
                                     children: [
                                         {
                                             path: 'users',
-                                            element: <>users</>,
+                                            element: <UsersListPage />,
                                         },
                                         {
                                             path: 'companies',

@@ -338,8 +338,8 @@ type Mutation {
 input CreateUserInput {
   username: String!
   fullName: String!
-  role: Role!
-  active: Boolean!
+  role: Role = USER
+  active: Boolean = true
   password: String!
 }
 

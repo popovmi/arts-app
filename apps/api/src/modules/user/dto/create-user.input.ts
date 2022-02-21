@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsBoolean, IsEnum, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Role } from '../role.enum';
 
 @InputType()
@@ -13,12 +13,14 @@ export class CreateUserInput {
     fullName: string;
 
     @IsEnum(Role)
-    @Field(() => Role)
-    role: Role;
+    @IsOptional()
+    @Field(() => Role, { nullable: true })
+    role: Role = Role.USER;
 
-    @Field(() => Boolean)
+    @Field(() => Boolean, { nullable: true })
+    @IsOptional()
     @IsBoolean()
-    active: boolean;
+    active = true;
 
     @IsString()
     @Field()

@@ -1,5 +1,6 @@
 import { projectReducer } from '@/features/project/project.slice';
 import { artReducer } from '@/features/art/art.slice';
+import { userReducer } from '@/features/user/user.slice';
 import { api } from '@/app/extend-api';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -9,6 +10,7 @@ const appReducer = combineReducers({
     [api.reducerPath]: api.reducer,
     project: projectReducer,
     art: artReducer,
+    user: userReducer,
 });
 
 export type RootState = ReturnType<typeof appReducer>;

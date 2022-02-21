@@ -19,7 +19,7 @@ export class UserService {
     }
 
     async getUsers({ filter, pagination, order }: FindUsersArgs): Promise<UserResponse> {
-        const query = filterQuery(this.userRepository.createQueryBuilder(), filter);
+        const query = filterQuery(this.userRepository.createQueryBuilder('users'), 'users', filter);
         const { take = 50, skip = 0 } = pagination.pagingParams();
 
         query.skip(skip);

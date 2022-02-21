@@ -45,6 +45,9 @@ export const UpdateUserModal: FC = () => {
                 <Spin spinning={loading}>
                     {user && (
                         <>
+                            <Item label="Логин">
+                                <Typography.Text >{user.username}</Typography.Text>
+                            </Item>
                             <Item name="fullName" label="Полное имя">
                                 <Input />
                             </Item>

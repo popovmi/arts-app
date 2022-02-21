@@ -370,6 +370,8 @@ input UpdateProjectInput {
   dropNumber: String
   intercenter: String
   sfm: String
+  customerId: String
+  factoryId: String
 }
 
 input CreateArtInput {

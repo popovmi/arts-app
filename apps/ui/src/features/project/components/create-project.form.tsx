@@ -1,3 +1,4 @@
+import { useAppDispatch } from '@/app/store';
 import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
@@ -5,17 +6,19 @@ import { CreateProjectInput, useCreateProjectMutation } from '@/graphql';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, Input, Row, Space, Spin, Typography } from 'antd';
 import { projectAttributesTypes } from '../project-attribute.types';
+import { clearFilter } from '../project.slice';
 
 const { Item } = Form;
 const { Text } = Typography;
 
 export const CreateArtForm = () => {
+    const dispatch = useAppDispatch();
     const [createProject, { isLoading, error, isError, reset }] = useCreateProjectMutation({
         fixedCacheKey: 'createProject',
     });
     const [form] = Form.useForm<CreateProjectInput>();
     const onFormFinish = (createProjectInput: CreateProjectInput) => {
-        createProject({ createProjectInput });
+        createProject({ createProjectInput }).then((res) => 'data' in res && dispatch(clearFilter()));
     };
 
     return (
@@ -49,8 +52,12 @@ export const CreateArtForm = () => {
                                 <AttributeSelector active type={type} allowClear />
                             </Item>
                         ))}
-                        <Item label="Заказчик" name="customerId"><CustomerSelector active/></Item>
-						<Item label="Завод" name="factoryId"><FactorySelector active/></Item>
+                        <Item label="Заказчик" name="customerId">
+                            <CustomerSelector active />
+                        </Item>
+                        <Item label="Завод" name="factoryId">
+                            <FactorySelector active />
+                        </Item>
                         <Item>
                             <Button type="primary" htmlType="submit">
                                 Сохранить

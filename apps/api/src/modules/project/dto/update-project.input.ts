@@ -37,6 +37,16 @@ export class UpdateProjectInput {
     @Field(() => String, { nullable: true })
     sfm?: string;
 
+    @IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    customerId: string;
+
+    @IsString()
+    @IsOptional()
+    @Field(() => String, { nullable: true })
+    factoryId: string;
+
     format() {
         return {
             ...this,

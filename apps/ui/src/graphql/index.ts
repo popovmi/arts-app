@@ -530,7 +530,9 @@ export type UpdateFactoryInput = {
 };
 
 export type UpdateProjectInput = {
+  customerId?: InputMaybe<Scalars['String']>;
   dropNumber?: InputMaybe<Scalars['String']>;
+  factoryId?: InputMaybe<Scalars['String']>;
   hasDesignDoc?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['String'];
   intercenter?: InputMaybe<Scalars['String']>;

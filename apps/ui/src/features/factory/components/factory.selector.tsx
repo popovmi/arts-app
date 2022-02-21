@@ -1,4 +1,4 @@
-import { useLazyFactoriesQuery } from '@/graphql';
+import { Factory, useLazyFactoriesQuery } from '@/graphql';
 import { Select } from 'antd';
 import { FC } from 'react';
 
@@ -9,6 +9,7 @@ interface MultipleFactorySelectorProps {
     allowClear?: boolean;
     mode: 'multiple';
     onClear?: () => void;
+    current?: Factory;
 }
 
 interface SingleFactorySelectorProps {
@@ -18,6 +19,7 @@ interface SingleFactorySelectorProps {
     allowClear?: boolean;
     mode?: undefined;
     onClear?: () => void;
+    current?: Factory;
 }
 type FactorySelectorProps = MultipleFactorySelectorProps | SingleFactorySelectorProps;
 
@@ -28,6 +30,7 @@ export const FactorySelector: FC<FactorySelectorProps> = ({
     allowClear = false,
     mode,
     onClear = () => {},
+    current,
 }) => {
     const [fetch, { data, isLoading, isFetching }] = useLazyFactoriesQuery();
     const loading = isLoading || isFetching;
@@ -38,6 +41,15 @@ export const FactorySelector: FC<FactorySelectorProps> = ({
     const onSelectChange = (newValue: string | string[]) => {
         onChange!(newValue);
     };
+
+    if (current) {
+        const index = options.findIndex((option) => option.value === current.id);
+
+        if (index >= 0) {
+            options.splice(index, 1);
+        }
+        options.unshift({ label: current.name, value: current.id });
+    }
 
     return (
         <Select
@@ -52,7 +64,7 @@ export const FactorySelector: FC<FactorySelectorProps> = ({
             mode={mode}
             onClear={onClear}
             onClick={() => {
-                if (options.length === 0) fetch({});
+                if (!data?.factories?.length) fetch({});
             }}
         />
     );

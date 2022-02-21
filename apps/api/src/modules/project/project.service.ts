@@ -35,7 +35,8 @@ export class ProjectService {
             .take(take);
         const count = await query.getCount();
 
-        orderQuery(query, { ...order });
+        // orderQuery(query, { ...order });
+        query.orderBy('projects.name', 'ASC');
 
         const projects = await query.getMany();
         const page = connectionFromArraySlice(projects, pagination, { arrayLength: count, sliceStart: skip || 0 });

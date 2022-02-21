@@ -1,9 +1,11 @@
+import { useAppDispatch } from '@/app/store';
 import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { ProjectsSelector } from '@/features/project/components';
 import { CreateArtInput, useCreateArtMutation } from '@/graphql';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, Input, Row, Space, Spin, Typography } from 'antd';
 import { useState } from 'react';
+import { clearFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
 import { ArtFileUpload } from '../components';
 
@@ -11,6 +13,7 @@ const { Item } = Form;
 const { Text } = Typography;
 
 export const CreateArtForm = () => {
+    const dispatch = useAppDispatch();
     const [createArt, { isLoading, error, isError, reset }] = useCreateArtMutation({ fixedCacheKey: 'createArt' });
     const [form] = Form.useForm<CreateArtInput>();
     const [fileExtension, setFileExtension] = useState('');
@@ -22,7 +25,7 @@ export const CreateArtForm = () => {
     };
 
     const onFormFinish = (createArtInput: CreateArtInput) => {
-        createArt({ createArtInput });
+        createArt({ createArtInput }).then((res) => 'data' in res && dispatch(clearFilter()));
     };
 
     const filePath = form.getFieldValue('filePath');

@@ -1,7 +1,11 @@
 import { RootState } from '@/app/store';
 import {
-	ConnectionArgs, Project, ProjectFilterQuery,
-	ProjectOrderQuery, ProjectResponse, ProjectTypeEdge
+    ConnectionArgs,
+    Project,
+    ProjectFilterQuery,
+    ProjectOrderQuery,
+    ProjectResponse,
+    ProjectTypeEdge,
 } from '@/graphql';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 

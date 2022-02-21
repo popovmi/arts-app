@@ -39,7 +39,8 @@ export class ArtService {
             .take(take);
         const count = await query.getCount();
 
-        orderQuery(query, { ...order });
+        // orderQuery(query, { ...order });
+		query.orderBy('arts.name', 'ASC');
 
         const arts = await query.getMany();
         const page = connectionFromArraySlice(arts, pagination, { arrayLength: count, sliceStart: skip || 0 });

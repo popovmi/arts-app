@@ -1,28 +1,30 @@
 import { useAppDispatch } from '@/app/store';
 import { AttributeSelector, AttributesLabels } from '@/features/attribute';
-import { ProjectsSelector } from '@/features/project/components';
-import { Art, UpdateArtInput, useUpdateArtMutation } from '@/graphql';
+import { CustomerSelector } from '@/features/customer';
+import { FactorySelector } from '@/features/factory';
+import { Customer, Factory, Project, UpdateProjectInput, useUpdateProjectMutation } from '@/graphql';
 import { useToggle } from '@/shared/hooks';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Descriptions, Form, Space, Spin, Typography } from 'antd';
 import { FC, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { clearFilter } from '..';
-import { artAttributesTypes } from '../art-attribute.types';
+import { projectAttributesTypes } from '../project-attribute.types';
+import { clearFilter } from '../project.slice';
 
 const { Item: DItem } = Descriptions;
 const { Item: FItem, useForm } = Form;
 const { Text } = Typography;
 
-interface ArtDescriptionsProps {
-    art: Art;
+interface ProjectDescriptionsProps {
+    project: Project;
 }
 
-export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
+export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) => {
     const dispatch = useAppDispatch();
     const [edit, toggleEdit] = useToggle();
-    const [form] = useForm<UpdateArtInput>();
-    const [update, { data, isLoading, isSuccess, reset }] = useUpdateArtMutation({ fixedCacheKey: 'updateArt' });
+    const [form] = useForm<UpdateProjectInput>();
+    const [update, { isLoading, isSuccess, reset }] = useUpdateProjectMutation({
+        fixedCacheKey: 'updateProject',
+    });
 
     useEffect(() => {
         return () => form.resetFields();
@@ -31,7 +33,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
     const onFinish = async () => {
         const values = await form.validateFields();
 
-        update({ updateArtInput: { ...values, id: art.id } }).then(
+        update({ updateProjectInput: { ...values, id: project.id } }).then(
             (res) => 'data' in res && dispatch(clearFilter())
         );
     };
@@ -45,7 +47,11 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
     }, [isSuccess]);
 
     return (
-        <Form initialValues={{ ...art }} form={form} component={false}>
+        <Form
+            initialValues={{ ...project, customerId: project?.customer?.id, factoryId: project?.factory?.id }}
+            form={form}
+            component={false}
+        >
             <Spin spinning={isLoading}>
                 <Descriptions
                     bordered
@@ -68,28 +74,46 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
                                 <Checkbox />
                             </FItem>
                         ) : (
-                            <Text>{art.internal ? 'Да' : 'Нет'}</Text>
+                            <Text>{project.internal ? 'Да' : 'Нет'}</Text>
                         )}
                     </DItem>
-                    {artAttributesTypes.map((type) => (
+                    <DItem label={'Есть КД'}>
+                        {edit ? (
+                            <FItem name="hasDesignDoc" valuePropName="checked">
+                                <Checkbox />
+                            </FItem>
+                        ) : (
+                            <Text>{project.hasDesignDoc ? 'Да' : 'Нет'}</Text>
+                        )}
+                    </DItem>
+                    {projectAttributesTypes.map((type) => (
                         <DItem key={type} label={AttributesLabels[type]}>
                             {edit ? (
                                 <FItem name={type}>
                                     <AttributeSelector active type={type} allowClear />
                                 </FItem>
                             ) : (
-                                <Text>{art[type as keyof Art]}</Text>
+                                <Text>{project[type as keyof Project]}</Text>
                             )}
                         </DItem>
                     ))}
 
-                    <DItem label={'Проект'}>
+                    <DItem label={'Заказчик'}>
                         {edit ? (
-                            <FItem name="projectId">
-                                <ProjectsSelector allowClear currentProject={art?.project && art.project} />
+                            <FItem name="customerId">
+                                <CustomerSelector allowClear current={project?.customer as Customer} />
                             </FItem>
                         ) : (
-                            art?.project && <Link to={`/projects/${art.project?.id}`}>{art.project?.name}</Link>
+                            <Text>{project?.customer?.name}</Text>
+                        )}
+                    </DItem>
+                    <DItem label={'Завод'}>
+                        {edit ? (
+                            <FItem name="factoryId">
+                                <FactorySelector allowClear current={project?.factory as Factory} />
+                            </FItem>
+                        ) : (
+                            <Text>{project?.factory?.name}</Text>
                         )}
                     </DItem>
                 </Descriptions>

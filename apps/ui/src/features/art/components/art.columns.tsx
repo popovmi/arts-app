@@ -171,7 +171,7 @@ export const artColumns = () => {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'name',
             fixed: true,
-			width:200,
+            width: 200,
             title: 'Название',
             filteredValue: filter?.name?.contains ? [filter.name.contains] : [],
             filterDropdown: () => (
@@ -195,7 +195,7 @@ export const artColumns = () => {
                 <Space>
                     <Link to={`/arts/${record.id}`}>{record.name}</Link>
                     {record.files && record.files?.length > 0 && (
-                        <Image src={`/static/${record.files![0].watermarkPath}`} style={{maxWidth:80}} />
+                        <Image src={`/static/${record.files![0].watermarkPath}`} style={{ maxWidth: 60, maxHeight:80 }} />
                     )}
                 </Space>
             ),

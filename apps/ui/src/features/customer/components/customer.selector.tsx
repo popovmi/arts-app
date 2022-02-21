@@ -1,4 +1,4 @@
-import { useLazyCustomersQuery } from '@/graphql';
+import { useLazyCustomersQuery, Customer } from '@/graphql';
 import { Select } from 'antd';
 import { FC } from 'react';
 
@@ -9,6 +9,7 @@ interface MultipleCustomerSelectorProps {
     allowClear?: boolean;
     mode: 'multiple';
     onClear?: () => void;
+    current?: Customer;
 }
 
 interface SingleCustomerSelectorProps {
@@ -17,6 +18,7 @@ interface SingleCustomerSelectorProps {
     onChange?: (value: any) => void;
     allowClear?: boolean;
     mode?: undefined;
+    current?: Customer;
     onClear?: () => void;
 }
 type CustomerSelectorProps = MultipleCustomerSelectorProps | SingleCustomerSelectorProps;
@@ -28,6 +30,7 @@ export const CustomerSelector: FC<CustomerSelectorProps> = ({
     allowClear = false,
     mode,
     onClear = () => {},
+    current,
 }) => {
     const [fetch, { data, isLoading, isFetching }] = useLazyCustomersQuery();
     const loading = isLoading || isFetching;
@@ -38,6 +41,15 @@ export const CustomerSelector: FC<CustomerSelectorProps> = ({
     const onSelectChange = (newValue: string | string[]) => {
         onChange!(newValue);
     };
+
+    if (current) {
+        const index = options.findIndex((option) => option.value === current.id);
+
+        if (index >= 0) {
+            options.splice(index, 1);
+        }
+        options.unshift({ label: current.name, value: current.id });
+    }
 
     return (
         <Select
@@ -52,7 +64,7 @@ export const CustomerSelector: FC<CustomerSelectorProps> = ({
             mode={mode}
             onClear={onClear}
             onClick={() => {
-                if (options.length === 0) fetch({});
+                if (!data?.customers?.length) fetch({});
             }}
         />
     );

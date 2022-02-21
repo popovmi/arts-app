@@ -24,7 +24,8 @@ export class UserService {
 
         query.skip(skip);
         query.take(take);
-        orderQuery(query, { ...order });
+        query.orderBy('users.username', 'ASC');
+        // orderQuery(query, { ...order });
 
         const [users, count] = await query.getManyAndCount();
         const page = connectionFromArraySlice(users, pagination, { arrayLength: count, sliceStart: skip || 0 });

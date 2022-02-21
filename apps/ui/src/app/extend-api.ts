@@ -1,7 +1,7 @@
 import { api as generatedApi } from '@/graphql';
 
 export const api = generatedApi.enhanceEndpoints({
-    addTagTypes: ['Art', 'Project'],
+    addTagTypes: ['Art', 'Project', 'User'],
     endpoints: {
         art: {
             providesTags: (result, error, { id }) => [{ type: 'Art', id }],
@@ -43,6 +43,30 @@ export const api = generatedApi.enhanceEndpoints({
             invalidatesTags: (result, error, { updateProjectInput: { id } }) => [
                 { type: 'Project', id },
                 { type: 'Project', id: 'LIST' },
+            ],
+        },
+		user: {
+            providesTags: (result, error, { id }) => [{ type: 'User', id }],
+        },
+        users: {
+            providesTags: (result) =>
+                result?.users.page.edges
+                    ? [
+                          ...result.users.page.edges.map(({ node }) => ({
+                              type: 'User' as const,
+                              id: node!.id,
+                          })),
+                          { type: 'User', id: 'LIST' },
+                      ]
+                    : [{ type: 'User', id: 'LIST' }],
+        },
+        createUser: {
+            invalidatesTags: [{ type: 'User', id: 'LIST' }],
+        },
+        updateUser: {
+            invalidatesTags: (result, error, { updateUserInput: { id } }) => [
+                { type: 'User', id },
+                { type: 'User', id: 'LIST' },
             ],
         },
     },

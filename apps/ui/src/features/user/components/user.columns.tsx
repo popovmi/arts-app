@@ -1,9 +1,10 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { BooleanFieldOption, Role, User, UserFilterQuery } from '@/graphql';
+import { BooleanFieldOption, Role, User, UserFilterQuery, useWhoAmIQuery } from '@/graphql';
+import { EditOutlined } from '@ant-design/icons';
 import { Button, Col, Input, Radio, RadioChangeEvent, Row, Select, TableColumnProps } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
-import { selectUsers, shouldFetch, updateFilter } from '..';
+import { selectUsers, setEditUserId, shouldFetch, updateFilter } from '..';
 
 interface UserFilterItemProps {
     value: any;
@@ -16,6 +17,7 @@ interface UserFilterItemProps {
 const UserFilterInput: FC<UserFilterItemProps> = ({ onChange, value, onClear, disableClear, withTimer }) => {
     let timer: NodeJS.Timeout;
     const dispatch = useAppDispatch();
+
 
     const onChangeValue = (evt: React.ChangeEvent<HTMLInputElement> | CheckboxChangeEvent) => {
         if (withTimer) clearTimeout(timer);
@@ -53,6 +55,8 @@ const UserFilterInput: FC<UserFilterItemProps> = ({ onChange, value, onClear, di
 export const userColumns = () => {
     const dispatch = useAppDispatch();
     const { filter } = useAppSelector(selectUsers);
+    const { data } = useWhoAmIQuery();
+    const currentUser = data?.whoAmI || {} as User;
 
     const getYesNoFilter = (dataIndex: keyof UserFilterQuery) => () => {
         const onChange = (e: RadioChangeEvent) => {
@@ -95,6 +99,15 @@ export const userColumns = () => {
 
     const userColumns: TableColumnProps<User>[] = [
         {
+            dataIndex: 'editOper',
+            width: '48px',
+            render: (_: any, record: User) =>
+                record.id !== currentUser.id && (
+                    <Button icon={<EditOutlined />} onClick={() => dispatch(setEditUserId(record.id))} />
+                ),
+            fixed: true,
+        },
+        {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'username',
             fixed: true,
@@ -116,6 +129,7 @@ export const userColumns = () => {
                     withTimer={true}
                 />
             ),
+
             filterMultiple: false,
         },
         {
@@ -161,7 +175,7 @@ export const userColumns = () => {
                     <Row gutter={[8, 8]} style={{ padding: 8, width: 250 }} justify="space-between">
                         <Col flex="1">
                             <Select
-							style={{width:'100%'}}
+                                style={{ width: '100%' }}
                                 options={Object.values(Role).map((role) => ({ value: role, label: role }))}
                                 value={filter?.role?.is || ''}
                                 onChange={(value) =>

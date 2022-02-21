@@ -6,11 +6,11 @@ import { Button, Col, Row, Space, Table, Tooltip } from 'antd';
 import { FC, useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { clearFilter, usersLoaded, selectUsers, setShowCreateUser } from '..';
-import { HeaderCell, HeaderRow, userColumns, CreateUserModal } from '../components';
+import { UpdateUserModal, HeaderCell, HeaderRow, userColumns, CreateUserModal } from '../components';
 
 export const UsersListPage: FC = () => {
     const dispatch = useAppDispatch();
-    const { filter, order, pagination, users, hasMore, doFetch } = useAppSelector(selectUsers);
+    const { filter, order, pagination, users, hasMore, doFetch, editUserId } = useAppSelector(selectUsers);
     const [load, { isLoading, isFetching }] = useLazyUsersQuery();
     const loading = isLoading || isFetching;
 
@@ -74,7 +74,8 @@ export const UsersListPage: FC = () => {
                     <CenteredSpin />
                 </Col>
             )}
-			<CreateUserModal />
+            <CreateUserModal />
+            {editUserId && <UpdateUserModal />}
         </Row>
     );
 };

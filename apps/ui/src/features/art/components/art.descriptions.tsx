@@ -18,9 +18,10 @@ const { Text } = Typography;
 
 interface ArtDescriptionsProps {
     art: Art;
+    editable?: boolean;
 }
 
-export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
+export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true }) => {
     const dispatch = useAppDispatch();
     const [edit, toggleEdit] = useToggle();
     const [form] = useForm<UpdateArtInput>();
@@ -66,14 +67,16 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
                     size="small"
                     column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
                     extra={
-                        <Space>
-                            <Button
-                                type={edit ? 'default' : 'primary'}
-                                icon={<EditOutlined />}
-                                onClick={() => toggleEdit()}
-                            />
-                            {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
-                        </Space>
+                        editable && (
+                            <Space>
+                                <Button
+                                    type={edit ? 'default' : 'primary'}
+                                    icon={<EditOutlined />}
+                                    onClick={() => toggleEdit()}
+                                />
+                                {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
+                            </Space>
+                        )
                     }
                 >
                     <DItem label={'Внутренний'}>
@@ -125,7 +128,9 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art }) => {
                                 <Col flex={'none'}>
                                     <Space direction="vertical">
                                         <ArtFileUpload onSuccess={onUpload} />
-                                        {fileInfo.filePath && <Button icon={<CloseOutlined />} onClick={cancelFile} />}
+                                        {fileInfo.filePath && (
+                                            <Button icon={<CloseOutlined />} onClick={cancelFile} />
+                                        )}
                                     </Space>
                                 </Col>
                                 <Col flex={1}>

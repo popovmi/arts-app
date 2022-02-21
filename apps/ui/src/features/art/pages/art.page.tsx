@@ -1,6 +1,6 @@
 import { Art, useArtQuery } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { Col, PageHeader, Result, Row } from 'antd';
+import { Col, PageHeader, Result, Row, Typography } from 'antd';
 import { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArtDescriptions } from '../components';
@@ -18,7 +18,14 @@ export const ArtPage: FC = () => {
 
     return (
         <>
-            <PageHeader title={`${art.name}`} onBack={() => navigate(-1)}>
+            <PageHeader
+                title={
+                    <Typography.Title level={1} className="ant-col ant-col-24">
+                        {art.name}
+                    </Typography.Title>
+                }
+                onBack={() => navigate(-1)}
+            >
                 <ArtDescriptions art={art} />
             </PageHeader>
             <Row style={{ padding: 8 }}>

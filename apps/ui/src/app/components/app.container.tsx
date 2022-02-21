@@ -16,7 +16,7 @@ export const AppContainer: FC = () => {
             >
                 <AppNavigation />
             </Sider>
-            <Content style={{ paddingLeft: 40 }}>
+            <Content style={{ paddingInline: 40 }}>
                 <Outlet />
             </Content>
         </Layout>

@@ -20,42 +20,42 @@ export class UpdateArtInput {
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    projectId: string;
+    projectId: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    bottomForm: string;
+    bottomForm: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    artClass: string;
+    artClass: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    form: string;
+    form: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    nominalVolume: string;
+    nominalVolume: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    height: string;
+    height: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    productType: string;
+    productType: string = null;
 
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    productionMethod: string;
+    productionMethod: string = null;
 
     @Field(() => String, { nullable: true })
     @IsOptional()
@@ -65,7 +65,7 @@ export class UpdateArtInput {
     @IsString()
     @IsOptional()
     @Field(() => String, { nullable: true })
-    ringType: string;
+    ringType: string = null;
 
     format() {
         return {

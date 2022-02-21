@@ -7,3 +7,4 @@ export * from './art.layout';
 export * from './art.navigation';
 export * from './create-art.form';
 export * from './table-components';
+export * from './art-upload-file.view';

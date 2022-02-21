@@ -9,6 +9,7 @@ interface ProjectsSelectorProps {
     allowClear?: boolean;
     currentProject?: Project | undefined | null;
     disabled?: boolean;
+	onClear?: () => void
 }
 
 let timer: NodeJS.Timer;
@@ -17,6 +18,7 @@ export const ProjectsSelector: FC<ProjectsSelectorProps> = ({
     currentProject,
     disabled = false,
     onChange,
+	onClear = () => {},
     ...props
 }) => {
     const [fetch, { data, isLoading, isFetching }] = useLazyProjectsLovQuery();
@@ -69,6 +71,7 @@ export const ProjectsSelector: FC<ProjectsSelectorProps> = ({
             filterOption={false}
             dropdownRender={DropDown}
             placeholder="Проект"
+			onClear={onClear}
             onClick={() => {
                 if (projects.length === 0) fetch({ pagination: { first: 10 } });
             }}

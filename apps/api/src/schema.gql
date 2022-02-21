@@ -393,16 +393,16 @@ input UpdateArtInput {
   id: String!
   name: String
   internal: Boolean
-  projectId: String
-  bottomForm: String
-  artClass: String
-  form: String
-  nominalVolume: String
-  height: String
-  productType: String
-  productionMethod: String
+  projectId: String = null
+  bottomForm: String = null
+  artClass: String = null
+  form: String = null
+  nominalVolume: String = null
+  height: String = null
+  productType: String = null
+  productionMethod: String = null
   filePath: String
-  ringType: String
+  ringType: String = null
 }
 
 input CreateFactoryInput {

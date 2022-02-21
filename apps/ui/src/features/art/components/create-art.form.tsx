@@ -7,7 +7,7 @@ import { Button, Checkbox, Col, Form, Input, Row, Space, Spin, Typography } from
 import { useState } from 'react';
 import { clearFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
-import { ArtFileUpload } from '../components';
+import { ArtFileUpload, ArtUploadFileView } from '../components';
 
 const { Item } = Form;
 const { Text } = Typography;
@@ -16,19 +16,19 @@ export const CreateArtForm = () => {
     const dispatch = useAppDispatch();
     const [createArt, { isLoading, error, isError, reset }] = useCreateArtMutation({ fixedCacheKey: 'createArt' });
     const [form] = Form.useForm<CreateArtInput>();
-    const [fileExtension, setFileExtension] = useState('');
+    const [fileInfo, setFileInfo] = useState({ filePath: '', fileExtension: '' });
     const onUpload = ({ filePath, fileName }: { filePath: string; fileName: string }) => {
-        const [name, extension] = fileName.split('.');
+        const fileParts = fileName.split('.');
+        const fileExtension = fileParts.pop()?.toLowerCase() || '';
+        const name = fileParts.join('.');
 
         form.setFieldsValue({ name, filePath });
-        setFileExtension(extension);
+        setFileInfo({ filePath, fileExtension });
     };
 
     const onFormFinish = (createArtInput: CreateArtInput) => {
         createArt({ createArtInput }).then((res) => 'data' in res && dispatch(clearFilter()));
     };
-
-    const filePath = form.getFieldValue('filePath');
 
     return (
         <Row gutter={[8, 8]} justify="center">
@@ -87,26 +87,9 @@ export const CreateArtForm = () => {
                 </Form>
             </Col>
             <Col xs={24} md={16}>
-                {filePath &&
-                    (fileExtension === 'jpg' ? (
-                        <div
-                            style={{
-                                maxWidth: '100%',
-                                overflow: 'auto',
-                                maxHeight: '700px',
-                            }}
-                        >
-                            <img src={filePath} style={{ maxWidth: '100%' }} alt={'Новый ART'} />
-                        </div>
-                    ) : (
-                        fileExtension === 'pdf' && (
-                            <embed
-                                type="application/pdf"
-                                src={`${filePath}?#toolbar=0&navpanes=0&scrollbar=0`}
-                                style={{ width: '100%', height: '600px' }}
-                            />
-                        )
-                    ))}
+                {fileInfo.filePath && (
+                    <ArtUploadFileView filePath={fileInfo.filePath} extension={fileInfo.fileExtension} />
+                )}
             </Col>
         </Row>
     );

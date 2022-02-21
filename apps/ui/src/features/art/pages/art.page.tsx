@@ -18,7 +18,7 @@ export const ArtPage: FC = () => {
 
     return (
         <>
-            <PageHeader title={art && `${art.name}`} onBack={() => navigate(-1)}>
+            <PageHeader title={`${art.name}`} onBack={() => navigate(-1)}>
                 <ArtDescriptions art={art} />
             </PageHeader>
             <Row style={{ padding: 8 }}>

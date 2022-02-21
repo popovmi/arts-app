@@ -122,7 +122,7 @@ export const userColumns = () => {
             onHeaderCell: (record) => ({ dataIndex: 'fullName' } as HTMLAttributes<any>),
             dataIndex: 'fullName',
             fixed: true,
-            title: 'Логин',
+            title: 'Полное имя',
             filteredValue: filter?.fullName?.contains ? [filter.fullName.contains] : [],
             filterDropdown: () => (
                 <UserFilterInput

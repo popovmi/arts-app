@@ -1,21 +1,22 @@
 import { ArtDescriptions } from '@/features/art/components';
 import { Art, Project, useProjectQuery } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { MehOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, MehOutlined } from '@ant-design/icons';
 import { Button, Col, Divider, PageHeader, Result, Row, Tabs, Tooltip, Typography } from 'antd';
-import { FC } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { FC, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ProjectDescriptions } from '../components';
 
 export const ProjectPage: FC = () => {
   const { projectId } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { data, isLoading, isFetching } = useProjectQuery({ id: projectId! });
   const loading = isLoading || isFetching;
 
   const project = (data?.project || {}) as Project;
   const arts = data?.project.arts || [];
+
+  const [currentArt, setCurrentArt] = useState(arts[0]?.id || '');
 
   if (loading) return <CenteredSpin />;
   if (!project) return <Result title="Проект не найден" status={'404'} />;
@@ -32,19 +33,18 @@ export const ProjectPage: FC = () => {
       >
         <ProjectDescriptions project={project} />
       </PageHeader>
-      <Divider />
-      <Row gutter={8}>
-        <Typography.Title level={2} className="ant-col ant-col-24">
-          ART-ы
-        </Typography.Title>
+      <Divider orientation="left">
+        <Typography.Title level={2}>ART-ы</Typography.Title>
+      </Divider>
+      <Row gutter={8} style={{ paddingInline: 8 }}>
         <Col span={24}>
-          <Tabs tabPosition={'left'} activeKey={searchParams.get('artId') || ''}>
+          <Tabs tabPosition={'top'} activeKey={currentArt}>
             {arts.map((a) => (
               <Tabs.TabPane
                 tab={
                   <>
                     <Tooltip title="Показать">
-                      <Button type="link" onClick={() => setSearchParams({ artId: a.id })}>
+                      <Button type="link" onClick={() => setCurrentArt(a.id)}>
                         {a.name}
                       </Button>
                     </Tooltip>

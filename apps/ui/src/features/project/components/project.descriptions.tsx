@@ -70,7 +70,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
         >
           <DItem label={'Внутренний'}>
             {edit ? (
-              <FItem name="internal" valuePropName="checked">
+              <FItem noStyle name="internal" valuePropName="checked">
                 <Checkbox />
               </FItem>
             ) : (
@@ -79,7 +79,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           </DItem>
           <DItem label={'Есть КД'}>
             {edit ? (
-              <FItem name="hasDesignDoc" valuePropName="checked">
+              <FItem noStyle name="hasDesignDoc" valuePropName="checked">
                 <Checkbox />
               </FItem>
             ) : (
@@ -89,7 +89,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           {projectAttributesTypes.map((type) => (
             <DItem key={type} label={AttributesLabels[type]}>
               {edit ? (
-                <FItem name={type}>
+                <FItem noStyle name={type}>
                   <AttributeSelector active type={type} allowClear />
                 </FItem>
               ) : (
@@ -100,7 +100,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
 
           <DItem label={'Заказчик'}>
             {edit ? (
-              <FItem name="customerId">
+              <FItem noStyle name="customerId">
                 <CustomerSelector allowClear current={project?.customer as Customer} />
               </FItem>
             ) : (
@@ -109,7 +109,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           </DItem>
           <DItem label={'Завод'}>
             {edit ? (
-              <FItem name="factoryId">
+              <FItem noStyle name="factoryId">
                 <FactorySelector allowClear current={project?.factory as Factory} />
               </FItem>
             ) : (

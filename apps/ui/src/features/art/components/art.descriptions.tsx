@@ -60,7 +60,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
   };
 
   return (
-    <Form initialValues={{ ...art }} form={form} component={false}>
+    <Form initialValues={{ ...art }} form={form} component={false} layout='horizontal'>
       <Spin spinning={isLoading}>
         <Descriptions
           bordered
@@ -81,7 +81,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
         >
           <DItem label={'Внутренний'}>
             {edit ? (
-              <FItem name="internal" valuePropName="checked">
+              <FItem noStyle name="internal" valuePropName="checked">
                 <Checkbox />
               </FItem>
             ) : (
@@ -91,7 +91,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
           {artAttributesTypes.map((type) => (
             <DItem key={type} label={AttributesLabels[type]}>
               {edit ? (
-                <FItem name={type}>
+                <FItem noStyle name={type}>
                   <AttributeSelector
                     active
                     type={type}
@@ -107,7 +107,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
 
           <DItem label={'Проект'}>
             {edit ? (
-              <FItem name="projectId">
+              <FItem noStyle name="projectId">
                 <ProjectsSelector
                   allowClear
                   currentProject={art?.project && art.project}
@@ -121,7 +121,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
 
           {edit && (
             <DItem label={'Файл'}>
-              <FItem name="filePath" style={{ height: 0, width: 0 }}>
+              <FItem noStyle name="filePath" style={{ height: 0, width: 0 }}>
                 <Input readOnly style={{ display: 'none' }} />
               </FItem>
               <Row gutter={8}>

@@ -4,7 +4,7 @@ import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Table, Typography } from 'antd';
 import { FC } from 'react';
 import { setEditCustomerId, setShowCreateCustomer } from '../customer.slice';
-// import { CreateCustomerModal } from './create-customer-modal';
+import { CreateCustomerModal } from './create-customer-modal';
 // import { UpdateCustomerModal } from './update-customer-modal';
 
 const { Text } = Typography;
@@ -59,7 +59,7 @@ export const CustomerView: FC = () => {
           ]}
         />
       </Card>
-      {/* <CreateCustomerModal /> */}
+      <CreateCustomerModal />
       {/* <UpdateCustomerModal /> */}
     </>
   );

@@ -1,65 +1,60 @@
-/* import { Checkbox, Form, Input, message, Modal } from 'antd';
-import { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/app/store';
+import { CreateCustomerInput, useCreateCustomerMutation } from '@/graphql';
+import { CloseOutlined } from '@ant-design/icons';
+import { Checkbox, Button, Form, Input, Modal, Space, Spin, Typography } from 'antd';
+import { FC } from 'react';
+import { selectCustomers, setShowCreateCustomer } from '../customer.slice';
 
-import { useAppDispatch, useAppSelector } from '~/app/store';
-
-import { resetState, toggleShowCreate, create } from '../customer.slice';
-import { CreateCustomerDto } from '../interfaces';
+const { Item } = Form;
+const { Text } = Typography;
 
 export const CreateCustomerModal: FC = () => {
-  const { showCreateNew, createSuccess, createError } = useAppSelector(state => state.customers);
-  const [form] = Form.useForm<CreateCustomerDto>();
   const dispatch = useAppDispatch();
+  const { showCreateCustomer } = useAppSelector(selectCustomers);
+  const [createCustomer, { isLoading, error, isError, reset }] = useCreateCustomerMutation({
+    fixedCacheKey: 'createCustomer',
+  });
+  const [form] = Form.useForm<CreateCustomerInput>();
+  const onFormFinish = async () => {
+    const input = await form.validateFields();
 
-  useEffect(() => {
-    if (createSuccess) {
-      message.success(`Заказчик успешно создан`);
-      form.resetFields();
-      dispatch(toggleShowCreate(false));
-    }
-
-    return () => {
-      dispatch(resetState());
-    };
-  }, [createSuccess]);
-
-  useEffect(() => {
-    if (createError) {
-      message.error(`Не удалось создать заказчика. ${createError}`);
-    }
-  }, [createError]);
-
-  const handleCreate = async () => {
-    const values = await form.validateFields();
-    dispatch(create(values));
+    createCustomer({ input }).then((res) => {
+      if ('data' in res) {
+        form.resetFields();
+				dispatch(setShowCreateCustomer(false));
+      }
+    });
   };
 
   return (
     <Modal
-      visible={showCreateNew}
-      title={`Новый заказчик`}
-      okText='Сохранить'
-      cancelText='Отменить'
-      onCancel={() => dispatch(toggleShowCreate(false))}
-      onOk={handleCreate}
-      forceRender={true}>
+      title="Новый пользователь"
+      visible={showCreateCustomer}
+      onOk={onFormFinish}
+      onCancel={() => dispatch(setShowCreateCustomer(false))}
+    >
       <Form
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        name='newFactory'
+        name="newCustomer"
         form={form}
-        labelAlign='left'>
-        <Form.Item
-          label='Название'
-          name='name'
-          rules={[{ required: true, message: 'Обязательно!' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label='Активен' name='active' valuePropName='checked' initialValue={true}>
-          <Checkbox />
-        </Form.Item>
+        labelAlign="left"
+      >
+        <Spin spinning={isLoading}>
+          <Item label="Название" name="name" rules={[{ required: true, message: 'Обязательно!' }]}>
+            <Input />
+          </Item>
+          <Item label="Активен" name="active" valuePropName="checked">
+            <Checkbox />
+          </Item>
+        </Spin>
+        {isError && (
+          <Space>
+            <Text type="danger">{error?.message}</Text>
+            <Button size="small" type="link" danger icon={<CloseOutlined />} onClick={reset} />
+          </Space>
+        )}
       </Form>
     </Modal>
   );
 };
- */

@@ -53,7 +53,7 @@ export const CustomerSelector: FC<CustomerSelectorProps> = ({
 
   return (
     <Select
-      style={{ minWidth: 100, width: '100%', maxWidth: 300 }}
+      style={{ minWidth: 150, width: '100%', maxWidth: 300 }}
       showSearch
       options={options}
       value={value}

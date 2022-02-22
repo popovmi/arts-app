@@ -7,7 +7,11 @@ const { Item, SubMenu } = Menu;
 
 export const AppNavigation: FC = () => {
   const { data } = useWhoAmIQuery();
-  const isAdmin = data?.whoAmI?.role === Role.Admin;
+  const user = data?.whoAmI;
+
+  if (!user) return <></>;
+
+  const isAdmin = user?.role === Role.Admin;
 
   const location = useLocation();
   const selectedKeys = location.pathname

@@ -1,32 +1,32 @@
 import { useAppDispatch } from '@/app/store';
-import { useCustomersQuery } from '@/graphql';
+import { useFactoriesQuery } from '@/graphql';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Table, Typography } from 'antd';
 import { FC } from 'react';
-import { setEditCustomerId, setShowCreateCustomer } from '../customer.slice';
-import { CreateCustomerModal } from './create-customer-modal';
-import { UpdateCustomerModal } from './update-customer-modal';
+import { setEditFactoryId, setShowCreateFactory } from '../factory.slice';
+import { CreateFactoryModal } from './create-factory-modal';
+import { UpdateFactoryModal } from './update-factory-modal';
 
 const { Text } = Typography;
 
-export const CustomerView: FC = () => {
+export const FactoryView: FC = () => {
   const dispatch = useAppDispatch();
 
-  const { data, isLoading, isFetching } = useCustomersQuery();
+  const { data, isLoading, isFetching } = useFactoriesQuery();
   const loading = isLoading || isFetching;
 
-  const dataSource = data?.customers || [];
+  const dataSource = data?.factories || [];
 
   return (
     <>
       <Card
         type="inner"
-        title={'Заказчики'}
+        title={'Заводы'}
         extra={
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => dispatch(setShowCreateCustomer(true))}
+            onClick={() => dispatch(setShowCreateFactory(true))}
           />
         }
       >
@@ -42,7 +42,7 @@ export const CustomerView: FC = () => {
               dataIndex: 'editOper',
               width: '48px',
               render: (_, record) => (
-                <Button icon={<EditOutlined />} onClick={() => dispatch(setEditCustomerId(record.id))} />
+                <Button icon={<EditOutlined />} onClick={() => dispatch(setEditFactoryId(record.id))} />
               ),
             },
             { title: 'Название', dataIndex: 'name' },
@@ -59,8 +59,8 @@ export const CustomerView: FC = () => {
           ]}
         />
       </Card>
-      <CreateCustomerModal />
-      <UpdateCustomerModal />
+      <CreateFactoryModal />
+      <UpdateFactoryModal />
     </>
   );
 };

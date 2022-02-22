@@ -2,6 +2,7 @@ import { projectReducer } from '@/features/project/project.slice';
 import { artReducer } from '@/features/art/art.slice';
 import { userReducer } from '@/features/user/user.slice';
 import { customerReducer } from '@/features/customer/customer.slice';
+import { factoryReducer } from '@/features/factory/factory.slice';
 import { api } from '@/app/extend-api';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   project: projectReducer,
   art: artReducer,
+  factory: factoryReducer,
   customer: customerReducer,
   user: userReducer,
 });

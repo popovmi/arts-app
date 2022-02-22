@@ -1,42 +1,42 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { CreateCustomerInput, useCreateCustomerMutation } from '@/graphql';
+import { CreateFactoryInput, useCreateFactoryMutation } from '@/graphql';
 import { CloseOutlined } from '@ant-design/icons';
-import { Checkbox, Button, Form, Input, Modal, Space, Spin, Typography } from 'antd';
+import { Button, Checkbox, Form, Input, Modal, Space, Spin, Typography } from 'antd';
 import { FC } from 'react';
-import { selectCustomers, setShowCreateCustomer } from '../customer.slice';
+import { selectFactorys, setShowCreateFactory } from '../factory.slice';
 
 const { Item } = Form;
 const { Text } = Typography;
 
-export const CreateCustomerModal: FC = () => {
+export const CreateFactoryModal: FC = () => {
   const dispatch = useAppDispatch();
-  const { showCreateCustomer } = useAppSelector(selectCustomers);
-  const [createCustomer, { isLoading, error, isError, reset }] = useCreateCustomerMutation({
-    fixedCacheKey: 'createCustomer',
+  const { showCreateFactory } = useAppSelector(selectFactorys);
+  const [createFactory, { isLoading, error, isError, reset }] = useCreateFactoryMutation({
+    fixedCacheKey: 'createFactory',
   });
-  const [form] = Form.useForm<CreateCustomerInput>();
+  const [form] = Form.useForm<CreateFactoryInput>();
   const onFormFinish = async () => {
     const input = await form.validateFields();
 
-    createCustomer({ input }).then((res) => {
+    createFactory({ input }).then((res) => {
       if ('data' in res) {
         form.resetFields();
-				dispatch(setShowCreateCustomer(false));
+        dispatch(setShowCreateFactory(false));
       }
     });
   };
 
   return (
     <Modal
-      title="Новый заказчик"
-      visible={showCreateCustomer}
+      title="Новый завод"
+      visible={showCreateFactory}
       onOk={onFormFinish}
-      onCancel={() => dispatch(setShowCreateCustomer(false))}
+      onCancel={() => dispatch(setShowCreateFactory(false))}
     >
       <Form
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        name="newCustomer"
+        name="newFactory"
         form={form}
         labelAlign="left"
       >

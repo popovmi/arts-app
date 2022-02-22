@@ -1,6 +1,7 @@
 import { Row, Col } from 'antd';
 import { FC } from 'react';
-import { CustomerView } from '../customer';
+import { CustomerView } from '@/features/customer';
+import { FactoryView } from '@/features/factory';
 
 export const CompanyPage: FC = () => {
   return (
@@ -8,9 +9,9 @@ export const CompanyPage: FC = () => {
       <Col xs={24} lg={12}>
         <CustomerView />
       </Col>
-      {/* <Col xs={24} lg={12}>
-                <FactoryView />
-            </Col> */}
+      <Col xs={24} lg={12}>
+        <FactoryView />
+      </Col>
     </Row>
   );
 };

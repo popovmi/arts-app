@@ -1,7 +1,7 @@
 import { api as generatedApi } from '@/graphql';
 
 export const api = generatedApi.enhanceEndpoints({
-  addTagTypes: ['Art', 'Project', 'User', 'Customer'],
+  addTagTypes: ['Art', 'Project', 'User', 'Customer', 'Factory'],
   endpoints: {
     art: {
       providesTags: (result, error, { id }) => [{ type: 'Art', id }],
@@ -91,6 +91,31 @@ export const api = generatedApi.enhanceEndpoints({
       invalidatesTags: (result, error, { input: { id } }) => [
         { type: 'Customer', id },
         { type: 'Customer', id: 'LIST' },
+      ],
+    },
+
+    factory: {
+      providesTags: (result, error, { id }) => [{ type: 'Factory', id }],
+    },
+    factories: {
+      providesTags: (result) =>
+        result?.factories
+          ? [
+              ...result.factories.map(({ id }) => ({
+                type: 'Factory' as const,
+                id,
+              })),
+              { type: 'Factory', id: 'LIST' },
+            ]
+          : [{ type: 'Factory', id: 'LIST' }],
+    },
+    createFactory: {
+      invalidatesTags: [{ type: 'Factory', id: 'LIST' }],
+    },
+    updateFactory: {
+      invalidatesTags: (result, error, { input: { id } }) => [
+        { type: 'Factory', id },
+        { type: 'Factory', id: 'LIST' },
       ],
     },
   },

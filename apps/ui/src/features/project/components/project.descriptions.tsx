@@ -57,7 +57,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           bordered
           size="small"
           column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
-          extra={
+          title={
             <Space>
               <Button
                 type={edit ? 'default' : 'primary'}
@@ -68,7 +68,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
             </Space>
           }
         >
-          <DItem label={'Внутренний'}>
+          <DItem label={'Внутренний'} span={1}>
             {edit ? (
               <FItem noStyle name="internal" valuePropName="checked">
                 <Checkbox />
@@ -77,7 +77,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
               <Text>{project.internal ? 'Да' : 'Нет'}</Text>
             )}
           </DItem>
-          <DItem label={'Есть КД'}>
+          <DItem label={'Есть КД'} span={2}>
             {edit ? (
               <FItem noStyle name="hasDesignDoc" valuePropName="checked">
                 <Checkbox />
@@ -86,8 +86,8 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
               <Text>{project.hasDesignDoc ? 'Да' : 'Нет'}</Text>
             )}
           </DItem>
-          {projectAttributesTypes.map((type) => (
-            <DItem key={type} label={AttributesLabels[type]}>
+          {projectAttributesTypes.map((type, i, arr) => (
+            <DItem key={type} label={AttributesLabels[type]} span={i === arr.length - 1 ? 2 : 1}>
               {edit ? (
                 <FItem noStyle name={type}>
                   <AttributeSelector active type={type} allowClear />
@@ -98,7 +98,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
             </DItem>
           ))}
 
-          <DItem label={'Заказчик'}>
+          <DItem label={'Заказчик'} span={4}>
             {edit ? (
               <FItem noStyle name="customerId">
                 <CustomerSelector allowClear current={project?.customer as Customer} />
@@ -107,7 +107,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
               <Text>{project?.customer?.name}</Text>
             )}
           </DItem>
-          <DItem label={'Завод'}>
+          <DItem label={'Завод'} span={4}>
             {edit ? (
               <FItem noStyle name="factoryId">
                 <FactorySelector allowClear current={project?.factory as Factory} />

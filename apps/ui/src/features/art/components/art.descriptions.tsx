@@ -66,7 +66,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
           bordered
           size="small"
           column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
-          extra={
+          title={
             editable && (
               <Space>
                 <Button
@@ -105,7 +105,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
             </DItem>
           ))}
 
-          <DItem label={'Проект'}>
+          <DItem label={'Проект'} span={3}>
             {edit ? (
               <FItem noStyle name="projectId">
                 <ProjectsSelector

@@ -33,7 +33,7 @@ export const CreateArtForm = () => {
   };
 
   return (
-    <Row gutter={[8, 8]} justify="center">
+    <Row gutter={[8, 8]} justify="center" style={{ padding: 8 }}>
       <Col xs={24}>
         {isError && (
           <Space>

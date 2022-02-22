@@ -33,7 +33,7 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
   mode,
   onClear = () => {},
 }) => {
-  const [load, { data, isLoading, isFetching }] = useLazyAttributesQuery({});
+  const [load, { data, isLoading, isFetching }] = useLazyAttributesQuery({ refetchOnFocus: true });
   const loading = isLoading || isFetching;
   const options = (data?.attributes || [])
     .filter((type) => (active === true ? type.active : true))

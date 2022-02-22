@@ -115,15 +115,6 @@ type ArtTypePageInfo {
   hasNextPage: Boolean!
 }
 
-type BaseAttributeType {
-  id: Float!
-  name: String!
-  active: Boolean!
-  valueOrder: Float!
-  createdAt: Date!
-  updatedAt: Date!
-}
-
 type User {
   id: String!
   username: String!
@@ -180,6 +171,7 @@ type Query {
   factory(id: String!): Factory!
   customers: [Customer!]!
   customer(id: String!): Customer!
+  attribute(type: AttributeType!, id: Int!): BaseAttributeType!
   attributes(type: AttributeType!): [BaseAttributeType!]!
 }
 
@@ -300,6 +292,15 @@ input ArtOrderQuery {
   productType: OrderDirection
   productionMethod: OrderDirection
   ringType: OrderDirection
+}
+
+type BaseAttributeType {
+  id: Float!
+  name: String!
+  active: Boolean!
+  valueOrder: Float!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 enum AttributeType {

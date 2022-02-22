@@ -6,11 +6,8 @@ import { Link, useLocation } from 'react-router-dom';
 const { Item, SubMenu } = Menu;
 
 export const AppNavigation: FC = () => {
-  const { data } = useWhoAmIQuery();
+  const { data, isSuccess } = useWhoAmIQuery();
   const user = data?.whoAmI;
-
-  if (!user) return <></>;
-
   const isAdmin = user?.role === Role.Admin;
 
   const location = useLocation();
@@ -21,6 +18,8 @@ export const AppNavigation: FC = () => {
         selected.length ? [...selected, `${selected.join('/')}/${current}`] : current ? [current] : [],
       []
     );
+
+  if (!isSuccess) return <></>;
 
   return (
     <Menu

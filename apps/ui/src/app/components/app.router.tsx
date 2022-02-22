@@ -1,4 +1,5 @@
 import { ArtPage, ArtsListPage, CreateArtPage } from '@/features/art';
+import { AttributePage } from '@/features/attribute';
 import { AdminRoute, AuthRoute, LoginPage, PasswordUpdatePage } from '@/features/auth';
 import { CompanyPage } from '@/features/company';
 import { CreateProjectPage, ProjectPage, ProjectsListPage } from '@/features/project';
@@ -52,7 +53,7 @@ export const AppRouter: FC = () => {
                     },
                     {
                       path: 'attributes',
-                      element: <>attributes</>,
+                      element: <AttributePage />,
                     },
                   ],
                 },

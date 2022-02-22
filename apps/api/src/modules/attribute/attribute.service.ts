@@ -36,7 +36,16 @@ export class AttributeService {
     return result;
   }
 
-  public async getValues(type: AttributeType) {
+  public async getAttribute(type: AttributeType, id: number) {
+    const result = await this.em.findOne(this.getType(type), {
+      order: { valueOrder: 'ASC' },
+      where: { id },
+    });
+
+    return result;
+  }
+
+  public async getAttributes(type: AttributeType) {
     const result = await this.em.find(this.getType(type), { order: { valueOrder: 'ASC' } });
 
     return result;
@@ -63,7 +72,7 @@ export class AttributeService {
 
     await this.em.update(Attribute, { valueOrder: -1 }, { valueOrder: newOrder });
 
-    return await this.getValues(input.type);
+    return await this.getAttributes(input.type);
   }
 
   public async updateValue({ type, active, name, id }: UpdateAttributeInput) {

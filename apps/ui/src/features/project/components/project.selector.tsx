@@ -21,7 +21,7 @@ export const ProjectsSelector: FC<ProjectsSelectorProps> = ({
   onClear = () => {},
   ...props
 }) => {
-  const [fetch, { data, isLoading, isFetching }] = useLazyProjectsLovQuery();
+  const [fetch, { data, isLoading, isFetching }] = useLazyProjectsLovQuery({ refetchOnFocus: true });
   const projects = data?.projects.page.edges?.map((edge) => edge.node as Project) || [];
   const options = [...projects.map((project) => ({ label: project.name, value: project.id }))];
 

@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from '../auth/auth.guard';
 import { AttributeType } from './attribute-type';
 import { AttributeService } from './attribute.service';
@@ -20,9 +20,17 @@ export class AttributeResolver {
     return await this.service.create(input);
   }
 
+  @Query(() => BaseAttributeType)
+  public async attribute(
+    @Args('type', { type: () => AttributeType }) type: AttributeType,
+    @Args('id', { type: () => Int }) id: number
+  ) {
+    return await this.service.getAttribute(type, id);
+  }
+
   @Query(() => [BaseAttributeType])
   public async attributes(@Args('type', { type: () => AttributeType }) type: AttributeType) {
-    return await this.service.getValues(type);
+    return await this.service.getAttributes(type);
   }
 
   @Mutation(() => [BaseAttributeType])

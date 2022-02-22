@@ -32,7 +32,7 @@ export const FactorySelector: FC<FactorySelectorProps> = ({
   onClear = () => {},
   current,
 }) => {
-  const [fetch, { data, isLoading, isFetching }] = useLazyFactoriesQuery();
+  const [fetch, { data, isLoading, isFetching }] = useLazyFactoriesQuery({ refetchOnFocus: true });
   const loading = isLoading || isFetching;
   const options = (data?.factories || [])
     .filter((factory) => (active === true ? factory.active : true))

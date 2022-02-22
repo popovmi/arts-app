@@ -32,7 +32,7 @@ export const CustomerSelector: FC<CustomerSelectorProps> = ({
   onClear = () => {},
   current,
 }) => {
-  const [fetch, { data, isLoading, isFetching }] = useLazyCustomersQuery();
+  const [fetch, { data, isLoading, isFetching }] = useLazyCustomersQuery({ refetchOnFocus: true });
   const loading = isLoading || isFetching;
   const options = (data?.customers || [])
     .filter((customer) => (active === true ? customer.active : true))

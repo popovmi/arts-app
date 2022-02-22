@@ -1,12 +1,14 @@
 import { projectReducer } from '@/features/project/project.slice';
 import { artReducer } from '@/features/art/art.slice';
 import { userReducer } from '@/features/user/user.slice';
+import { attributeReducer } from '@/features/attribute/attribute.slice';
 import { customerReducer } from '@/features/customer/customer.slice';
 import { factoryReducer } from '@/features/factory/factory.slice';
 import { api } from '@/app/extend-api';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { message } from 'antd';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 const appReducer = combineReducers({
   [api.reducerPath]: api.reducer,
@@ -14,6 +16,7 @@ const appReducer = combineReducers({
   art: artReducer,
   factory: factoryReducer,
   customer: customerReducer,
+  attribute: attributeReducer,
   user: userReducer,
 });
 

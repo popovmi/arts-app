@@ -1,7 +1,9 @@
-import { api as generatedApi } from '@/graphql';
+import { api as generatedApi, AttributeType } from '@/graphql';
+
+const attributesTags = Object.values(AttributeType).map((type) => `${type}Attribute`);
 
 export const api = generatedApi.enhanceEndpoints({
-  addTagTypes: ['Art', 'Project', 'User', 'Customer', 'Factory'],
+  addTagTypes: ['Art', 'Project', 'User', 'Customer', 'Factory', ...attributesTags],
   endpoints: {
     art: {
       providesTags: (result, error, { id }) => [{ type: 'Art', id }],
@@ -21,6 +23,7 @@ export const api = generatedApi.enhanceEndpoints({
     updateArt: {
       invalidatesTags: (result, error, { updateArtInput: { id } }) => [{ type: 'Art', id }],
     },
+
     project: {
       providesTags: (result, error, { id }) => [{ type: 'Project', id }],
     },
@@ -45,6 +48,7 @@ export const api = generatedApi.enhanceEndpoints({
         { type: 'Project', id: 'LIST' },
       ],
     },
+
     user: {
       providesTags: (result, error, { id }) => [{ type: 'User', id }],
     },
@@ -69,6 +73,7 @@ export const api = generatedApi.enhanceEndpoints({
         { type: 'User', id: 'LIST' },
       ],
     },
+
     customer: {
       providesTags: (result, error, { id }) => [{ type: 'Customer', id }],
     },
@@ -116,6 +121,38 @@ export const api = generatedApi.enhanceEndpoints({
       invalidatesTags: (result, error, { input: { id } }) => [
         { type: 'Factory', id },
         { type: 'Factory', id: 'LIST' },
+      ],
+    },
+
+    attribute: {
+      providesTags: (result, error, { id, type }) => [{ type: `${type}Attribute`, id }],
+    },
+    attributes: {
+      providesTags: (result, error, { type }) =>
+        result?.attributes
+          ? [
+              ...result.attributes.map(({ id }) => ({
+                type: `${type}Attribute` as const,
+                id,
+              })),
+              { type: `${type}Attribute`, id: 'LIST' },
+            ]
+          : [{ type: `${type}Attribute`, id: 'LIST' }],
+    },
+    createAttribute: {
+      invalidatesTags: (result, error, { input: { type } }) => [
+        { type: `${type}Attribute`, id: 'LIST' },
+      ],
+    },
+    updateAttribute: {
+      invalidatesTags: (result, error, { input: { id, type } }) => [
+        { type: `${type}Attribute`, id },
+        { type: `${type}Attribute`, id: 'LIST' },
+      ],
+    },
+    updateAttributesOrder: {
+      invalidatesTags: (result, error, { input: { type } }) => [
+        { type: `${type}Attribute`, id: 'LIST' },
       ],
     },
   },

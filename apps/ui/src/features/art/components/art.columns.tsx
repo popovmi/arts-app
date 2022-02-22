@@ -2,7 +2,8 @@ import { useAppDispatch, useAppSelector } from '@/app/store';
 import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
-import { Art, ArtFilterQuery, AttributeType, StringFieldOption } from '@/graphql';
+import { projectAttributesTypes } from '@/features/project/project-attribute.types';
+import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOption } from '@/graphql';
 import {
   Button,
   Col,
@@ -219,6 +220,7 @@ export const artColumns = () => {
       filterMultiple: false,
       render: (_, { internal }) => (internal ? 'Да' : 'Нет'),
     },
+
     ...(artAttributesTypes.map((type: any) => ({
       dataIndex: `${type}`,
       title: AttributesLabels[type as AttributeType],
@@ -229,6 +231,7 @@ export const artColumns = () => {
           : [],
       filterDropdown: getAttributeFilter(type, type),
     })) as any[]),
+
     {
       title: 'Проект',
       key: 'project',
@@ -258,6 +261,7 @@ export const artColumns = () => {
           ),
           filterMultiple: false,
         },
+
         {
           dataIndex: ['project', 'internal'],
           title: 'Внутренний',
@@ -269,6 +273,7 @@ export const artColumns = () => {
           render: (_, { project }) =>
             typeof project?.internal === 'boolean' ? (project.internal ? 'Да' : 'Нет') : '',
         },
+
         {
           dataIndex: ['project', 'hasDesignDoc'],
           title: 'Есть КД',
@@ -282,34 +287,18 @@ export const artColumns = () => {
           render: (_, { project }) =>
             typeof project?.hasDesignDoc === 'boolean' ? (project.hasDesignDoc ? 'Да' : 'Нет') : '',
         },
-        {
-          dataIndex: ['project', 'dropNumber'],
-          title: 'Кол-во капель',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'dropNumber'] } as HTMLAttributes<any>),
+
+        ...(projectAttributesTypes.map((type: any) => ({
+          dataIndex: ['project', `${type}`],
+          title: AttributesLabels[type as AttributeType],
+          onHeaderCell: (record: Art) => ({ dataIndex: ['project', `${type}`] } as HTMLAttributes<any>),
           filteredValue:
-            Object.keys(filter.project?.dropNumber || {}).length > 0
-              ? filter.project?.dropNumber!.in
+            Object.keys(filter.project?.[type as keyof ProjectFilterQuery] || {}).length > 0
+              ? (filter.project?.[type as keyof ProjectFilterQuery] as StringFieldOption)!.in
               : [],
-          filterDropdown: getAttributeFilter(AttributeType.DropNumber, ['project', 'dropNumber']),
-        },
-        {
-          dataIndex: ['project', 'intercenter'],
-          title: 'Межцентровое',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'intercenter'] } as HTMLAttributes<any>),
-          filteredValue:
-            Object.keys(filter.project?.intercenter || {}).length > 0
-              ? filter.project?.intercenter!.in
-              : [],
-          filterDropdown: getAttributeFilter(AttributeType.Intercenter, ['project', 'intercenter']),
-        },
-        {
-          dataIndex: ['project', 'sfm'],
-          title: 'СФМ',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'sfm'] } as HTMLAttributes<any>),
-          filteredValue:
-            Object.keys(filter.project?.sfm || {}).length > 0 ? filter.project?.sfm!.in : [],
-          filterDropdown: getAttributeFilter(AttributeType.Sfm, ['project', 'sfm']),
-        },
+          filterDropdown: getAttributeFilter(type, ['project', type]),
+        })) as any[]),
+
         {
           dataIndex: ['project', 'customer', 'id'],
           title: 'Заказчик',

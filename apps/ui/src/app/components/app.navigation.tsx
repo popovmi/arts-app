@@ -6,19 +6,26 @@ import { Link, useLocation } from 'react-router-dom';
 const { Item, SubMenu } = Menu;
 
 export const AppNavigation: FC = () => {
-  const location = useLocation();
   const { data } = useWhoAmIQuery();
   const isAdmin = data?.whoAmI?.role === Role.Admin;
-  const selectedKeys = location.pathname.slice(1);
+
+  const location = useLocation();
+  const selectedKeys = location.pathname
+    .split('/')
+    .reduce(
+      (selected: string[], current) =>
+        selected.length ? [...selected, `${selected.join('/')}/${current}`] : current ? [current] : [],
+      []
+    );
 
   return (
     <Menu
-      style={{ height: '100%' }}
-      theme="light"
-      mode={'inline'}
+      style={{ flex: '1 1 auto' }}
+      theme="dark"
+      mode={'horizontal'}
       defaultSelectedKeys={[]}
-      selectedKeys={[selectedKeys]}
-      inlineCollapsed={true}
+      selectedKeys={selectedKeys}
+      triggerSubMenuAction={'click'}
     >
       <Item key={'projects'}>
         <Link to={'projects'}>Проекты</Link>

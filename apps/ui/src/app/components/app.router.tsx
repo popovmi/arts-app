@@ -1,11 +1,10 @@
 import { ArtPage, ArtsListPage, CreateArtPage } from '@/features/art';
 import { AdminRoute, AuthRoute, LoginPage, PasswordUpdatePage } from '@/features/auth';
 import { CompanyPage } from '@/features/company';
-import { ProjectPage, ProjectsListPage, CreateProjectPage } from '@/features/project';
+import { CreateProjectPage, ProjectPage, ProjectsListPage } from '@/features/project';
 import { UsersListPage } from '@/features/user';
 import { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
-import { AppContainer } from './app.container';
 import { AppLayout } from './app.layout';
 
 export const AppRouter: FC = () => {
@@ -21,7 +20,6 @@ export const AppRouter: FC = () => {
           children: [
             {
               path: '/',
-              element: <AppContainer />,
               children: [
                 { path: 'update', element: <PasswordUpdatePage /> },
                 {

@@ -18,7 +18,7 @@ const artSlice = createSlice({
     data: [],
     filter: {},
     order: {},
-    pagination: { first: 50 },
+    pagination: { first: 25 },
     hasMore: true,
     doFetch: true,
     showColumns: [

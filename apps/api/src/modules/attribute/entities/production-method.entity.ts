@@ -4,5 +4,5 @@ import { BaseAttribute } from './base-attribute.entity';
 
 @Entity()
 export class ProductionMethod extends BaseAttribute {
-    static attributeType = AttributeType.productionMethod;
+  static attributeType = AttributeType.productionMethod;
 }

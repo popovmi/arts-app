@@ -1,39 +1,39 @@
 query projects($filter: ProjectFilterQuery, $pagination: ConnectionArgs, $order: ProjectOrderQuery) {
-    projects(filter: $filter, pagination: $pagination, order: $order) {
-        page {
-            edges {
-                cursor
-                node {
-                    id
-                    name
-                    internal
-                    hasDesignDoc
-                    sfm
-                    dropNumber
-                    intercenter
-                    factory {
-                        id
-                        name
-                    }
-                    customer {
-                        id
-                        name
-                    }
-                    createdAt
-                    updatedAt
-                }
-            }
-            pageInfo {
-                startCursor
-                endCursor
-                hasPreviousPage
-                hasNextPage
-            }
+  projects(filter: $filter, pagination: $pagination, order: $order) {
+    page {
+      edges {
+        cursor
+        node {
+          id
+          name
+          internal
+          hasDesignDoc
+          sfm
+          dropNumber
+          intercenter
+          factory {
+            id
+            name
+          }
+          customer {
+            id
+            name
+          }
+          createdAt
+          updatedAt
         }
-        pageData {
-            count
-            take
-            skip
-        }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasPreviousPage
+        hasNextPage
+      }
     }
+    pageData {
+      count
+      take
+      skip
+    }
+  }
 }

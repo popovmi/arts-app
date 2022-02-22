@@ -7,7 +7,7 @@ import * as Entities from './entities';
 const EntitiesArray = Object.values(Entities);
 
 @Module({
-    imports: [TypeOrmModule.forFeature(EntitiesArray)],
-    providers: [AttributeService,AttributeResolver] ,
+  imports: [TypeOrmModule.forFeature(EntitiesArray)],
+  providers: [AttributeService, AttributeResolver],
 })
 export class AttributeModule {}

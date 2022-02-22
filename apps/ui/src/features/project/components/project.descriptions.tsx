@@ -15,109 +15,109 @@ const { Item: FItem, useForm } = Form;
 const { Text } = Typography;
 
 interface ProjectDescriptionsProps {
-    project: Project;
+  project: Project;
 }
 
 export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) => {
-    const dispatch = useAppDispatch();
-    const [edit, toggleEdit] = useToggle();
-    const [form] = useForm<UpdateProjectInput>();
-    const [update, { isLoading, isSuccess, reset }] = useUpdateProjectMutation({
-        fixedCacheKey: 'updateProject',
-    });
+  const dispatch = useAppDispatch();
+  const [edit, toggleEdit] = useToggle();
+  const [form] = useForm<UpdateProjectInput>();
+  const [update, { isLoading, isSuccess, reset }] = useUpdateProjectMutation({
+    fixedCacheKey: 'updateProject',
+  });
 
-    useEffect(() => {
-        return () => form.resetFields();
-    }, []);
+  useEffect(() => {
+    return () => form.resetFields();
+  }, []);
 
-    const onFinish = async () => {
-        const values = await form.validateFields();
+  const onFinish = async () => {
+    const values = await form.validateFields();
 
-        update({ updateProjectInput: { ...values, id: project.id } }).then(
-            (res) => 'data' in res && dispatch(clearFilter())
-        );
-    };
-
-    useEffect(() => {
-        if (isSuccess) {
-            reset();
-            toggleEdit();
-            form.resetFields();
-        }
-    }, [isSuccess]);
-
-    return (
-        <Form
-            initialValues={{ ...project, customerId: project?.customer?.id, factoryId: project?.factory?.id }}
-            form={form}
-            component={false}
-        >
-            <Spin spinning={isLoading}>
-                <Descriptions
-                    bordered
-                    size="small"
-                    column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
-                    extra={
-                        <Space>
-                            <Button
-                                type={edit ? 'default' : 'primary'}
-                                icon={<EditOutlined />}
-                                onClick={() => toggleEdit()}
-                            />
-                            {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
-                        </Space>
-                    }
-                >
-                    <DItem label={'Внутренний'}>
-                        {edit ? (
-                            <FItem name="internal" valuePropName="checked">
-                                <Checkbox />
-                            </FItem>
-                        ) : (
-                            <Text>{project.internal ? 'Да' : 'Нет'}</Text>
-                        )}
-                    </DItem>
-                    <DItem label={'Есть КД'}>
-                        {edit ? (
-                            <FItem name="hasDesignDoc" valuePropName="checked">
-                                <Checkbox />
-                            </FItem>
-                        ) : (
-                            <Text>{project.hasDesignDoc ? 'Да' : 'Нет'}</Text>
-                        )}
-                    </DItem>
-                    {projectAttributesTypes.map((type) => (
-                        <DItem key={type} label={AttributesLabels[type]}>
-                            {edit ? (
-                                <FItem name={type}>
-                                    <AttributeSelector active type={type} allowClear />
-                                </FItem>
-                            ) : (
-                                <Text>{project[type as keyof Project]}</Text>
-                            )}
-                        </DItem>
-                    ))}
-
-                    <DItem label={'Заказчик'}>
-                        {edit ? (
-                            <FItem name="customerId">
-                                <CustomerSelector allowClear current={project?.customer as Customer} />
-                            </FItem>
-                        ) : (
-                            <Text>{project?.customer?.name}</Text>
-                        )}
-                    </DItem>
-                    <DItem label={'Завод'}>
-                        {edit ? (
-                            <FItem name="factoryId">
-                                <FactorySelector allowClear current={project?.factory as Factory} />
-                            </FItem>
-                        ) : (
-                            <Text>{project?.factory?.name}</Text>
-                        )}
-                    </DItem>
-                </Descriptions>
-            </Spin>
-        </Form>
+    update({ updateProjectInput: { ...values, id: project.id } }).then(
+      (res) => 'data' in res && dispatch(clearFilter())
     );
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      toggleEdit();
+      form.resetFields();
+    }
+  }, [isSuccess]);
+
+  return (
+    <Form
+      initialValues={{ ...project, customerId: project?.customer?.id, factoryId: project?.factory?.id }}
+      form={form}
+      component={false}
+    >
+      <Spin spinning={isLoading}>
+        <Descriptions
+          bordered
+          size="small"
+          column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
+          extra={
+            <Space>
+              <Button
+                type={edit ? 'default' : 'primary'}
+                icon={<EditOutlined />}
+                onClick={() => toggleEdit()}
+              />
+              {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
+            </Space>
+          }
+        >
+          <DItem label={'Внутренний'}>
+            {edit ? (
+              <FItem name="internal" valuePropName="checked">
+                <Checkbox />
+              </FItem>
+            ) : (
+              <Text>{project.internal ? 'Да' : 'Нет'}</Text>
+            )}
+          </DItem>
+          <DItem label={'Есть КД'}>
+            {edit ? (
+              <FItem name="hasDesignDoc" valuePropName="checked">
+                <Checkbox />
+              </FItem>
+            ) : (
+              <Text>{project.hasDesignDoc ? 'Да' : 'Нет'}</Text>
+            )}
+          </DItem>
+          {projectAttributesTypes.map((type) => (
+            <DItem key={type} label={AttributesLabels[type]}>
+              {edit ? (
+                <FItem name={type}>
+                  <AttributeSelector active type={type} allowClear />
+                </FItem>
+              ) : (
+                <Text>{project[type as keyof Project]}</Text>
+              )}
+            </DItem>
+          ))}
+
+          <DItem label={'Заказчик'}>
+            {edit ? (
+              <FItem name="customerId">
+                <CustomerSelector allowClear current={project?.customer as Customer} />
+              </FItem>
+            ) : (
+              <Text>{project?.customer?.name}</Text>
+            )}
+          </DItem>
+          <DItem label={'Завод'}>
+            {edit ? (
+              <FItem name="factoryId">
+                <FactorySelector allowClear current={project?.factory as Factory} />
+              </FItem>
+            ) : (
+              <Text>{project?.factory?.name}</Text>
+            )}
+          </DItem>
+        </Descriptions>
+      </Spin>
+    </Form>
+  );
 };

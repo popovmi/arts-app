@@ -114,7 +114,7 @@ export enum AttributeType {
   ProductType = 'productType',
   ProductionMethod = 'productionMethod',
   RingType = 'ringType',
-  Sfm = 'sfm'
+  Sfm = 'sfm',
 }
 
 export type BaseAttributeType = {
@@ -236,7 +236,6 @@ export type Mutation = {
   updateUser: User;
 };
 
-
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   password: Scalars['String'];
@@ -244,72 +243,58 @@ export type MutationChangePasswordArgs = {
   username: Scalars['String'];
 };
 
-
 export type MutationCreateArtArgs = {
   createArtInput: CreateArtInput;
 };
-
 
 export type MutationCreateAttributeArgs = {
   input: CreateAttributeInput;
 };
 
-
 export type MutationCreateCustomerArgs = {
   input: CreateCustomerInput;
 };
-
 
 export type MutationCreateFactoryArgs = {
   input: CreateFactoryInput;
 };
 
-
 export type MutationCreateProjectArgs = {
   createProjectInput: CreateProjectInput;
 };
 
-
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
 };
-
 
 export type MutationLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
 };
 
-
 export type MutationUpdateArtArgs = {
   updateArtInput: UpdateArtInput;
 };
-
 
 export type MutationUpdateAttributeArgs = {
   input: UpdateAttributeInput;
 };
 
-
 export type MutationUpdateAttributesOrderArgs = {
   input: UpdateAttributeValueOrderInput;
 };
-
 
 export type MutationUpdateCustomerArgs = {
   input: UpdateCustomerInput;
 };
 
-
 export type MutationUpdateFactoryArgs = {
   input: UpdateFactoryInput;
 };
 
-
 export type MutationUpdateProjectArgs = {
   updateProjectInput: UpdateProjectInput;
 };
-
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
@@ -319,7 +304,7 @@ export enum OrderDirection {
   /** Ascending */
   Asc = 'ASC',
   /** Descending */
-  Desc = 'DESC'
+  Desc = 'DESC',
 }
 
 export type PageData = {
@@ -413,11 +398,9 @@ export type Query = {
   whoAmI: User;
 };
 
-
 export type QueryArtArgs = {
   id: Scalars['String'];
 };
-
 
 export type QueryArtsArgs = {
   filter?: InputMaybe<ArtFilterQuery>;
@@ -425,26 +408,21 @@ export type QueryArtsArgs = {
   pagination?: InputMaybe<ConnectionArgs>;
 };
 
-
 export type QueryAttributesArgs = {
   type: AttributeType;
 };
-
 
 export type QueryCustomerArgs = {
   id: Scalars['String'];
 };
 
-
 export type QueryFactoryArgs = {
   id: Scalars['String'];
 };
 
-
 export type QueryProjectArgs = {
   id: Scalars['String'];
 };
-
 
 export type QueryProjectsArgs = {
   filter?: InputMaybe<ProjectFilterQuery>;
@@ -452,11 +430,9 @@ export type QueryProjectsArgs = {
   pagination?: InputMaybe<ConnectionArgs>;
 };
 
-
 export type QueryUserArgs = {
   id: Scalars['String'];
 };
-
 
 export type QueryUsersArgs = {
   filter?: InputMaybe<UserFilterQuery>;
@@ -468,7 +444,7 @@ export enum Role {
   /** Administrator Role */
   Admin = 'ADMIN',
   /** Simple user role */
-  User = 'USER'
+  User = 'USER',
 }
 
 export type StringFieldOption = {
@@ -611,119 +587,340 @@ export type ChangePasswordMutationVariables = Exact<{
   newPassword: Scalars['String'];
 }>;
 
-
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: boolean };
+export type ChangePasswordMutation = { __typename?: 'Mutation'; changePassword: boolean };
 
 export type CreateArtMutationVariables = Exact<{
   createArtInput: CreateArtInput;
 }>;
 
-
-export type CreateArtMutation = { __typename?: 'Mutation', createArt: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null } };
+export type CreateArtMutation = {
+  __typename?: 'Mutation';
+  createArt: {
+    __typename?: 'Art';
+    id: string;
+    name: string;
+    internal: boolean;
+    projectId?: string | null;
+    createdAt?: any | null;
+    updatedAt?: any | null;
+    bottomForm?: string | null;
+    artClass?: string | null;
+    form?: string | null;
+    nominalVolume?: string | null;
+    height?: string | null;
+    productType?: string | null;
+    productionMethod?: string | null;
+    ringType?: string | null;
+    files?: Array<{
+      __typename?: 'ArtFile';
+      artId: string;
+      originalPath: string;
+      watermarkPath: string;
+      uploadedAt: any;
+    }> | null;
+    project?: { __typename?: 'Project'; id: string; name: string } | null;
+  };
+};
 
 export type CreateAttributeMutationVariables = Exact<{
   input: CreateAttributeInput;
 }>;
 
-
-export type CreateAttributeMutation = { __typename?: 'Mutation', createAttribute: { __typename?: 'BaseAttributeType', id: number, name: string, active: boolean, valueOrder: number, createdAt: any, updatedAt: any } };
+export type CreateAttributeMutation = {
+  __typename?: 'Mutation';
+  createAttribute: {
+    __typename?: 'BaseAttributeType';
+    id: number;
+    name: string;
+    active: boolean;
+    valueOrder: number;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type CreateCustomerMutationVariables = Exact<{
   input: CreateCustomerInput;
 }>;
 
-
-export type CreateCustomerMutation = { __typename?: 'Mutation', createCustomer: { __typename?: 'Customer', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
+export type CreateCustomerMutation = {
+  __typename?: 'Mutation';
+  createCustomer: {
+    __typename?: 'Customer';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type CreateFactoryMutationVariables = Exact<{
   input: CreateFactoryInput;
 }>;
 
-
-export type CreateFactoryMutation = { __typename?: 'Mutation', createFactory: { __typename?: 'Factory', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
+export type CreateFactoryMutation = {
+  __typename?: 'Mutation';
+  createFactory: {
+    __typename?: 'Factory';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type CreateProjectMutationVariables = Exact<{
   createProjectInput: CreateProjectInput;
 }>;
 
-
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+export type CreateProjectMutation = {
+  __typename?: 'Mutation';
+  createProject: {
+    __typename?: 'Project';
+    id: string;
+    name: string;
+    internal: boolean;
+    hasDesignDoc?: boolean | null;
+    sfm?: string | null;
+    dropNumber?: string | null;
+    intercenter?: string | null;
+    createdAt: any;
+    updatedAt: any;
+    factory?: { __typename?: 'Factory'; id: string; name: string } | null;
+    customer?: { __typename?: 'Customer'; id: string; name: string } | null;
+  };
+};
 
 export type CreateUserMutationVariables = Exact<{
   createUserInput: CreateUserInput;
 }>;
 
-
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: {
+    __typename?: 'User';
+    id: string;
+    username: string;
+    fullName: string;
+    role: Role;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
 }>;
 
+export type LoginMutation = {
+  __typename?: 'Mutation';
+  login: {
+    __typename?: 'LoginResponse';
+    user: {
+      __typename?: 'User';
+      id: string;
+      username: string;
+      fullName: string;
+      role: Role;
+      active: boolean;
+      createdAt: any;
+      updatedAt: any;
+    };
+  };
+};
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', user: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } } };
+export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
 
 export type UpdateArtMutationVariables = Exact<{
   updateArtInput: UpdateArtInput;
 }>;
 
-
-export type UpdateArtMutation = { __typename?: 'Mutation', updateArt: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, factoryId?: string | null, customerId?: string | null, createdAt: any, updatedAt: any } | null } };
+export type UpdateArtMutation = {
+  __typename?: 'Mutation';
+  updateArt: {
+    __typename?: 'Art';
+    id: string;
+    name: string;
+    internal: boolean;
+    projectId?: string | null;
+    createdAt?: any | null;
+    updatedAt?: any | null;
+    bottomForm?: string | null;
+    artClass?: string | null;
+    form?: string | null;
+    nominalVolume?: string | null;
+    height?: string | null;
+    productType?: string | null;
+    productionMethod?: string | null;
+    ringType?: string | null;
+    files?: Array<{
+      __typename?: 'ArtFile';
+      artId: string;
+      originalPath: string;
+      watermarkPath: string;
+      uploadedAt: any;
+    }> | null;
+    project?: {
+      __typename?: 'Project';
+      id: string;
+      name: string;
+      internal: boolean;
+      hasDesignDoc?: boolean | null;
+      sfm?: string | null;
+      dropNumber?: string | null;
+      intercenter?: string | null;
+      factoryId?: string | null;
+      customerId?: string | null;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
+  };
+};
 
 export type UpdateAttributeMutationVariables = Exact<{
   input: UpdateAttributeInput;
 }>;
 
-
-export type UpdateAttributeMutation = { __typename?: 'Mutation', updateAttribute: { __typename?: 'BaseAttributeType', id: number, name: string, active: boolean, valueOrder: number, createdAt: any, updatedAt: any } };
+export type UpdateAttributeMutation = {
+  __typename?: 'Mutation';
+  updateAttribute: {
+    __typename?: 'BaseAttributeType';
+    id: number;
+    name: string;
+    active: boolean;
+    valueOrder: number;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type UpdateAttributesOrderMutationVariables = Exact<{
   input: UpdateAttributeValueOrderInput;
 }>;
 
-
-export type UpdateAttributesOrderMutation = { __typename?: 'Mutation', updateAttributesOrder: Array<{ __typename?: 'BaseAttributeType', id: number, name: string, active: boolean, valueOrder: number, createdAt: any, updatedAt: any }> };
+export type UpdateAttributesOrderMutation = {
+  __typename?: 'Mutation';
+  updateAttributesOrder: Array<{
+    __typename?: 'BaseAttributeType';
+    id: number;
+    name: string;
+    active: boolean;
+    valueOrder: number;
+    createdAt: any;
+    updatedAt: any;
+  }>;
+};
 
 export type UpdateCustomerMutationVariables = Exact<{
   input: UpdateCustomerInput;
 }>;
 
-
-export type UpdateCustomerMutation = { __typename?: 'Mutation', updateCustomer: { __typename?: 'Customer', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
+export type UpdateCustomerMutation = {
+  __typename?: 'Mutation';
+  updateCustomer: {
+    __typename?: 'Customer';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type UpdateFactoryMutationVariables = Exact<{
   input: UpdateFactoryInput;
 }>;
 
-
-export type UpdateFactoryMutation = { __typename?: 'Mutation', updateFactory: { __typename?: 'Factory', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
+export type UpdateFactoryMutation = {
+  __typename?: 'Mutation';
+  updateFactory: {
+    __typename?: 'Factory';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type UpdateProjectMutationVariables = Exact<{
   updateProjectInput: UpdateProjectInput;
 }>;
 
-
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+export type UpdateProjectMutation = {
+  __typename?: 'Mutation';
+  updateProject: {
+    __typename?: 'Project';
+    id: string;
+    name: string;
+    internal: boolean;
+    hasDesignDoc?: boolean | null;
+    sfm?: string | null;
+    dropNumber?: string | null;
+    intercenter?: string | null;
+    createdAt: any;
+    updatedAt: any;
+    factory?: { __typename?: 'Factory'; id: string; name: string } | null;
+    customer?: { __typename?: 'Customer'; id: string; name: string } | null;
+  };
+};
 
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
 }>;
 
-
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
+export type UpdateUserMutation = {
+  __typename?: 'Mutation';
+  updateUser: {
+    __typename?: 'User';
+    id: string;
+    username: string;
+    fullName: string;
+    role: Role;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type ArtQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
-
-export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null } };
+export type ArtQuery = {
+  __typename?: 'Query';
+  art: {
+    __typename?: 'Art';
+    id: string;
+    name: string;
+    internal: boolean;
+    projectId?: string | null;
+    createdAt?: any | null;
+    updatedAt?: any | null;
+    bottomForm?: string | null;
+    artClass?: string | null;
+    form?: string | null;
+    nominalVolume?: string | null;
+    height?: string | null;
+    productType?: string | null;
+    productionMethod?: string | null;
+    ringType?: string | null;
+    files?: Array<{
+      __typename?: 'ArtFile';
+      artId: string;
+      originalPath: string;
+      watermarkPath: string;
+      uploadedAt: any;
+    }> | null;
+    project?: { __typename?: 'Project'; id: string; name: string } | null;
+  };
+};
 
 export type ArtsQueryVariables = Exact<{
   filter?: InputMaybe<ArtFilterQuery>;
@@ -731,46 +928,185 @@ export type ArtsQueryVariables = Exact<{
   order?: InputMaybe<ArtOrderQuery>;
 }>;
 
-
-export type ArtsQuery = { __typename?: 'Query', arts: { __typename?: 'ArtResponse', page: { __typename?: 'ArtTypeConnection', edges?: Array<{ __typename?: 'ArtTypeEdge', cursor?: string | null, node?: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } | null } | null }> | null, pageInfo?: { __typename?: 'ArtTypePageInfo', startCursor?: string | null, endCursor?: string | null, hasPreviousPage: boolean, hasNextPage: boolean } | null }, pageData?: { __typename?: 'PageData', count: number, take: number, skip: number } | null } };
+export type ArtsQuery = {
+  __typename?: 'Query';
+  arts: {
+    __typename?: 'ArtResponse';
+    page: {
+      __typename?: 'ArtTypeConnection';
+      edges?: Array<{
+        __typename?: 'ArtTypeEdge';
+        cursor?: string | null;
+        node?: {
+          __typename?: 'Art';
+          id: string;
+          name: string;
+          internal: boolean;
+          projectId?: string | null;
+          createdAt?: any | null;
+          updatedAt?: any | null;
+          bottomForm?: string | null;
+          artClass?: string | null;
+          form?: string | null;
+          nominalVolume?: string | null;
+          height?: string | null;
+          productType?: string | null;
+          productionMethod?: string | null;
+          ringType?: string | null;
+          files?: Array<{
+            __typename?: 'ArtFile';
+            artId: string;
+            originalPath: string;
+            watermarkPath: string;
+            uploadedAt: any;
+          }> | null;
+          project?: {
+            __typename?: 'Project';
+            id: string;
+            name: string;
+            internal: boolean;
+            hasDesignDoc?: boolean | null;
+            sfm?: string | null;
+            dropNumber?: string | null;
+            intercenter?: string | null;
+            factory?: { __typename?: 'Factory'; id: string; name: string } | null;
+            customer?: { __typename?: 'Customer'; id: string; name: string } | null;
+          } | null;
+        } | null;
+      }> | null;
+      pageInfo?: {
+        __typename?: 'ArtTypePageInfo';
+        startCursor?: string | null;
+        endCursor?: string | null;
+        hasPreviousPage: boolean;
+        hasNextPage: boolean;
+      } | null;
+    };
+    pageData?: { __typename?: 'PageData'; count: number; take: number; skip: number } | null;
+  };
+};
 
 export type AttributesQueryVariables = Exact<{
   type: AttributeType;
 }>;
 
-
-export type AttributesQuery = { __typename?: 'Query', attributes: Array<{ __typename?: 'BaseAttributeType', id: number, name: string, active: boolean, valueOrder: number, createdAt: any, updatedAt: any }> };
+export type AttributesQuery = {
+  __typename?: 'Query';
+  attributes: Array<{
+    __typename?: 'BaseAttributeType';
+    id: number;
+    name: string;
+    active: boolean;
+    valueOrder: number;
+    createdAt: any;
+    updatedAt: any;
+  }>;
+};
 
 export type CustomerQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
+export type CustomerQuery = {
+  __typename?: 'Query';
+  customer: {
+    __typename?: 'Customer';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
-export type CustomerQuery = { __typename?: 'Query', customer: { __typename?: 'Customer', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
+export type CustomersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type CustomersQueryVariables = Exact<{ [key: string]: never; }>;
+export type CustomersQuery = {
+  __typename?: 'Query';
+  customers: Array<{
+    __typename?: 'Customer';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  }>;
+};
 
+export type FactoriesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type CustomersQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: string, name: string, active: boolean, createdAt: any, updatedAt: any }> };
-
-export type FactoriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type FactoriesQuery = { __typename?: 'Query', factories: Array<{ __typename?: 'Factory', id: string, name: string, active: boolean, createdAt: any, updatedAt: any }> };
+export type FactoriesQuery = {
+  __typename?: 'Query';
+  factories: Array<{
+    __typename?: 'Factory';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  }>;
+};
 
 export type FactoryQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
-
-export type FactoryQuery = { __typename?: 'Query', factory: { __typename?: 'Factory', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
+export type FactoryQuery = {
+  __typename?: 'Query';
+  factory: {
+    __typename?: 'Factory';
+    id: string;
+    name: string;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type ProjectQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
-
-export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+export type ProjectQuery = {
+  __typename?: 'Query';
+  project: {
+    __typename?: 'Project';
+    id: string;
+    name: string;
+    internal: boolean;
+    hasDesignDoc?: boolean | null;
+    sfm?: string | null;
+    dropNumber?: string | null;
+    intercenter?: string | null;
+    createdAt: any;
+    updatedAt: any;
+    arts?: Array<{
+      __typename?: 'Art';
+      id: string;
+      name: string;
+      internal: boolean;
+      createdAt?: any | null;
+      updatedAt?: any | null;
+      bottomForm?: string | null;
+      artClass?: string | null;
+      form?: string | null;
+      nominalVolume?: string | null;
+      height?: string | null;
+      productType?: string | null;
+      productionMethod?: string | null;
+      ringType?: string | null;
+      files?: Array<{
+        __typename?: 'ArtFile';
+        artId: string;
+        originalPath: string;
+        watermarkPath: string;
+        uploadedAt: any;
+      }> | null;
+    }> | null;
+    factory?: { __typename?: 'Factory'; id: string; name: string } | null;
+    customer?: { __typename?: 'Customer'; id: string; name: string } | null;
+  };
+};
 
 export type ProjectsQueryVariables = Exact<{
   filter?: InputMaybe<ProjectFilterQuery>;
@@ -778,23 +1114,78 @@ export type ProjectsQueryVariables = Exact<{
   order?: InputMaybe<ProjectOrderQuery>;
 }>;
 
-
-export type ProjectsQuery = { __typename?: 'Query', projects: { __typename?: 'ProjectResponse', page: { __typename?: 'ProjectTypeConnection', edges?: Array<{ __typename?: 'ProjectTypeEdge', cursor?: string | null, node?: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } | null }> | null, pageInfo?: { __typename?: 'ProjectTypePageInfo', startCursor?: string | null, endCursor?: string | null, hasPreviousPage: boolean, hasNextPage: boolean } | null }, pageData?: { __typename?: 'PageData', count: number, take: number, skip: number } | null } };
+export type ProjectsQuery = {
+  __typename?: 'Query';
+  projects: {
+    __typename?: 'ProjectResponse';
+    page: {
+      __typename?: 'ProjectTypeConnection';
+      edges?: Array<{
+        __typename?: 'ProjectTypeEdge';
+        cursor?: string | null;
+        node?: {
+          __typename?: 'Project';
+          id: string;
+          name: string;
+          internal: boolean;
+          hasDesignDoc?: boolean | null;
+          sfm?: string | null;
+          dropNumber?: string | null;
+          intercenter?: string | null;
+          createdAt: any;
+          updatedAt: any;
+          factory?: { __typename?: 'Factory'; id: string; name: string } | null;
+          customer?: { __typename?: 'Customer'; id: string; name: string } | null;
+        } | null;
+      }> | null;
+      pageInfo?: {
+        __typename?: 'ProjectTypePageInfo';
+        startCursor?: string | null;
+        endCursor?: string | null;
+        hasPreviousPage: boolean;
+        hasNextPage: boolean;
+      } | null;
+    };
+    pageData?: { __typename?: 'PageData'; count: number; take: number; skip: number } | null;
+  };
+};
 
 export type ProjectsLovQueryVariables = Exact<{
   filter?: InputMaybe<ProjectFilterQuery>;
   pagination?: InputMaybe<ConnectionArgs>;
 }>;
 
-
-export type ProjectsLovQuery = { __typename?: 'Query', projects: { __typename?: 'ProjectResponse', page: { __typename?: 'ProjectTypeConnection', edges?: Array<{ __typename?: 'ProjectTypeEdge', node?: { __typename?: 'Project', id: string, name: string } | null }> | null } } };
+export type ProjectsLovQuery = {
+  __typename?: 'Query';
+  projects: {
+    __typename?: 'ProjectResponse';
+    page: {
+      __typename?: 'ProjectTypeConnection';
+      edges?: Array<{
+        __typename?: 'ProjectTypeEdge';
+        node?: { __typename?: 'Project'; id: string; name: string } | null;
+      }> | null;
+    };
+  };
+};
 
 export type UserQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
-
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
+export type UserQuery = {
+  __typename?: 'Query';
+  user: {
+    __typename?: 'User';
+    id: string;
+    username: string;
+    fullName: string;
+    role: Role;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export type UsersQueryVariables = Exact<{
   filter?: InputMaybe<UserFilterQuery>;
@@ -802,14 +1193,53 @@ export type UsersQueryVariables = Exact<{
   order?: InputMaybe<UserOrderQuery>;
 }>;
 
+export type UsersQuery = {
+  __typename?: 'Query';
+  users: {
+    __typename?: 'UserResponse';
+    page: {
+      __typename?: 'UserTypeConnection';
+      edges?: Array<{
+        __typename?: 'UserTypeEdge';
+        cursor?: string | null;
+        node?: {
+          __typename?: 'User';
+          id: string;
+          username: string;
+          fullName: string;
+          role: Role;
+          active: boolean;
+          createdAt: any;
+          updatedAt: any;
+        } | null;
+      }> | null;
+      pageInfo?: {
+        __typename?: 'UserTypePageInfo';
+        startCursor?: string | null;
+        endCursor?: string | null;
+        hasPreviousPage: boolean;
+        hasNextPage: boolean;
+      } | null;
+    };
+    pageData?: { __typename?: 'PageData'; count: number; take: number; skip: number } | null;
+  };
+};
 
-export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UserResponse', page: { __typename?: 'UserTypeConnection', edges?: Array<{ __typename?: 'UserTypeEdge', cursor?: string | null, node?: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } | null }> | null, pageInfo?: { __typename?: 'UserTypePageInfo', startCursor?: string | null, endCursor?: string | null, hasPreviousPage: boolean, hasNextPage: boolean } | null }, pageData?: { __typename?: 'PageData', count: number, take: number, skip: number } | null } };
+export type WhoAmIQueryVariables = Exact<{ [key: string]: never }>;
 
-export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
-
+export type WhoAmIQuery = {
+  __typename?: 'Query';
+  whoAmI: {
+    __typename?: 'User';
+    id: string;
+    username: string;
+    fullName: string;
+    role: Role;
+    active: boolean;
+    createdAt: any;
+    updatedAt: any;
+  };
+};
 
 export const ChangePasswordDocument = `
     mutation changePassword($username: String!, $password: String!, $passwordRepeat: String!, $newPassword: String!) {
@@ -1369,95 +1799,140 @@ export const WhoAmIDocument = `
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     changePassword: build.mutation<ChangePasswordMutation, ChangePasswordMutationVariables>({
-      query: (variables) => ({ document: ChangePasswordDocument, variables })
+      query: (variables) => ({ document: ChangePasswordDocument, variables }),
     }),
     createArt: build.mutation<CreateArtMutation, CreateArtMutationVariables>({
-      query: (variables) => ({ document: CreateArtDocument, variables })
+      query: (variables) => ({ document: CreateArtDocument, variables }),
     }),
     createAttribute: build.mutation<CreateAttributeMutation, CreateAttributeMutationVariables>({
-      query: (variables) => ({ document: CreateAttributeDocument, variables })
+      query: (variables) => ({ document: CreateAttributeDocument, variables }),
     }),
     createCustomer: build.mutation<CreateCustomerMutation, CreateCustomerMutationVariables>({
-      query: (variables) => ({ document: CreateCustomerDocument, variables })
+      query: (variables) => ({ document: CreateCustomerDocument, variables }),
     }),
     createFactory: build.mutation<CreateFactoryMutation, CreateFactoryMutationVariables>({
-      query: (variables) => ({ document: CreateFactoryDocument, variables })
+      query: (variables) => ({ document: CreateFactoryDocument, variables }),
     }),
     createProject: build.mutation<CreateProjectMutation, CreateProjectMutationVariables>({
-      query: (variables) => ({ document: CreateProjectDocument, variables })
+      query: (variables) => ({ document: CreateProjectDocument, variables }),
     }),
     createUser: build.mutation<CreateUserMutation, CreateUserMutationVariables>({
-      query: (variables) => ({ document: CreateUserDocument, variables })
+      query: (variables) => ({ document: CreateUserDocument, variables }),
     }),
     login: build.mutation<LoginMutation, LoginMutationVariables>({
-      query: (variables) => ({ document: LoginDocument, variables })
+      query: (variables) => ({ document: LoginDocument, variables }),
     }),
     logout: build.mutation<LogoutMutation, LogoutMutationVariables | void>({
-      query: (variables) => ({ document: LogoutDocument, variables })
+      query: (variables) => ({ document: LogoutDocument, variables }),
     }),
     updateArt: build.mutation<UpdateArtMutation, UpdateArtMutationVariables>({
-      query: (variables) => ({ document: UpdateArtDocument, variables })
+      query: (variables) => ({ document: UpdateArtDocument, variables }),
     }),
     updateAttribute: build.mutation<UpdateAttributeMutation, UpdateAttributeMutationVariables>({
-      query: (variables) => ({ document: UpdateAttributeDocument, variables })
+      query: (variables) => ({ document: UpdateAttributeDocument, variables }),
     }),
-    updateAttributesOrder: build.mutation<UpdateAttributesOrderMutation, UpdateAttributesOrderMutationVariables>({
-      query: (variables) => ({ document: UpdateAttributesOrderDocument, variables })
+    updateAttributesOrder: build.mutation<
+      UpdateAttributesOrderMutation,
+      UpdateAttributesOrderMutationVariables
+    >({
+      query: (variables) => ({ document: UpdateAttributesOrderDocument, variables }),
     }),
     updateCustomer: build.mutation<UpdateCustomerMutation, UpdateCustomerMutationVariables>({
-      query: (variables) => ({ document: UpdateCustomerDocument, variables })
+      query: (variables) => ({ document: UpdateCustomerDocument, variables }),
     }),
     updateFactory: build.mutation<UpdateFactoryMutation, UpdateFactoryMutationVariables>({
-      query: (variables) => ({ document: UpdateFactoryDocument, variables })
+      query: (variables) => ({ document: UpdateFactoryDocument, variables }),
     }),
     updateProject: build.mutation<UpdateProjectMutation, UpdateProjectMutationVariables>({
-      query: (variables) => ({ document: UpdateProjectDocument, variables })
+      query: (variables) => ({ document: UpdateProjectDocument, variables }),
     }),
     updateUser: build.mutation<UpdateUserMutation, UpdateUserMutationVariables>({
-      query: (variables) => ({ document: UpdateUserDocument, variables })
+      query: (variables) => ({ document: UpdateUserDocument, variables }),
     }),
     art: build.query<ArtQuery, ArtQueryVariables>({
-      query: (variables) => ({ document: ArtDocument, variables })
+      query: (variables) => ({ document: ArtDocument, variables }),
     }),
     arts: build.query<ArtsQuery, ArtsQueryVariables | void>({
-      query: (variables) => ({ document: ArtsDocument, variables })
+      query: (variables) => ({ document: ArtsDocument, variables }),
     }),
     attributes: build.query<AttributesQuery, AttributesQueryVariables>({
-      query: (variables) => ({ document: AttributesDocument, variables })
+      query: (variables) => ({ document: AttributesDocument, variables }),
     }),
     customer: build.query<CustomerQuery, CustomerQueryVariables>({
-      query: (variables) => ({ document: CustomerDocument, variables })
+      query: (variables) => ({ document: CustomerDocument, variables }),
     }),
     customers: build.query<CustomersQuery, CustomersQueryVariables | void>({
-      query: (variables) => ({ document: CustomersDocument, variables })
+      query: (variables) => ({ document: CustomersDocument, variables }),
     }),
     factories: build.query<FactoriesQuery, FactoriesQueryVariables | void>({
-      query: (variables) => ({ document: FactoriesDocument, variables })
+      query: (variables) => ({ document: FactoriesDocument, variables }),
     }),
     factory: build.query<FactoryQuery, FactoryQueryVariables>({
-      query: (variables) => ({ document: FactoryDocument, variables })
+      query: (variables) => ({ document: FactoryDocument, variables }),
     }),
     project: build.query<ProjectQuery, ProjectQueryVariables>({
-      query: (variables) => ({ document: ProjectDocument, variables })
+      query: (variables) => ({ document: ProjectDocument, variables }),
     }),
     projects: build.query<ProjectsQuery, ProjectsQueryVariables | void>({
-      query: (variables) => ({ document: ProjectsDocument, variables })
+      query: (variables) => ({ document: ProjectsDocument, variables }),
     }),
     projectsLov: build.query<ProjectsLovQuery, ProjectsLovQueryVariables | void>({
-      query: (variables) => ({ document: ProjectsLovDocument, variables })
+      query: (variables) => ({ document: ProjectsLovDocument, variables }),
     }),
     user: build.query<UserQuery, UserQueryVariables>({
-      query: (variables) => ({ document: UserDocument, variables })
+      query: (variables) => ({ document: UserDocument, variables }),
     }),
     users: build.query<UsersQuery, UsersQueryVariables | void>({
-      query: (variables) => ({ document: UsersDocument, variables })
+      query: (variables) => ({ document: UsersDocument, variables }),
     }),
     whoAmI: build.query<WhoAmIQuery, WhoAmIQueryVariables | void>({
-      query: (variables) => ({ document: WhoAmIDocument, variables })
+      query: (variables) => ({ document: WhoAmIDocument, variables }),
     }),
   }),
 });
 
 export { injectedRtkApi as api };
-export const { useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
-
+export const {
+  useChangePasswordMutation,
+  useCreateArtMutation,
+  useCreateAttributeMutation,
+  useCreateCustomerMutation,
+  useCreateFactoryMutation,
+  useCreateProjectMutation,
+  useCreateUserMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useUpdateArtMutation,
+  useUpdateAttributeMutation,
+  useUpdateAttributesOrderMutation,
+  useUpdateCustomerMutation,
+  useUpdateFactoryMutation,
+  useUpdateProjectMutation,
+  useUpdateUserMutation,
+  useArtQuery,
+  useLazyArtQuery,
+  useArtsQuery,
+  useLazyArtsQuery,
+  useAttributesQuery,
+  useLazyAttributesQuery,
+  useCustomerQuery,
+  useLazyCustomerQuery,
+  useCustomersQuery,
+  useLazyCustomersQuery,
+  useFactoriesQuery,
+  useLazyFactoriesQuery,
+  useFactoryQuery,
+  useLazyFactoryQuery,
+  useProjectQuery,
+  useLazyProjectQuery,
+  useProjectsQuery,
+  useLazyProjectsQuery,
+  useProjectsLovQuery,
+  useLazyProjectsLovQuery,
+  useUserQuery,
+  useLazyUserQuery,
+  useUsersQuery,
+  useLazyUsersQuery,
+  useWhoAmIQuery,
+  useLazyWhoAmIQuery,
+} = injectedRtkApi;

@@ -1,11 +1,11 @@
-mutation createUser($createUserInput: CreateUserInput!){
-    createUser(createUserInput: $createUserInput){
-        id
-        username
-        fullName
-        role
-        active
-        createdAt
-        updatedAt
-    }
+mutation createUser($createUserInput: CreateUserInput!) {
+  createUser(createUserInput: $createUserInput) {
+    id
+    username
+    fullName
+    role
+    active
+    createdAt
+    updatedAt
+  }
 }

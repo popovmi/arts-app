@@ -1,9 +1,9 @@
-mutation updateCustomer($input: UpdateCustomerInput!){
-    updateCustomer(input: $input){
-        id
-        name
-        active
-        createdAt
-        updatedAt
-    }
+mutation updateCustomer($input: UpdateCustomerInput!) {
+  updateCustomer(input: $input) {
+    id
+    name
+    active
+    createdAt
+    updatedAt
+  }
 }

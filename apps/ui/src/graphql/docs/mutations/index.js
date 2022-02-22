@@ -16,5 +16,7 @@ module.exports.createCustomer = fs.readFileSync(path.join(__dirname, 'createCust
 module.exports.updateCustomer = fs.readFileSync(path.join(__dirname, 'updateCustomer.gql'), 'utf8');
 module.exports.createAttribute = fs.readFileSync(path.join(__dirname, 'createAttribute.gql'), 'utf8');
 module.exports.updateAttribute = fs.readFileSync(path.join(__dirname, 'updateAttribute.gql'), 'utf8');
-module.exports.updateAttributesOrder = fs.readFileSync(path.join(__dirname, 'updateAttributesOrder.gql'), 'utf8');
-
+module.exports.updateAttributesOrder = fs.readFileSync(
+  path.join(__dirname, 'updateAttributesOrder.gql'),
+  'utf8'
+);

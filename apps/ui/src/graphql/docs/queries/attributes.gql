@@ -1,10 +1,10 @@
-query attributes($type: AttributeType!){
-    attributes(type: $type){
-        id
-        name
-        active
-        valueOrder
-        createdAt
-        updatedAt
-    }
+query attributes($type: AttributeType!) {
+  attributes(type: $type) {
+    id
+    name
+    active
+    valueOrder
+    createdAt
+    updatedAt
+  }
 }

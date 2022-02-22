@@ -42,13 +42,14 @@ export const FilterDropdownWithInput = ({
       </Col>
       <Col xs={24} style={{ display: 'flex', justifyContent: 'end' }}>
         <Button
-          type='link'
-          size='small'
+          type="link"
+          size="small"
           disabled={!selectedKeys[0]}
-          onClick={evt => {
+          onClick={(evt) => {
             clear();
             confirm({ closeDropdown: true });
-          }}>
+          }}
+        >
           Сбросить
         </Button>
       </Col>

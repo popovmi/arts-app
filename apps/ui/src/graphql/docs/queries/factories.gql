@@ -1,9 +1,9 @@
-query factories{
-    factories{
-        id
-        name
-        active
-        createdAt
-        updatedAt
-    }
+query factories {
+  factories {
+    id
+    name
+    active
+    createdAt
+    updatedAt
+  }
 }

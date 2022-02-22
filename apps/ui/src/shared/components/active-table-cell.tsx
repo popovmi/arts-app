@@ -9,11 +9,12 @@ interface ActiveCellProps {
 
 export const ActiveTableCell: FC<ActiveCellProps> = ({ record, action }) => (
   <Button
-    size='small'
-    type='primary'
+    size="small"
+    type="primary"
     danger={!record.active}
     icon={<SwitcherOutlined />}
-    onClick={action}>
+    onClick={action}
+  >
     {record.active ? 'Активен' : 'Неактивен'}
   </Button>
 );

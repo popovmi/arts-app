@@ -6,48 +6,48 @@ import { Customer } from './entities/customer.entity';
 
 @Injectable()
 export class CustomerService {
-    constructor(@InjectRepository(Customer) private customerRepository: Repository<Customer>) {}
+  constructor(@InjectRepository(Customer) private customerRepository: Repository<Customer>) {}
 
-    public async getByIds(ids: string[]) {
-        return await this.customerRepository.find({ id: In(ids) });
-    }
+  public async getByIds(ids: string[]) {
+    return await this.customerRepository.find({ id: In(ids) });
+  }
 
-    public async create(input: CreateCustomerInput) {
-        const customer = await this.customerRepository.save(input);
+  public async create(input: CreateCustomerInput) {
+    const customer = await this.customerRepository.save(input);
 
-        return customer;
-    }
+    return customer;
+  }
 
-    public async findAll() {
-        const customers = await this.customerRepository.find({ order: { createdAt: 'ASC' } });
+  public async findAll() {
+    const customers = await this.customerRepository.find({ order: { createdAt: 'ASC' } });
 
-        return customers;
-    }
+    return customers;
+  }
 
-    public async findOne(id: string) {
-        const customers = await this.customerRepository.findOne({ id });
+  public async findOne(id: string) {
+    const customers = await this.customerRepository.findOne({ id });
 
-        return customers;
-    }
+    return customers;
+  }
 
-    public async update({ id, ...input }: UpdateCustomerInput) {
-        const customer = await this.customerRepository.findOneOrFail({ id });
+  public async update({ id, ...input }: UpdateCustomerInput) {
+    const customer = await this.customerRepository.findOneOrFail({ id });
 
-        Object.assign(customer, input);
-        await this.customerRepository.save(customer);
+    Object.assign(customer, input);
+    await this.customerRepository.save(customer);
 
-        return customer;
-    }
+    return customer;
+  }
 
-    public async remove(id: string) {
-        await this.customerRepository.findOneOrFail({ id }, { select: ['id'] });
-        await this.customerRepository.delete({ id });
-    }
+  public async remove(id: string) {
+    await this.customerRepository.findOneOrFail({ id }, { select: ['id'] });
+    await this.customerRepository.delete({ id });
+  }
 
-    public async isActive(id: string) {
-        await this.customerRepository.findOneOrFail({
-            where: { id, active: true },
-            select: ['id'],
-        });
-    }
+  public async isActive(id: string) {
+    await this.customerRepository.findOneOrFail({
+      where: { id, active: true },
+      select: ['id'],
+    });
+  }
 }

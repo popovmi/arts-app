@@ -4,5 +4,5 @@ import { BaseAttribute } from './base-attribute.entity';
 
 @Entity()
 export class RingType extends BaseAttribute {
-    static attributeType = AttributeType.ringType;
+  static attributeType = AttributeType.ringType;
 }

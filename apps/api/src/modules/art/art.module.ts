@@ -9,9 +9,9 @@ import { ArtLoader } from './loaders';
 import { ArtFileService, ArtService } from './services';
 
 @Module({
-    imports: [forwardRef(() => ProjectModule), TypeOrmModule.forFeature([Art, ArtFile])],
-    providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
-    controllers: [FileUploadController],
-    exports: [ArtService],
+  imports: [forwardRef(() => ProjectModule), TypeOrmModule.forFeature([Art, ArtFile])],
+  providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
+  controllers: [FileUploadController],
+  exports: [ArtService],
 })
 export class ArtModule {}

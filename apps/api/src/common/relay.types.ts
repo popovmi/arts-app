@@ -6,57 +6,59 @@ import { PageData } from './page-data.type';
 const typeMap = {};
 
 export default function relayTypes<T>(type: Type<T>): any {
-    const { name } = type;
-    if (typeMap[`${name}`]) return typeMap[`${name}`];
+  const { name } = type;
 
-    @ObjectType(`${name}Edge`, { isAbstract: true })
-    class Edge implements Relay.Edge<T> {
-        public name = `${name}Edge`;
+  if (typeMap[`${name}`]) return typeMap[`${name}`];
 
-        @Field(() => String, { nullable: true })
-        public cursor!: Relay.ConnectionCursor;
+  @ObjectType(`${name}Edge`, { isAbstract: true })
+  class Edge implements Relay.Edge<T> {
+    public name = `${name}Edge`;
 
-        @Field(() => type, { nullable: true })
-        public node!: T;
-    }
+    @Field(() => String, { nullable: true })
+    public cursor!: Relay.ConnectionCursor;
 
-    @ObjectType(`${name}PageInfo`, { isAbstract: true })
-    class PageInfo implements Relay.PageInfo {
-        @Field(() => String, { nullable: true })
-        public startCursor!: Relay.ConnectionCursor;
+    @Field(() => type, { nullable: true })
+    public node!: T;
+  }
 
-        @Field(() => String, { nullable: true })
-        public endCursor!: Relay.ConnectionCursor;
+  @ObjectType(`${name}PageInfo`, { isAbstract: true })
+  class PageInfo implements Relay.PageInfo {
+    @Field(() => String, { nullable: true })
+    public startCursor!: Relay.ConnectionCursor;
 
-        @Field(() => Boolean)
-        public hasPreviousPage!: boolean;
+    @Field(() => String, { nullable: true })
+    public endCursor!: Relay.ConnectionCursor;
 
-        @Field(() => Boolean)
-        public hasNextPage!: boolean;
-    }
+    @Field(() => Boolean)
+    public hasPreviousPage!: boolean;
 
-    @ObjectType(`${name}Connection`, { isAbstract: true })
-    class Connection implements Relay.Connection<T> {
-        public name = `${name}Connection`;
+    @Field(() => Boolean)
+    public hasNextPage!: boolean;
+  }
 
-        @Field(() => [Edge], { nullable: true })
-        public edges!: Relay.Edge<T>[];
+  @ObjectType(`${name}Connection`, { isAbstract: true })
+  class Connection implements Relay.Connection<T> {
+    public name = `${name}Connection`;
 
-        @Field(() => PageInfo, { nullable: true })
-        public pageInfo!: Relay.PageInfo;
-    }
+    @Field(() => [Edge], { nullable: true })
+    public edges!: Relay.Edge<T>[];
 
-    @ObjectType(`${name}Page`, { isAbstract: true })
-    abstract class Page {
-        public name = `${name}Page`;
+    @Field(() => PageInfo, { nullable: true })
+    public pageInfo!: Relay.PageInfo;
+  }
 
-        @Field(() => Connection)
-        public page!: Connection;
+  @ObjectType(`${name}Page`, { isAbstract: true })
+  abstract class Page {
+    public name = `${name}Page`;
 
-        @Field(() => PageData, { nullable: true })
-        public pageData!: PageData;
-    }
+    @Field(() => Connection)
+    public page!: Connection;
 
-    typeMap[`${name}`] = Page;
-    return typeMap[`${name}`];
+    @Field(() => PageData, { nullable: true })
+    public pageData!: PageData;
+  }
+
+  typeMap[`${name}`] = Page;
+
+  return typeMap[`${name}`];
 }

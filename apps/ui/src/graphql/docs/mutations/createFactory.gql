@@ -1,9 +1,9 @@
-mutation createFactory($input: CreateFactoryInput!){
-    createFactory(input: $input){
-        id
-        name
-        active
-        createdAt
-        updatedAt
-    }
+mutation createFactory($input: CreateFactoryInput!) {
+  createFactory(input: $input) {
+    id
+    name
+    active
+    createdAt
+    updatedAt
+  }
 }

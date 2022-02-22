@@ -1,37 +1,37 @@
-mutation updateArt($updateArtInput: UpdateArtInput!){
-    updateArt(updateArtInput: $updateArtInput){
-        id
-        name
-        internal
-        files{
-            artId
-            originalPath
-            watermarkPath
-            uploadedAt
-        }
-        projectId
-        createdAt
-        updatedAt
-        bottomForm
-        artClass
-        form
-        nominalVolume
-        height
-        productType
-        productionMethod
-        ringType
-        project{
-            id
-            name
-            internal
-            hasDesignDoc
-            sfm
-            dropNumber
-            intercenter
-            factoryId
-            customerId
-            createdAt
-            updatedAt
-        }
+mutation updateArt($updateArtInput: UpdateArtInput!) {
+  updateArt(updateArtInput: $updateArtInput) {
+    id
+    name
+    internal
+    files {
+      artId
+      originalPath
+      watermarkPath
+      uploadedAt
     }
+    projectId
+    createdAt
+    updatedAt
+    bottomForm
+    artClass
+    form
+    nominalVolume
+    height
+    productType
+    productionMethod
+    ringType
+    project {
+      id
+      name
+      internal
+      hasDesignDoc
+      sfm
+      dropNumber
+      intercenter
+      factoryId
+      customerId
+      createdAt
+      updatedAt
+    }
+  }
 }

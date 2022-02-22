@@ -4,5 +4,5 @@ import { BaseAttribute } from './base-attribute.entity';
 
 @Entity()
 export class Intercenter extends BaseAttribute {
-    static attributeType = AttributeType.intercenter;
+  static attributeType = AttributeType.intercenter;
 }

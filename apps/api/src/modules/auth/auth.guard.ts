@@ -4,11 +4,11 @@ import { AppContext } from '@/shared/types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    canActivate(context: ExecutionContext): boolean {
-        const ctx = GqlExecutionContext.create(context).getContext<AppContext>();
+  canActivate(context: ExecutionContext): boolean {
+    const ctx = GqlExecutionContext.create(context).getContext<AppContext>();
 
-        if (!ctx.session.isLoggedIn) throw new UnauthorizedException();
+    if (!ctx.session.isLoggedIn) throw new UnauthorizedException();
 
-        return true;
-    }
+    return true;
+  }
 }

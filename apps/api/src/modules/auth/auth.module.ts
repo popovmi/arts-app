@@ -6,8 +6,8 @@ import { Session } from './entity/session.entity';
 import { PasswordService, AuthService } from './service';
 
 @Module({
-    imports: [forwardRef(() => UserModule), TypeOrmModule.forFeature([Session])],
-    providers: [PasswordService, AuthService, AuthResolver],
-    exports: [PasswordService],
+  imports: [forwardRef(() => UserModule), TypeOrmModule.forFeature([Session])],
+  providers: [PasswordService, AuthService, AuthResolver],
+  exports: [PasswordService],
 })
 export class AuthModule {}

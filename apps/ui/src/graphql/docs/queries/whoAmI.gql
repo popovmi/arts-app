@@ -1,11 +1,11 @@
-query whoAmI{
-    whoAmI{
-        id
-        username
-        fullName
-        role
-        active
-        createdAt
-        updatedAt
-    }
+query whoAmI {
+  whoAmI {
+    id
+    username
+    fullName
+    role
+    active
+    createdAt
+    updatedAt
+  }
 }

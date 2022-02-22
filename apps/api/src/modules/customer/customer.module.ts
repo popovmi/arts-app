@@ -5,8 +5,8 @@ import { CustomerResolver } from './customer.resolver';
 import { CustomerService } from './customer.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Customer])],
-    providers: [CustomerService, CustomerResolver],
-    exports: [CustomerService],
+  imports: [TypeOrmModule.forFeature([Customer])],
+  providers: [CustomerService, CustomerResolver],
+  exports: [CustomerService],
 })
 export class CustomerModule {}

@@ -1,28 +1,28 @@
-mutation createArt($createArtInput: CreateArtInput!){
-    createArt(createArtInput: $createArtInput){
-        id
-        name
-        internal
-        files{
-            artId
-            originalPath
-            watermarkPath
-            uploadedAt
-        }
-        projectId
-        createdAt
-        updatedAt
-        bottomForm
-        artClass
-        form
-        nominalVolume
-        height
-        productType
-        productionMethod
-        ringType
-        project{
-            id
-            name
-        }
+mutation createArt($createArtInput: CreateArtInput!) {
+  createArt(createArtInput: $createArtInput) {
+    id
+    name
+    internal
+    files {
+      artId
+      originalPath
+      watermarkPath
+      uploadedAt
     }
+    projectId
+    createdAt
+    updatedAt
+    bottomForm
+    artClass
+    form
+    nominalVolume
+    height
+    productType
+    productionMethod
+    ringType
+    project {
+      id
+      name
+    }
+  }
 }

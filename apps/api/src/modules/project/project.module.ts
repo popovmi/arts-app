@@ -9,8 +9,13 @@ import { FactoryModule } from '@/modules/factory/factory.module';
 import { CustomerModule } from '@/modules/customer/customer.module';
 
 @Module({
-    imports: [forwardRef(() => ArtModule), forwardRef(() => FactoryModule), forwardRef(() => CustomerModule), TypeOrmModule.forFeature([Project])],
-    providers: [ProjectResolver, ProjectService, ProjectLoader],
-    exports: [ProjectService],
+  imports: [
+    forwardRef(() => ArtModule),
+    forwardRef(() => FactoryModule),
+    forwardRef(() => CustomerModule),
+    TypeOrmModule.forFeature([Project]),
+  ],
+  providers: [ProjectResolver, ProjectService, ProjectLoader],
+  exports: [ProjectService],
 })
 export class ProjectModule {}

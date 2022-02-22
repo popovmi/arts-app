@@ -4,38 +4,38 @@ import { FC } from 'react';
 import { selectArts } from '..';
 
 export const HeaderRow: FC = ({ children, ...props }) => {
-    return <tr {...props}>{children}</tr>;
+  return <tr {...props}>{children}</tr>;
 };
 
 interface HeaderCellProps {
-    dataIndex: keyof ArtFilterQuery;
-    [key: string]: any;
+  dataIndex: keyof ArtFilterQuery;
+  [key: string]: any;
 }
 
 export const HeaderCell: FC<HeaderCellProps> = ({ children, style, dataIndex, ...props }) => {
-    const { filter } = useAppSelector(selectArts);
-    const filterField = Array.isArray(dataIndex)
-        ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
-        : filter[dataIndex];
+  const { filter } = useAppSelector(selectArts);
+  const filterField = Array.isArray(dataIndex)
+    ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
+    : filter[dataIndex];
 
-    const cellStyle = {
-        ...style,
-        ...(Object.keys(filterField || {}).length > 0 ? { backgroundColor: 'rgba(190,245,255,0.9)' } : {}),
-    };
+  const cellStyle = {
+    ...style,
+    ...(Object.keys(filterField || {}).length > 0 ? { backgroundColor: 'rgba(190,245,255,0.9)' } : {}),
+  };
 
-    return (
-        <th {...props} style={cellStyle}>
-            {children}
-        </th>
-    );
+  return (
+    <th {...props} style={cellStyle}>
+      {children}
+    </th>
+  );
 };
 
 interface TableBodyProps {
-    [key: string]: any;
+  [key: string]: any;
 }
 
 export const TableBody: FC<TableBodyProps> = ({ children, style, ...props }) => (
-    <tbody style={{ ...style, overflow: 'hidden' }} {...props}>
-        {children}
-    </tbody>
+  <tbody style={{ ...style, overflow: 'hidden' }} {...props}>
+    {children}
+  </tbody>
 );

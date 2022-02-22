@@ -1,70 +1,63 @@
-// import { Checkbox, Form, Input, message, Modal } from 'antd';
-// import { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/app/store';
+import { UpdateCustomerInput, useCustomerQuery, useUpdateCustomerMutation } from '@/graphql';
+import { Checkbox, Form, Input, Modal, Spin, Typography } from 'antd';
+import { FC, useEffect } from 'react';
+import { setEditCustomerId } from '../customer.slice';
 
-// import { useAppDispatch, useAppSelector } from '~/app/store';
+const { Item, useForm } = Form;
 
-// import { resetState, setEdit, update } from '../customer.slice';
-// import { UpdateCustomerDto } from '../interfaces';
+export const UpdateCustomerModal: FC = () => {
+  const dispatch = useAppDispatch();
+  const { editCustomerId } = useAppSelector((state) => state.customer);
+  const {
+    data: customerData,
+    isLoading,
+    isFetching,
+  } = useCustomerQuery({ id: editCustomerId! }, { skip: !editCustomerId });
+  const customer = customerData?.customer;
+  const [update, { reset, isError, error, isLoading: isUpdating }] = useUpdateCustomerMutation();
+  const [form] = useForm<UpdateCustomerInput>();
 
-// export const UpdateCustomerModal: FC = () => {
-//   const { editUuid, updateSuccess, updateError, data } = useAppSelector(state => state.customers);
-//   const [form] = Form.useForm<UpdateCustomerDto>();
-//   const dispatch = useAppDispatch();
-//   const company = data?.find(company => company.uuid === editUuid);
+  useEffect(() => {
+    form.resetFields();
+  }, [customer]);
 
-//   useEffect(() => {
-//     form.resetFields();
-//   }, [editUuid]);
+  const onOk = async () => {
+    const values = await form.validateFields();
 
-//   useEffect(() => {
-//     if (updateSuccess) {
-//       message.success(`Заказчик успешно обновлён`);
-//       form.resetFields();
-//       dispatch(setEdit(undefined));
-//     }
+    update({ input: { ...values, id: customer!.id } }).then((res) => {
+      if ('data' in res) {
+        form.resetFields();
+        reset();
+        dispatch(setEditCustomerId(null));
+      }
+    });
+  };
 
-//     return () => {
-//       dispatch(resetState());
-//     };
-//   }, [updateSuccess]);
+  const loading = isLoading || isFetching || isUpdating;
 
-//   useEffect(() => {
-//     if (updateError) {
-//       message.error(`Не удалось обновить заказчика. ${updateError}`);
-//     }
-//   }, [updateError]);
-
-//   const handleUpdate = async () => {
-//     const data = await form.validateFields();
-//     dispatch(update({ uuid: editUuid, data }));
-//   };
-
-//   return (
-//     <Modal
-//       visible={!!editUuid}
-//       title={`Редактировать заказчика ${company?.name}`}
-//       okText='Сохранить'
-//       cancelText='Отменить'
-//       onCancel={() => dispatch(setEdit(undefined))}
-//       onOk={handleUpdate}
-//       forceRender={true}>
-//       <Form
-//         labelCol={{ span: 8 }}
-//         wrapperCol={{ span: 16 }}
-//         name='newCustomer'
-//         form={form}
-//         initialValues={company}
-//         labelAlign='left'>
-//         <Form.Item
-//           label='Название'
-//           name='name'
-//           rules={[{ required: true, message: 'Обязательно!' }]}>
-//           <Input />
-//         </Form.Item>
-//         <Form.Item label='Активен' name='active' valuePropName='checked'>
-//           <Checkbox />
-//         </Form.Item>
-//       </Form>
-//     </Modal>
-//   );
-// };
+  return (
+    <Modal
+      visible={!!editCustomerId}
+      onCancel={() => dispatch(setEditCustomerId(null))}
+      onOk={onOk}
+      title={customer?.name || 'Заказчик'}
+    >
+      <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} initialValues={{ ...customer }}>
+        <Spin spinning={loading}>
+          {customer && (
+            <>
+              <Item name="name" label="Название">
+                <Input />
+              </Item>
+              <Item name="active" label="Активен" valuePropName="checked">
+                <Checkbox />
+              </Item>
+            </>
+          )}
+        </Spin>
+        {isError && <Typography.Text type="danger">{error!.message}</Typography.Text>}
+      </Form>
+    </Modal>
+  );
+};

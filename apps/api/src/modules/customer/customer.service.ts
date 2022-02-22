@@ -19,7 +19,7 @@ export class CustomerService {
   }
 
   public async findAll() {
-    const customers = await this.customerRepository.find({ order: { createdAt: 'ASC' } });
+    const customers = await this.customerRepository.find({ order: { createdAt: 'ASC', name: 'ASC' } });
 
     return customers;
   }

@@ -1,13 +1,13 @@
-import { MutationChangePasswordArgs, useChangePasswordMutation, useWhoAmIQuery } from '@/graphql';
+import { MutationChangePasswordArgs, useChangePasswordMutation } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
+import { useUser } from '@/shared/hooks';
 import { Button, Form, Input, Row, Typography } from 'antd';
 
 const { Item } = Form;
 const { Password } = Input;
 
 export const PasswordUpdatePage = () => {
-  const { data, refetch } = useWhoAmIQuery();
-  const user = data?.whoAmI;
+  const { user, refetch } = useUser();
   const [updatePassword, { isLoading, isError, error }] = useChangePasswordMutation();
 
   if (isLoading) return <CenteredSpin />;
@@ -24,10 +24,10 @@ export const PasswordUpdatePage = () => {
         <Item name="password" rules={[{ required: true, message: 'Введите старый пароль!' }]}>
           <Password placeholder="Старый пароль" />
         </Item>
-        <Item name="passwordRepeat" rules={[{ required: true, message: 'Повторите старый пароль!' }]}>
-          <Password placeholder="Старый пароль" />
+        <Item name="newPassword" rules={[{ required: true, message: 'Введите новый пароль!' }]}>
+          <Password placeholder="Новый пароль" />
         </Item>
-        <Item name="newPassword" rules={[{ required: true, message: 'Повторите старый пароль!' }]}>
+        <Item name="passwordRepeat" rules={[{ required: true, message: 'Повторите новый пароль!' }]}>
           <Password placeholder="Новый пароль" />
         </Item>
         <Item>

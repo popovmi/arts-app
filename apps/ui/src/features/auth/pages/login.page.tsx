@@ -1,5 +1,6 @@
-import { MutationLoginArgs, useLoginMutation, useWhoAmIQuery } from '@/graphql';
+import { MutationLoginArgs, useLoginMutation } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
+import { useUser } from '@/shared/hooks';
 import { Button, Col, Form, Input, Row, Typography } from 'antd';
 import { FC, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -16,13 +17,13 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate();
 
   const [tryAuthenticate, { isError, error, isLoading }] = useLoginMutation({ fixedCacheKey: 'auth' });
-  const { isSuccess, refetch } = useWhoAmIQuery();
+  const { user, refetch } = useUser();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (user) {
       navigate(navigateTo);
     }
-  }, [isSuccess]);
+  }, [user]);
 
   if (isLoading) return <CenteredSpin />;
 

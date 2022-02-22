@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from '@/app/store';
 import {
   UpdateAttributeInput,
   useAttributeQuery,
-  useAttributesQuery,
   useUpdateAttributeMutation,
 } from '@/graphql';
 import { Checkbox, Form, Input, Modal, Spin, Typography, message } from 'antd';

@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/app/store';
-import { BooleanFieldOption, Role, User, UserFilterQuery, useWhoAmIQuery } from '@/graphql';
+import { useUser } from '@/shared/hooks';
+import { BooleanFieldOption, Role, User, UserFilterQuery } from '@/graphql';
 import { EditOutlined } from '@ant-design/icons';
 import {
   Typography,
@@ -72,8 +73,7 @@ const UserFilterInput: FC<UserFilterItemProps> = ({
 export const userColumns = () => {
   const dispatch = useAppDispatch();
   const { filter } = useAppSelector(selectUsers);
-  const { data } = useWhoAmIQuery();
-  const currentUser = data?.whoAmI || ({} as User);
+  const { user: currentUser } = useUser();
 
   const getYesNoFilter = (dataIndex: keyof UserFilterQuery) => () => {
     const onChange = (e: RadioChangeEvent) => {
@@ -119,7 +119,7 @@ export const userColumns = () => {
       dataIndex: 'editOper',
       width: '48px',
       render: (_: any, record: User) =>
-        record.id !== currentUser.id && (
+        record.id !== currentUser!.id && (
           <Button icon={<EditOutlined />} onClick={() => dispatch(setEditUserId(record.id))} />
         ),
       fixed: true,

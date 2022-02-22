@@ -1,4 +1,5 @@
-import { useLogoutMutation, useWhoAmIQuery } from '@/graphql';
+import { useLogoutMutation } from '@/graphql';
+import { useUser } from '@/shared/hooks';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Space } from 'antd';
 import { FC } from 'react';
@@ -8,15 +9,12 @@ const { Item } = Menu;
 
 export const AuthWidget: FC = () => {
   const navigate = useNavigate();
-  const [doLogout] = useLogoutMutation();
-  const { data, isSuccess, refetch } = useWhoAmIQuery();
-  const user = data?.whoAmI;
+  const [doLogout] = useLogoutMutation({ fixedCacheKey: 'logout' });
+  const { user } = useUser();
 
   const handleLogOut = async (evt: any) => {
     evt.preventDefault();
-    doLogout().then((result) => {
-      'data' in result && refetch();
-    });
+    doLogout();
   };
 
   const handleChangePassword = (evt: any) => {
@@ -24,7 +22,7 @@ export const AuthWidget: FC = () => {
     navigate(`/update`);
   };
 
-  return isSuccess ? (
+  return user ? (
     <Space align="center">
       <UserOutlined style={{ color: '#aaa', fontSize: '1.25rem' }} />
       <Dropdown

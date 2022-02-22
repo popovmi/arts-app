@@ -25,9 +25,13 @@ export type AppStore = typeof store;
 export type AppDispatch = AppStore['dispatch'];
 
 const rootReducer: Reducer<RootState, AnyAction> = (state, action) => {
-  if (action['meta']?.arg?.endpointName !== 'whoAmI' && action['payload']?.data?.[0]?.status === 401) {
+  if ((action['meta']?.arg?.endpointName !== 'whoAmI' && action['payload']?.data?.[0]?.status === 401)) {
     message.error('Сессия истекла. Необходимо авторизоваться!');
 
+    return appReducer({} as RootState, action);
+  }
+
+  if (action['payload']?.logout === true) {
     return appReducer({} as RootState, action);
   }
 

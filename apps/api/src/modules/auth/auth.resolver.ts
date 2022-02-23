@@ -1,15 +1,17 @@
-import { Logger, UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserType } from '@/modules/user/dto';
 import { UserService } from '@/modules/user/user.service';
 import { AppContext } from '@/shared/types/context';
+import { Logger, UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from './auth.guard';
-import { AuthService } from './service';
 import { LoginArgs, LoginResponse } from './dto';
 import { ChangePasswordArgs } from './dto/change-password.args';
+import { AuthService } from './service';
 
 @Resolver()
 export class AuthResolver {
+  private logger = new Logger(AuthResolver.name);
+
   constructor(readonly authService: AuthService, readonly userService: UserService) {}
 
   @Mutation(() => LoginResponse)
@@ -53,7 +55,7 @@ export class AuthResolver {
     await this.authService.changePassword(changePasswordInput);
 
     session.destroy((err) => {
-      if (err) console.log(err);
+      if (err) this.logger.error('Error destroying session', err);
     });
 
     return true;

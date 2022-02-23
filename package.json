@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
+    "start": "NODE_ENV=production node dist/apps/api/main.js",
     "build": "nx build",
     "test": "nx test",
     "gen:gql:all": "npx gqlg --schemaFilePath ./apps/api/src/schema.gql --destDirPath ./.temp",

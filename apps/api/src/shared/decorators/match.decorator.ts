@@ -27,11 +27,13 @@ export const Match = <T>(
 export class MatchConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [fn] = args.constraints;
+
     return fn(args.object) === value;
   }
 
   defaultMessage(args: ValidationArguments) {
     const [constraintProperty]: (() => any)[] = args.constraints;
+
     return `${constraintProperty} and ${args.property} does not match`;
   }
 }
@@ -56,11 +58,13 @@ export const NotMatch = <T>(
 export class NotMatchConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [fn] = args.constraints;
+
     return fn(args.object) !== value;
   }
 
   defaultMessage(args: ValidationArguments) {
     const [constraintProperty]: (() => any)[] = args.constraints;
+
     return `${constraintProperty} and ${args.property} shoud not match`;
   }
 }

@@ -76,7 +76,6 @@ export class ApiConfigService {
       }),
 
       formatError: (error) => {
-        console.log(error);
         const { message, statusCode } = (error.extensions?.response as any) || {
           message: null,
           statusCode: null,
@@ -86,8 +85,6 @@ export class ApiConfigService {
           message: message || error.message,
           ...(statusCode && { status: statusCode }),
         };
-
-        console.log(graphQLFormattedError);
 
         return graphQLFormattedError;
       },
@@ -103,12 +100,12 @@ export class ApiConfigService {
           autoLoadEntities: true,
           synchronize: false,
           dropSchema: false,
-          ssl: true,
-          extra: {
-            ssl: {
-              rejectUnauthorized: false,
-            },
-          },
+          // ssl: true,
+          // extra: {
+          //   ssl: {
+          //     rejectUnauthorized: false,
+          //   },
+          // },
         }
       : {
           type: 'postgres',

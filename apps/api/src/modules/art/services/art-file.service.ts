@@ -107,6 +107,7 @@ export class ArtFileService {
       originalPath = await this.saveOriginal(filePath, art);
       watermarkPath = await this.saveWatemark(filePath, art);
       await this.artFileRepository.upsert({ artId: art.id, originalPath, watermarkPath }, ['artId']);
+      if (existsSync(filePath)) await rm(filePath);
     } catch (e) {
       if (existsSync(originalPath)) await rm(originalPath);
       if (existsSync(watermarkPath)) await rm(watermarkPath);

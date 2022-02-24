@@ -7,14 +7,14 @@ import { FactoryModule } from '@/modules/factory/factory.module';
 import { ProjectModule } from '@/modules/project/project.module';
 import { UserModule } from '@/modules/user';
 import { ApiConfigService, SharedModule } from '@/shared';
+import { LoggerModule } from '@/shared/logger';
 import { ApolloDriver } from '@nestjs/apollo';
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
-import { resolve } from 'path/posix';
+import { join, resolve } from 'path';
 import { EntityManager } from 'typeorm';
 
 @Module({
@@ -22,6 +22,8 @@ import { EntityManager } from 'typeorm';
     ConfigModule.forRoot({ isGlobal: true }),
 
     SharedModule,
+
+    LoggerModule,
 
     TypeOrmModule.forRootAsync({
       inject: [ApiConfigService],

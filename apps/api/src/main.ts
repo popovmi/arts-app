@@ -20,7 +20,9 @@ async function bootstrap() {
   initializeTransactionalContext();
   patchTypeORMRepositoryWithBaseRepository();
 
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: true,
+  });
   const apiConfig = app.get<ApiConfigService>(ApiConfigService);
   const port = process.env.PORT || 3333;
   const reflector = app.get<Reflector>(Reflector);

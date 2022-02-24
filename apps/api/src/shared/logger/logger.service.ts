@@ -1,14 +1,33 @@
 import { Inject, Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
 import { AsyncLocalStorage } from 'async_hooks';
-import pinoLogger from 'pino';
 import { ApiConfigService } from '..';
 import { ASYNC_STORAGE } from './logger.constants';
+import * as winstonLogger from 'winston';
+import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
+import 'winston-daily-rotate-file';
 
-const consoleLogger = pinoLogger({
-  prettyPrint: true,
+const format = winstonLogger.format.combine(
+  winstonLogger.format.timestamp({ format: () => new Date().toLocaleString() }),
+  winstonLogger.format.ms()
+);
+
+const logger = winstonLogger.createLogger({
+  transports: [
+    new winstonLogger.transports.Console({
+      format: winstonLogger.format.combine(
+        format,
+        nestWinstonModuleUtilities.format.nestLike('ARTsApplication', { prettyPrint: true })
+      ),
+    }),
+    new winstonLogger.transports.DailyRotateFile({
+      filename: './logs/arts-application-%DATE%.log',
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      format: winstonLogger.format.combine(format, winstonLogger.format.json()),
+    }),
+  ],
 });
-
-const fileLogger = pinoLogger({}, pinoLogger.destination('./logs/api.log'));
 
 @Injectable()
 export class LoggerService implements NestLoggerService {
@@ -21,12 +40,10 @@ export class LoggerService implements NestLoggerService {
   ) {
     if (this.config.isProduction) {
       this.logLevels = ['log', 'warn', 'error'];
-      consoleLogger.level = 'info';
-      fileLogger.level = 'info';
+      logger.level = 'info';
     } else {
       this.logLevels = ['debug', 'error', 'log', 'verbose', 'warn'];
-      consoleLogger.level = 'trace';
-      fileLogger.level = 'trace';
+      logger.level = 'debug';
     }
   }
 
@@ -34,63 +51,58 @@ export class LoggerService implements NestLoggerService {
     return context ? `[ ${context} ] ${message}` : message;
   }
 
-  private pinoError(message: any, trace?: string, context?: string): any {
+  private winstonError(message: any, trace?: string, context?: string): any {
     const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    consoleLogger.error({ traceId }, logMessage);
-    fileLogger.error({ traceId }, logMessage);
+    logger.error(logMessage, { traceId });
     if (trace) {
-      consoleLogger.error(trace);
-      fileLogger.error(trace);
+      logger.error(trace, { traceId });
     }
   }
 
-  private pinoLog(message: any, context?: string): any {
+  private winstonLog(message: any, context?: string): any {
     const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    consoleLogger.info({ traceId }, logMessage);
-    fileLogger.info({ traceId }, logMessage);
+    logger.info(logMessage, { traceId });
   }
 
-  private pinoWarn(message: any, trace?: string, context?: string): any {
+  private winstonWarn(message: any, trace?: string, context?: string): any {
     const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    consoleLogger.warn({ traceId }, logMessage);
-    fileLogger.warn({ traceId }, logMessage);
+    logger.warn(logMessage, { traceId });
   }
 
-  private pinoDebug(message: any, trace?: string, context?: string): any {
+  private winstonDebug(message: any, trace?: string, context?: string): any {
     const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    consoleLogger.debug({ traceId }, logMessage);
-    fileLogger.debug({ traceId }, logMessage);
+    logger.debug(logMessage, { traceId });
   }
 
   error(message: any, trace?: string, context?: string): any {
     if (this.logLevels.includes('error')) {
-      this.pinoError(message, trace, context);
+      this.winstonError(message, trace, context);
     }
   }
 
   log(message: any, context?: string): any {
     if (this.logLevels.includes('log')) {
-      this.pinoLog(message, context);
+      this.winstonLog(message, context);
     }
   }
 
   warn(message: any, context?: string): any {
     if (this.logLevels.includes('warn')) {
-      this.pinoWarn(message, context);
+      this.winstonWarn(message, context);
     }
   }
 
   debug(message: any, context?: string): any {
     if (this.logLevels.includes('debug')) {
-      this.pinoDebug(message, context);
+      this.winstonDebug(message, context);
     }
   }
 }

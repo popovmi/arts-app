@@ -33,6 +33,7 @@ async function bootstrap() {
   });
   const logger = app.get(LoggerService);
 
+  app.useLogger(logger);
   app.use((req, res, next) => {
     const asyncStorage = app.get(ASYNC_STORAGE);
     const traceId = req.headers['x-request-id'] || v4();
@@ -57,7 +58,6 @@ async function bootstrap() {
       }),
     })
   );
-  app.useLogger(app.get(LoggerService));
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalFilters(/* new HttpExceptionFilter(reflector), */ new QueryFailedFilter(reflector));
   app.disable('x-powered-by');

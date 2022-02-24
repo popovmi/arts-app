@@ -87,14 +87,11 @@
     "graphql-request": "^4.0.0",
     "graphql-tools": "^8.2.0",
     "jimp": "^0.16.1",
-    "nestjs-pino": "^2.5.0",
+    "nest-winston": "^1.6.2",
     "node-poppler": "^5.1.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "pino": "^7.8.0",
-    "pino-http": "^6.6.0",
-    "pino-pretty": "^7.5.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-infinite-scroll-hook": "^4.0.2",
@@ -108,6 +105,8 @@
     "tslib": "^2.3.1",
     "typeorm": "^0.2.43",
     "typeorm-transactional-cls-hooked": "^0.1.21",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.6.0",
+    "winston-daily-rotate-file": "^4.6.1"
   }
 }

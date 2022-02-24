@@ -1,3 +1,4 @@
+import { DbModule } from '@/db/db.module';
 import { initTestData } from '@/db/init-test-data';
 import { ArtModule } from '@/modules/art/art.module';
 import { AttributeModule } from '@/modules/attribute/attribute.module';
@@ -13,7 +14,7 @@ import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { InjectEntityManager, TypeOrmModule } from '@nestjs/typeorm';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import { join, resolve } from 'path';
 import { EntityManager } from 'typeorm';
 
@@ -25,10 +26,7 @@ import { EntityManager } from 'typeorm';
 
     LoggerModule,
 
-    TypeOrmModule.forRootAsync({
-      inject: [ApiConfigService],
-      useFactory: (config: ApiConfigService) => config.typeOrmConfig,
-    }),
+    DbModule,
 
     GraphQLModule.forRootAsync({
       driver: ApolloDriver,

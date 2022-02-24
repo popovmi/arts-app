@@ -2,7 +2,6 @@ import { AppContext } from '@/shared/types';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Request, Response } from 'express';
 import { GraphQLFormattedError } from 'graphql';
 import { join } from 'path';
@@ -88,33 +87,6 @@ export class ApiConfigService {
         return graphQLFormattedError;
       },
     };
-  }
-
-  get typeOrmConfig(): TypeOrmModuleOptions {
-    return this.isProduction
-      ? {
-          type: 'postgres',
-          url: this.getString('DATABASE_URL'),
-          logging: ['error', 'warn'],
-          autoLoadEntities: true,
-          synchronize: false,
-          dropSchema: false,
-          // ssl: true,
-          // extra: {
-          //   ssl: {
-          //     rejectUnauthorized: false,
-          //   },
-          // },
-        }
-      : {
-          type: 'postgres',
-          url: this.config.get<string>('DATABASE_URL'),
-          synchronize: true,
-          dropSchema: true,
-          autoLoadEntities: true,
-          keepConnectionAlive: true,
-          logging: ['error', 'info', 'log', 'migration', 'query', 'schema', 'warn'],
-        };
   }
 
   public get(key: string): string {

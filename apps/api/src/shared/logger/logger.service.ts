@@ -11,22 +11,23 @@ const format = winstonLogger.format.combine(
   winstonLogger.format.ms()
 );
 
-const logger = winstonLogger.createLogger({
-  transports: [
-    new winstonLogger.transports.Console({
-      format: winstonLogger.format.combine(
-        format,
-        nestWinstonModuleUtilities.format.nestLike('ARTsApplication', { prettyPrint: true })
-      ),
-    }),
-    new winstonLogger.transports.DailyRotateFile({
-      filename: './logs/arts-application-%DATE%.log',
-      datePattern: 'YYYY-MM-DD-HH',
-      zippedArchive: true,
-      maxSize: '20m',
-      format: winstonLogger.format.combine(format, winstonLogger.format.json()),
-    }),
-  ],
+const consoleTransport = new winstonLogger.transports.Console({
+  format: winstonLogger.format.combine(
+    format,
+    nestWinstonModuleUtilities.format.nestLike('ARTsApplication', { prettyPrint: true })
+  ),
+});
+
+const fileTransport = new winstonLogger.transports.DailyRotateFile({
+  filename: './logs/arts-application-%DATE%.log',
+  datePattern: 'YYYY-MM-DD-HH',
+  zippedArchive: true,
+  maxSize: '20m',
+  format: winstonLogger.format.combine(format, winstonLogger.format.json()),
+});
+
+export const logger = winstonLogger.createLogger({
+  transports: [consoleTransport, fileTransport],
 });
 
 @Injectable()
@@ -37,6 +38,18 @@ export class LoggerService implements NestLoggerService {
     private readonly config: ApiConfigService
   ) {
     logger.level = this.config.isProduction ? 'info' : 'debug';
+
+    const traceIdExtractor = winstonLogger.format((info) => {
+      const traceId = this.asyncStorage.getStore()?.get('traceId');
+
+      info.traceId = traceId;
+
+      return info;
+    });
+
+    [consoleTransport, fileTransport].forEach((transport) => {
+      transport.format = winstonLogger.format.combine(traceIdExtractor(), transport.format);
+    });
   }
 
   private getMessage(message: any, context?: string) {
@@ -44,39 +57,34 @@ export class LoggerService implements NestLoggerService {
   }
 
   private winstonError(message: any, trace?: string, context?: string): any {
-    const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    logger.error(logMessage, { traceId });
+    logger.error(logMessage);
     if (trace) {
-      logger.error(trace, { traceId });
+      logger.error(trace);
     }
   }
 
   private winstonLog(message: any, context?: string): any {
-    const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    logger.info(logMessage, { traceId });
+    logger.info(logMessage);
   }
 
   private winstonWarn(message: any, context?: string): any {
-    const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    logger.warn(logMessage, { traceId });
+    logger.warn(logMessage);
   }
 
   private winstonDebug(message: any, context?: string): any {
-    const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
-    logger.debug(logMessage, { traceId });
+    logger.debug(logMessage);
   }
 
   error(message: any, trace?: string, context?: string): any {
     this.winstonError(message, trace, context);
-    // }
   }
 
   log(message: any, context?: string): any {

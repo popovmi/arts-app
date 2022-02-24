@@ -31,20 +31,12 @@ const logger = winstonLogger.createLogger({
 
 @Injectable()
 export class LoggerService implements NestLoggerService {
-  private logLevels: Array<'debug' | 'error' | 'log' | 'verbose' | 'warn'>;
-
   constructor(
     @Inject(ASYNC_STORAGE)
     private readonly asyncStorage: AsyncLocalStorage<Map<string, string>>,
     private readonly config: ApiConfigService
   ) {
-    if (this.config.isProduction) {
-      this.logLevels = ['log', 'warn', 'error'];
-      logger.level = 'info';
-    } else {
-      this.logLevels = ['debug', 'error', 'log', 'verbose', 'warn'];
-      logger.level = 'debug';
-    }
+    logger.level = this.config.isProduction ? 'info' : 'debug';
   }
 
   private getMessage(message: any, context?: string) {
@@ -68,14 +60,14 @@ export class LoggerService implements NestLoggerService {
     logger.info(logMessage, { traceId });
   }
 
-  private winstonWarn(message: any, trace?: string, context?: string): any {
+  private winstonWarn(message: any, context?: string): any {
     const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
     logger.warn(logMessage, { traceId });
   }
 
-  private winstonDebug(message: any, trace?: string, context?: string): any {
+  private winstonDebug(message: any, context?: string): any {
     const traceId = this.asyncStorage.getStore()?.get('traceId');
     const logMessage = this.getMessage(message, context);
 
@@ -83,26 +75,19 @@ export class LoggerService implements NestLoggerService {
   }
 
   error(message: any, trace?: string, context?: string): any {
-    if (this.logLevels.includes('error')) {
-      this.winstonError(message, trace, context);
-    }
+    this.winstonError(message, trace, context);
+    // }
   }
 
   log(message: any, context?: string): any {
-    if (this.logLevels.includes('log')) {
-      this.winstonLog(message, context);
-    }
+    this.winstonLog(message, context);
   }
 
   warn(message: any, context?: string): any {
-    if (this.logLevels.includes('warn')) {
-      this.winstonWarn(message, context);
-    }
+    this.winstonWarn(message, context);
   }
 
   debug(message: any, context?: string): any {
-    if (this.logLevels.includes('debug')) {
-      this.winstonDebug(message, context);
-    }
+    this.winstonDebug(message, context);
   }
 }

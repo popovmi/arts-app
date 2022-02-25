@@ -41,7 +41,9 @@ async function bootstrap() {
   });
   const logger = app.get(LoggerService);
 
-	app.use
+  if (apiConfig.isProduction) {
+    app.set('trust proxy', 1);
+  }
   app.use(
     session({
       name: 'aa_sid',

@@ -41,9 +41,7 @@ export class LoggerService implements NestLoggerService {
 
     const traceIdExtractor = winstonLogger.format((info) => {
       const traceId = this.asyncStorage.getStore()?.get('traceId');
-
       info.traceId = traceId;
-
       return info;
     });
 

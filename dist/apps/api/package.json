@@ -1,0 +1,45 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "dependencies": {
+    "typeorm": "^0.2.44",
+    "dotenv": "^16.0.0",
+    "@nestjs/apollo": "^10.0.5",
+    "@nestjs/common": "^8.3.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.4",
+    "@nestjs/core": "^8.3.1",
+    "@nestjs/platform-express": "^8.3.1",
+    "@nestjs/graphql": "^10.0.5",
+    "graphql": "^16.3.0",
+    "apollo-server-express": "^3.6.3",
+    "express": "^4.17.3",
+    "@nestjs/config": "^1.2.0",
+    "@nestjs/serve-static": "^2.2.2",
+    "@nestjs/typeorm": "^8.0.3",
+    "graphql-relay": "^0.10.0",
+    "typeorm-logger-adaptor": "^1.0.4",
+    "bcrypt": "^5.0.1",
+    "express-session": "^1.17.2",
+    "connect-pg-simple": "^7.0.0",
+    "pg": "^8.7.3",
+    "typeorm-transactional-cls-hooked": "^0.1.21",
+    "uuid": "^8.3.2",
+    "dataloader": "^2.0.0",
+    "jimp": "^0.16.1",
+    "node-poppler": "^5.1.2",
+    "winston": "^3.6.0",
+    "nest-winston": "^1.6.2",
+    "winston-daily-rotate-file": "^4.6.1"
+  },
+  "main": "main.js",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  },
+  "scripts": {
+    "migration:run": "npx typeorm migration:run"
+  }
+}

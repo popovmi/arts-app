@@ -9,8 +9,26 @@
       "options": {
         "outputPath": "dist/apps/api",
         "main": "apps/api/src/main.ts",
+        "generatePackageJson": true,
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"]
+        "assets": [
+          "apps/api/src/assets",
+          {
+            "glob": "ormconfig.prod.js",
+            "input": "apps/api",
+            "output": "ormconfig.js"
+          },
+          {
+            "glob": "*.js",
+            "input": "apps/api/migrations",
+            "output": "migrations"
+          },
+					{
+            "glob": ".gitignore",
+            "input": ".",
+            "output": "."
+          }
+        ]
       },
       "configurations": {
         "production": {
@@ -45,6 +63,30 @@
       "options": {
         "jestConfig": "apps/api/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "engines": {
+      "executor": "./tools/executors/engines:engines",
+      "options": {
+        "engines": {
+          "node": "16.x",
+          "npm": "8.x"
+        }
+      }
+    },
+    "scripts": {
+      "executor": "./tools/executors/scripts:scripts",
+      "options": {
+        "scripts": {
+          "migration:run": "npx typeorm migration:run"
+        }
+      }
+    },
+    "build-app": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "powershell.exe ./tools/scripts/build-api.ps1"
       }
     }
   },

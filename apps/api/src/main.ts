@@ -41,6 +41,7 @@ async function bootstrap() {
   });
   const logger = app.get(LoggerService);
 
+	app.use
   app.use(
     session({
       name: 'aa_sid',
@@ -54,7 +55,7 @@ async function bootstrap() {
         path: '/',
         secure: apiConfig.isProduction,
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
       },
       store: new PGSession({
         pool,

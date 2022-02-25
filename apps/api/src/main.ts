@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as pgSession from 'connect-pg-simple';
+import { Request } from 'express';
 import * as session from 'express-session';
 import { Pool } from 'pg';
 import {
@@ -33,16 +34,6 @@ async function bootstrap() {
   });
   const logger = app.get(LoggerService);
 
-  app.useLogger(logger);
-  app.use((req, res, next) => {
-    const asyncStorage = app.get(ASYNC_STORAGE);
-    const traceId = req.headers['x-request-id'] || v4();
-    const store = new Map().set('traceId', traceId);
-
-    asyncStorage.run(store, () => {
-      next();
-    });
-  });
   app.use(
     session({
       name: 'aa_sid',
@@ -58,6 +49,16 @@ async function bootstrap() {
       }),
     })
   );
+  app.use((req: Request, res, next) => {
+    const asyncStorage = app.get(ASYNC_STORAGE);
+    const traceId = req.headers['x-request-id'] || v4();
+    const store = new Map().set('traceId', traceId).set('userId', req.session?.userId);
+
+    asyncStorage.run(store, () => {
+      next();
+    });
+  });
+  app.useLogger(logger);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalFilters(/* new HttpExceptionFilter(reflector), */ new QueryFailedFilter(reflector));
   app.disable('x-powered-by');

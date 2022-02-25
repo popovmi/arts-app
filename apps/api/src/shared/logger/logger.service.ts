@@ -39,14 +39,19 @@ export class LoggerService implements NestLoggerService {
   ) {
     logger.level = this.config.isProduction ? 'info' : 'debug';
 
-    const traceIdExtractor = winstonLogger.format((info) => {
-      const traceId = this.asyncStorage.getStore()?.get('traceId');
-      info.traceId = traceId;
+    const metaExtractor = winstonLogger.format((info) => {
+      const store = this.asyncStorage.getStore();
+      if (store) {
+        const traceId = store?.get('traceId');
+        const userId = store?.get('userId');
+        info.traceId = traceId;
+        info.userId = userId;
+      }
       return info;
     });
 
     [consoleTransport, fileTransport].forEach((transport) => {
-      transport.format = winstonLogger.format.combine(traceIdExtractor(), transport.format);
+      transport.format = winstonLogger.format.combine(metaExtractor(), transport.format);
     });
   }
 

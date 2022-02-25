@@ -34,12 +34,5 @@
     "nest-winston": "^1.6.2",
     "winston-daily-rotate-file": "^4.6.1"
   },
-  "main": "main.js",
-  "engines": {
-    "node": "16.x",
-    "npm": "8.x"
-  },
-  "scripts": {
-    "migration:run": "npx typeorm migration:run"
-  }
+  "main": "main.js"
 }

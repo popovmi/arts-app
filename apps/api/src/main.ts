@@ -54,7 +54,7 @@ async function bootstrap() {
         path: '/',
         secure: apiConfig.isProduction,
         httpOnly: true,
-        sameSite: true,
+        sameSite: 'lax',
       },
       store: new PGSession({
         pool,

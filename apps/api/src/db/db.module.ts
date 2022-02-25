@@ -17,6 +17,12 @@ import { WinstonAdaptor } from 'typeorm-logger-adaptor/logger/winston';
               autoLoadEntities: true,
               synchronize: false,
               dropSchema: false,
+              ssl: true,
+              extra: {
+                ssl: {
+                  rejectUnauthorized: false,
+                },
+              },
             }
           : {
               type: 'postgres',

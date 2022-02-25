@@ -48,7 +48,7 @@ async function bootstrap() {
       genid: () => v4(),
       saveUninitialized: false,
       resave: false,
-      cookie: { maxAge: 86400000, domain: 'localhost', path: '/' },
+      cookie: { maxAge: 86400000, domain: process.env.DOMAIN || 'localhost', path: '/' },
       store: new PGSession({
         pool,
         pruneSessionInterval: 60,

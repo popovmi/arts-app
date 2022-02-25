@@ -53,6 +53,8 @@ async function bootstrap() {
         domain: process.env.DOMAIN || 'localhost',
         path: '/',
         secure: apiConfig.isProduction,
+        httpOnly: true,
+        sameSite: true,
       },
       store: new PGSession({
         pool,

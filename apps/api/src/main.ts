@@ -31,6 +31,16 @@ async function bootstrap() {
     connectionString: apiConfig.get('DATABASE_URL'),
     min: 2,
     max: 5,
+    ...(apiConfig.isProduction
+      ? {
+          ssl: true,
+          extra: {
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          },
+        }
+      : {}),
   });
   const logger = app.get(LoggerService);
 

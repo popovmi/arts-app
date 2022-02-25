@@ -1,13 +1,18 @@
 import { ArtFile } from '@/modules/art/entity/art-file.entity';
 import { Art } from '@/modules/art/entity/art.entity';
 import * as AttrEntities from '@/modules/attribute/entities';
+
 import { Customer } from '@/modules/customer/entities/customer.entity';
 import { Factory } from '@/modules/factory/entities/factory.entity';
 import { Project } from '@/modules/project/entity/project.entity';
 import { User } from '@/modules/user/entity/user.entity';
 import { Role } from '@/modules/user/role.enum';
 import { hash } from 'bcrypt';
-import { EntityManager } from 'typeorm';
+import { config } from 'dotenv';
+import { createConnection, EntityManager } from 'typeorm';
+import ormConfig = require('../../ormconfig.local.js');
+
+config();
 
 export const initTestData = async (em: EntityManager) => {
   const users = [];
@@ -100,3 +105,11 @@ export const initTestData = async (em: EntityManager) => {
 function random(min, max) {
   return min + Math.random() * (max - min);
 }
+
+const run = async () => {
+  const connection = await createConnection(ormConfig);
+
+  await initTestData(connection.manager);
+};
+
+run();

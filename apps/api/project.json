@@ -28,6 +28,12 @@
             "input": ".",
             "output": "."
           }
+					,
+					{
+            "glob": "*",
+            "input": "apps/api/heroku",
+            "output": "."
+          }
         ]
       },
       "configurations": {

@@ -1,5 +1,4 @@
 import { DbModule } from '@/db/db.module';
-import { initTestData } from '@/db/init-test-data';
 import { ArtModule } from '@/modules/art/art.module';
 import { AttributeModule } from '@/modules/attribute/attribute.module';
 import { AuthModule } from '@/modules/auth';
@@ -10,13 +9,11 @@ import { UserModule } from '@/modules/user';
 import { ApiConfigService, SharedModule } from '@/shared';
 import { LoggerModule } from '@/shared/logger';
 import { ApolloDriver } from '@nestjs/apollo';
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { InjectEntityManager } from '@nestjs/typeorm';
 import { join, resolve } from 'path';
-import { EntityManager } from 'typeorm';
 
 @Module({
   imports: [
@@ -69,12 +66,4 @@ import { EntityManager } from 'typeorm';
     CustomerModule,
   ],
 })
-export class AppModule implements OnApplicationBootstrap {
-  constructor(@InjectEntityManager() readonly em: EntityManager, readonly config: ApiConfigService) {}
-
-  async onApplicationBootstrap() {
-    if (this.config.isDevelopment) {
-      await initTestData(this.em);
-    }
-  }
-}
+export class AppModule {}

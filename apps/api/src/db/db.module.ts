@@ -21,8 +21,8 @@ import { WinstonAdaptor } from 'typeorm-logger-adaptor/logger/winston';
           : {
               type: 'postgres',
               url: config.get('DATABASE_URL'),
-              synchronize: true,
-              dropSchema: true,
+              synchronize: false,
+              dropSchema: false,
               autoLoadEntities: true,
               keepConnectionAlive: true,
               logger: new WinstonAdaptor(logger, 'all'),

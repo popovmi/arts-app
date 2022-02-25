@@ -31,7 +31,7 @@ export const ArtsListPage: FC = () => {
     hasNextPage: hasMore,
     onLoadMore: fetchArts,
     rootMargin: '200px',
-    delayInMs: 500,
+    delayInMs: 100,
   });
 
   const scroll = { x: showColumns.find((col) => col === 'project') ? 2500 : showColumns.length * 130 };

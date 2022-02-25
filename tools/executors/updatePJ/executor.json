@@ -1,9 +1,9 @@
 {
   "executors": {
-    "engines": {
+    "updatePJ": {
       "implementation": "./impl",
       "schema": "./schema.json",
-      "description": "Updates engines in dist package.json."
+      "description": "Updates dist package.json with extra fields"
     }
   }
 }

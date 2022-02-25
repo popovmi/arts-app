@@ -79,7 +79,11 @@ export const ProjectPage: FC = () => {
             ))}
           </Tabs>
         </Col>
-        {!arts.length && <Result icon={<MehOutlined />} title="В проект пока не добавлен ни один ART" />}
+        {!arts.length && (
+          <Col span={24}>
+            <Result icon={<MehOutlined />} title="В проект пока не добавлен ни один ART" />
+          </Col>
+        )}
       </Row>
     </>
   );

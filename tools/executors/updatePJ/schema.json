@@ -3,6 +3,10 @@
   "type": "object",
   "cli": "nx",
   "properties": {
+    "scripts": {
+      "type": "object",
+      "description": "scripts"
+    },
     "engines": {
       "type": "object",
       "description": "engines",

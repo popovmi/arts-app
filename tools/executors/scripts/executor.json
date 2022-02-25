@@ -1,9 +1,0 @@
-{
-  "executors": {
-    "scripts": {
-      "implementation": "./impl",
-      "schema": "./schema.json",
-      "description": "Insert scripts into dist package.json."
-    }
-  }
-}

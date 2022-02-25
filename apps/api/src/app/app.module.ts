@@ -12,7 +12,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ServeStaticModule } from '@nestjs/serve-static';
+import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { join, resolve } from 'path';
 
 @Module({
@@ -33,22 +33,28 @@ import { join, resolve } from 'path';
 
     ServeStaticModule.forRootAsync({
       inject: [ApiConfigService],
-      useFactory: async (config: ApiConfigService) => [
-        {
-          exclude: ['/graphql'],
-          rootPath: resolve(config.fileStoragePath),
-          serveRoot: '/static',
-        },
-        {
-          exclude: ['/graphql'],
-          rootPath: './upload',
-          serveRoot: '/upload',
-        },
-        {
-          exclude: ['/graphql'],
-          rootPath: join(__dirname, config.isDevelopment ? '..' : '', 'ui'),
-        },
-      ],
+      useFactory: async (config: ApiConfigService) => {
+        const staticPaths: ServeStaticModuleOptions[] = [
+          {
+            exclude: ['/graphql'],
+            rootPath: resolve(config.fileStoragePath),
+            serveRoot: '/static',
+          },
+          {
+            exclude: ['/graphql'],
+            rootPath: './upload',
+            serveRoot: '/upload',
+          },
+        ];
+        if (config.isProduction) {
+          staticPaths.push({
+            exclude: ['/graphql'],
+            rootPath: join(__dirname, 'ui'),
+          });
+        }
+
+        return staticPaths;
+      },
     }),
 
     UserModule,

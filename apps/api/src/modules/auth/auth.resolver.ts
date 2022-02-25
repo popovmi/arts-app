@@ -20,7 +20,7 @@ export class AuthResolver {
     @Context() { session }: AppContext
   ): Promise<LoginResponse> {
     session.loginAttempts = (session.loginAttempts || 0) + 1;
-
+    session.save();
     const user = await this.authService.validateCredentials(loginInput);
 
     session.userId = user.id;

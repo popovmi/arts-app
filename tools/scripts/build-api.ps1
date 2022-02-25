@@ -1,4 +1,4 @@
-Remove-Item -Path ./dist/apps/api -Recurse;
+# Remove-Item -Path ./dist/apps/api -Recurse;
 
 npx nx build api --prod;
 npx nx run api:engines;

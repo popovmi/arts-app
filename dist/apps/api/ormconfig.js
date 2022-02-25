@@ -1,1 +1,1 @@
-const{config}=require("dotenv"),path=require("path");config(),module.exports={type:"postgres",url:process.env.DATABASE_URL,migrations:["migrations/*.js"],ssl: true,extra: {ssl: {rejectUnauthorized: false,},},cli:{migrationsDir:"migrations"}};
+const{config}=require("dotenv"),path=require("path");config(),module.exports={type:"postgres",url:process.env.DATABASE_URL,migrations:["migrations/*.js"],ssl:!0,extra:{ssl:{rejectUnauthorized:!1}},cli:{migrationsDir:"migrations"}};

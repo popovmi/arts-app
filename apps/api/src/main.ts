@@ -33,11 +33,8 @@ async function bootstrap() {
     max: 5,
     ...(apiConfig.isProduction
       ? {
-          ssl: true,
-          extra: {
-            ssl: {
-              rejectUnauthorized: false,
-            },
+          ssl: {
+            rejectUnauthorized: false,
           },
         }
       : {}),

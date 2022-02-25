@@ -46,7 +46,7 @@ import { join, resolve } from 'path';
         },
         {
           exclude: ['/graphql'],
-          rootPath: join(__dirname, '..', 'ui'),
+          rootPath: join(__dirname, config.isDevelopment ? '..' : '', 'ui'),
         },
       ],
     }),

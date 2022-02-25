@@ -9,7 +9,7 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "babel",
-        "outputPath": "dist/apps/ui",
+        "outputPath": "dist/apps/api/ui",
         "index": "apps/ui/src/index.html",
         "baseHref": "/",
         "main": "apps/ui/src/main.tsx",

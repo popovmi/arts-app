@@ -77,7 +77,7 @@ export class AttributeService {
 
   public async updateValue({ type, active, name, id }: UpdateAttributeInput) {
     const Attribute = this.getType(type);
-    const attributeValue = await this.em.findOneOrFail(Attribute, { id });
+    const attributeValue = await this.em.findOneOrFail(Attribute, { where: { id } });
 
     Object.assign(attributeValue, {
       ...(typeof name === 'string' ? { name } : {}),

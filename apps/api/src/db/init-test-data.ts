@@ -107,7 +107,13 @@ function random(min, max) {
 }
 
 const run = async () => {
-  const connection = await createConnection(ormConfig);
+  const connection = await createConnection({
+    ...ormConfig,
+    url: 'postgres://lhalfbfmtmkepf:f1ab7d576f26692741be6b92a1cdcbf7f082636888834f2c52e7d3e118246382@ec2-100-24-247-156.compute-1.amazonaws.com:5432/dekigrcq2ancdm',
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
 
   await initTestData(connection.manager);
 };

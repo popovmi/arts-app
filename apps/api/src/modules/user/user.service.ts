@@ -15,7 +15,7 @@ export class UserService {
   ) {}
 
   async getUser(id: string): Promise<User> {
-    return this.userRepository.findOneOrFail({ id });
+    return this.userRepository.findOneOrFail({ where: { id } });
   }
 
   async getUsers({ filter, pagination, order }: FindUsersArgs): Promise<UserResponse> {
@@ -52,7 +52,7 @@ export class UserService {
 
   async updateUser(updateUserInput: UpdateUserInput): Promise<User> {
     const { id, password, ...updateInput } = updateUserInput.format();
-    const user = await this.userRepository.findOneOrFail({ id });
+    const user = await this.userRepository.findOneOrFail({ where: { id } });
 
     Object.assign(user, {
       ...updateInput,

@@ -25,7 +25,7 @@ export class ProjectService {
   }
 
   public async getProject(id: string): Promise<Project> {
-    return this.projectRepository.findOne({ id });
+    return this.projectRepository.findOne({ where: { id } });
   }
 
   async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {
@@ -62,7 +62,7 @@ export class ProjectService {
 
   public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {
     const { id, ...updateInput } = updateProjectInput.format();
-    const project = await this.projectRepository.findOneOrFail({ id });
+    const project = await this.projectRepository.findOneOrFail({ where: { id } });
 
     Object.assign(project, {
       ...updateInput,

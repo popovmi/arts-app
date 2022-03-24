@@ -16,7 +16,9 @@ export class AuthService {
 
   public async validateCredentials({ username, password }: LoginArgs) {
     this.logger.debug(`Login request: ${username}`);
-    const user = await this.userRepository.findOne({ username: ILike(username), active: true });
+    const user = await this.userRepository.findOne({
+      where: { username: ILike(username), active: true },
+    });
 
     if (!user || !(await this.passwordService.compare(password, user.password)))
       throw new UnauthorizedException('Неверные данные для входа');

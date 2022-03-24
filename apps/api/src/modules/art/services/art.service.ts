@@ -22,7 +22,7 @@ export class ArtService {
   }
 
   async getArt(id: string): Promise<Art> {
-    return this.artRepository.findOne({ id });
+    return this.artRepository.findOne({ where: { id } });
   }
 
   async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
@@ -64,7 +64,7 @@ export class ArtService {
   @Transactional()
   public async updateArt(updateArtInput: UpdateArtInput): Promise<Art> {
     const { id, filePath, ...updateInput } = updateArtInput;
-    const art = await this.artRepository.findOneOrFail({ id });
+    const art = await this.artRepository.findOneOrFail({ where: { id } });
 
     if (filePath) await this.artFileService.saveArtFile(filePath, art);
     Object.assign(art, { ...updateInput });

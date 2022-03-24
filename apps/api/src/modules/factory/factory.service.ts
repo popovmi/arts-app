@@ -9,7 +9,7 @@ export class FactoryService {
   constructor(@InjectRepository(Factory) private factoryRepo: Repository<Factory>) {}
 
   public async getByIds(ids: string[]) {
-    return await this.factoryRepo.find({ id: In(ids) });
+    return await this.factoryRepo.find({ where: { id: In(ids) } });
   }
 
   public async create(input: CreateFactoryInput) {
@@ -25,13 +25,13 @@ export class FactoryService {
   }
 
   public async findOne(id: string) {
-    const factories = await this.factoryRepo.findOne({ id });
+    const factories = await this.factoryRepo.findOne({ where: { id } });
 
     return factories;
   }
 
   public async update({ id, ...input }: UpdateFactoryInput) {
-    const factory = await this.factoryRepo.findOneOrFail({ id });
+    const factory = await this.factoryRepo.findOneOrFail({ where: { id } });
 
     Object.assign(factory, input);
     await this.factoryRepo.save(factory);
@@ -40,7 +40,7 @@ export class FactoryService {
   }
 
   public async remove(id: string) {
-    await this.factoryRepo.findOneOrFail({ id }, { select: ['id'] });
+    await this.factoryRepo.findOneOrFail({ where: { id }, select: ['id'] });
     await this.factoryRepo.delete({ id });
   }
 

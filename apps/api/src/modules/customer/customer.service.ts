@@ -9,7 +9,7 @@ export class CustomerService {
   constructor(@InjectRepository(Customer) private customerRepository: Repository<Customer>) {}
 
   public async getByIds(ids: string[]) {
-    return await this.customerRepository.find({ id: In(ids) });
+    return await this.customerRepository.find({ where: { id: In(ids) } });
   }
 
   public async create(input: CreateCustomerInput) {
@@ -25,13 +25,13 @@ export class CustomerService {
   }
 
   public async findOne(id: string) {
-    const customers = await this.customerRepository.findOne({ id });
+    const customers = await this.customerRepository.findOne({ where: { id } });
 
     return customers;
   }
 
   public async update({ id, ...input }: UpdateCustomerInput) {
-    const customer = await this.customerRepository.findOneOrFail({ id });
+    const customer = await this.customerRepository.findOneOrFail({ where: { id } });
 
     Object.assign(customer, input);
     await this.customerRepository.save(customer);
@@ -40,7 +40,7 @@ export class CustomerService {
   }
 
   public async remove(id: string) {
-    await this.customerRepository.findOneOrFail({ id }, { select: ['id'] });
+    await this.customerRepository.findOneOrFail({ where: { id }, select: ['id'] });
     await this.customerRepository.delete({ id });
   }
 

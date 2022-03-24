@@ -202,6 +202,11 @@ export type Customer = {
   updatedAt: Scalars['Date'];
 };
 
+export type DeleteAttributeInput = {
+  id: Scalars['Float'];
+  type: AttributeType;
+};
+
 export type Factory = {
   __typename?: 'Factory';
   active: Scalars['Boolean'];
@@ -225,6 +230,7 @@ export type Mutation = {
   createFactory: Factory;
   createProject: Project;
   createUser: User;
+  deleteAttribute: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   updateArt: Art;
@@ -272,6 +278,11 @@ export type MutationCreateProjectArgs = {
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
+};
+
+
+export type MutationDeleteAttributeArgs = {
+  input: DeleteAttributeInput;
 };
 
 
@@ -663,6 +674,13 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
 
+export type DeleteAttributeMutationVariables = Exact<{
+  input: DeleteAttributeInput;
+}>;
+
+
+export type DeleteAttributeMutation = { __typename?: 'Mutation', deleteAttribute: boolean };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -934,6 +952,11 @@ export const CreateUserDocument = `
     createdAt
     updatedAt
   }
+}
+    `;
+export const DeleteAttributeDocument = `
+    mutation deleteAttribute($input: DeleteAttributeInput!) {
+  deleteAttribute(input: $input)
 }
     `;
 export const LoginDocument = `
@@ -1416,6 +1439,9 @@ const injectedRtkApi = api.injectEndpoints({
     createUser: build.mutation<CreateUserMutation, CreateUserMutationVariables>({
       query: (variables) => ({ document: CreateUserDocument, variables })
     }),
+    deleteAttribute: build.mutation<DeleteAttributeMutation, DeleteAttributeMutationVariables>({
+      query: (variables) => ({ document: DeleteAttributeDocument, variables })
+    }),
     login: build.mutation<LoginMutation, LoginMutationVariables>({
       query: (variables) => ({ document: LoginDocument, variables })
     }),
@@ -1489,5 +1515,5 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributeQuery, useLazyAttributeQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
+export const { useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useDeleteAttributeMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributeQuery, useLazyAttributeQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
 

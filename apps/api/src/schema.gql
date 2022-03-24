@@ -10,7 +10,9 @@ type ArtFile {
   uploadedAt: Date!
 }
 
-"""Date custom scalar type"""
+"""
+Date custom scalar type
+"""
 scalar Date
 
 type Factory {
@@ -126,10 +128,14 @@ type User {
 }
 
 enum Role {
-  """Administrator Role"""
+  """
+  Administrator Role
+  """
   ADMIN
 
-  """Simple user role"""
+  """
+  Simple user role
+  """
   USER
 }
 
@@ -161,12 +167,24 @@ type LoginResponse {
 
 type Query {
   user(id: String!): User!
-  users(filter: UserFilterQuery, pagination: ConnectionArgs = {}, order: UserOrderQuery): UserResponse!
+  users(
+    filter: UserFilterQuery
+    pagination: ConnectionArgs = {}
+    order: UserOrderQuery
+  ): UserResponse!
   whoAmI: User!
   project(id: String!): Project!
-  projects(filter: ProjectFilterQuery, pagination: ConnectionArgs = {}, order: ProjectOrderQuery): ProjectResponse!
+  projects(
+    filter: ProjectFilterQuery
+    pagination: ConnectionArgs = {}
+    order: ProjectOrderQuery
+  ): ProjectResponse!
   art(id: String!): Art!
-  arts(filter: ArtFilterQuery, pagination: ConnectionArgs = {}, order: ArtOrderQuery): ArtResponse!
+  arts(
+    filter: ArtFilterQuery
+    pagination: ConnectionArgs = {}
+    order: ArtOrderQuery
+  ): ArtResponse!
   factories: [Factory!]!
   factory(id: String!): Factory!
   customers: [Customer!]!
@@ -208,16 +226,24 @@ input BooleanFieldOption {
 }
 
 input ConnectionArgs {
-  """Paginate before opaque cursor"""
+  """
+  Paginate before opaque cursor
+  """
   before: String
 
-  """Paginate after opaque cursor"""
+  """
+  Paginate after opaque cursor
+  """
   after: String
 
-  """Paginate first"""
+  """
+  Paginate first
+  """
   first: Float
 
-  """Paginate last"""
+  """
+  Paginate last
+  """
   last: Float
 }
 
@@ -230,10 +256,14 @@ input UserOrderQuery {
 }
 
 enum OrderDirection {
-  """Ascending"""
+  """
+  Ascending
+  """
   ASC
 
-  """Descending"""
+  """
+  Descending
+  """
   DESC
 }
 
@@ -322,7 +352,12 @@ type Mutation {
   updateUser(updateUserInput: UpdateUserInput!): User!
   login(username: String!, password: String!): LoginResponse!
   logout: Boolean!
-  changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
+  changePassword(
+    username: String!
+    password: String!
+    passwordRepeat: String!
+    newPassword: String!
+  ): Boolean!
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createArt(createArtInput: CreateArtInput!): Art!
@@ -332,8 +367,11 @@ type Mutation {
   createCustomer(input: CreateCustomerInput!): Customer!
   updateCustomer(input: UpdateCustomerInput!): Customer!
   createAttribute(input: CreateAttributeInput!): BaseAttributeType!
-  updateAttributesOrder(input: UpdateAttributeValueOrderInput!): [BaseAttributeType!]!
+  updateAttributesOrder(
+    input: UpdateAttributeValueOrderInput!
+  ): [BaseAttributeType!]!
   updateAttribute(input: UpdateAttributeInput!): BaseAttributeType!
+  deleteAttribute(input: DeleteAttributeInput!): Boolean!
 }
 
 input CreateUserInput {
@@ -445,4 +483,9 @@ input UpdateAttributeInput {
   id: Float!
   name: String
   active: Boolean
+}
+
+input DeleteAttributeInput {
+  type: AttributeType!
+  id: Float!
 }

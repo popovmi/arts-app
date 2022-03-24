@@ -1,9 +1,8 @@
 {
-    "version": 2,
-    "projects": {
-        "api": "apps/api",
-        "graphql-utils": "libs/graphql-utils",
-        "ui": "apps/ui",
-        "ui-e2e": "apps/ui-e2e"
-    }
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "graphql-utils": "libs/graphql-utils",
+    "ui": "apps/ui"
+  }
 }

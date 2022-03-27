@@ -1,13 +1,30 @@
-import { AuthGuard } from '@/modules/auth/auth.guard';
+import { AuthGuard, RolesGuard } from '@/modules/auth';
 import { ProjectType } from '@/modules/project/dto';
+import { Role } from '@/modules/user';
+import { Roles } from '@/shared/decorators/roles.decorator';
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { ArtFileType, ArtResponse, ArtType, CreateArtInput, FindArtArgs, UpdateArtInput } from './dto';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import {
+  ArtFileType,
+  ArtResponse,
+  ArtType,
+  CreateArtInput,
+  FindArtArgs,
+  UpdateArtInput,
+} from './dto';
 import { ArtLoader } from './loaders';
 import { ArtService } from './services';
 
 @Resolver(() => ArtType)
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
+@Roles(Role.USER, Role.ADMIN)
 export class ArtResolver {
   constructor(private artService: ArtService, private artLoader: ArtLoader) {}
 
@@ -25,7 +42,9 @@ export class ArtResolver {
   public async getProject(@Parent() art: ArtType) {
     const { projectId } = art;
 
-    return projectId ? await this.artLoader.batchProjects.load(projectId) : null;
+    return projectId
+      ? await this.artLoader.batchProjects.load(projectId)
+      : null;
   }
 
   @ResolveField('files', () => [ArtFileType], { nullable: true })
@@ -36,12 +55,16 @@ export class ArtResolver {
   }
 
   @Mutation(() => ArtType)
-  public async createArt(@Args('createArtInput') createArtInput: CreateArtInput) {
+  public async createArt(
+    @Args('createArtInput') createArtInput: CreateArtInput
+  ) {
     return await this.artService.createArt(createArtInput);
   }
 
   @Mutation(() => ArtType)
-  public async updateArt(@Args('updateArtInput') updateArtInput: UpdateArtInput) {
+  public async updateArt(
+    @Args('updateArtInput') updateArtInput: UpdateArtInput
+  ) {
     return await this.artService.updateArt(updateArtInput);
   }
 }

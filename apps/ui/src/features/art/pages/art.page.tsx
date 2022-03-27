@@ -11,7 +11,7 @@ export const ArtPage: FC = () => {
   const { data, isLoading, isFetching } = useArtQuery({ id: artId! });
   const loading = isLoading || isFetching;
 
-  const art = (data?.art || {}) as Art;
+  const art = data?.art as Art;
 
   if (loading) return <CenteredSpin />;
   if (!art) return <Result title="ART не найден" status={'404'} />;

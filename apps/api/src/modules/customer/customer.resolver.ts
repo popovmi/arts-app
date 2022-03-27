@@ -1,27 +1,36 @@
+import { AuthGuard, RolesGuard } from '@/modules/auth';
+import { Role } from '@/modules/user';
+import { Roles } from '@/shared/decorators/roles.decorator';
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateCustomerInput, CustomerType, UpdateCustomerInput } from './dto';
 import { CustomerService } from './customer.service';
+import { CreateCustomerInput, CustomerType, UpdateCustomerInput } from './dto';
 
 @Resolver(() => CustomerType)
+@UseGuards(AuthGuard, RolesGuard)
 export class CustomerResolver {
   constructor(readonly customerService: CustomerService) {}
 
   @Mutation(() => CustomerType)
+  @Roles(Role.ADMIN)
   public async createCustomer(@Args('input') input: CreateCustomerInput) {
     return await this.customerService.create(input);
   }
 
   @Query(() => [CustomerType])
+  @Roles(Role.ADMIN, Role.USER)
   public async customers() {
     return await this.customerService.findAll();
   }
 
   @Query(() => CustomerType)
+  @Roles(Role.ADMIN, Role.USER)
   public async customer(@Args('id') id: string) {
     return await this.customerService.findOne(id);
   }
 
   @Mutation(() => CustomerType)
+  @Roles(Role.ADMIN)
   public async updateCustomer(@Args('input') input: UpdateCustomerInput) {
     return await this.customerService.update(input);
   }

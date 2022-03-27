@@ -20,7 +20,9 @@ export class ArtFileService {
     private config: ApiConfigService
   ) {
     this._poppler =
-      process.platform === 'linux' ? new Poppler('./.apt/usr/bin') : new Poppler();
+      process.platform === 'linux'
+        ? new Poppler('./.apt/usr/bin')
+        : new Poppler();
   }
 
   private async checkDir(path: string) {
@@ -41,11 +43,16 @@ export class ArtFileService {
     if (res instanceof Error) throw res;
   }
 
-  public async createWaterMarkFromJpeg(src: string, dest: string): Promise<void> {
+  public async createWaterMarkFromJpeg(
+    src: string,
+    dest: string
+  ): Promise<void> {
     const image = await Jimp.read(src);
     const { height, width } = image.bitmap;
 
-    const LOGO = `./watermark/${height > width ? 'vertical' : 'horizontal'}.jpg`;
+    const LOGO = `./watermark/${
+      height > width ? 'vertical' : 'horizontal'
+    }.jpg`;
     const logo = await Jimp.read(LOGO);
 
     logo.resize(image.bitmap.width, image.bitmap.height);
@@ -64,7 +71,11 @@ export class ArtFileService {
   private async saveWatemark(filePath: string, art: Art) {
     const fileName = resolve(filePath).split('/').pop();
     const fileExtension = fileName.split('.')[1];
-    let watermarkPath = resolve(this.config.fileStoragePath, 'watermark', art.name);
+    let watermarkPath = resolve(
+      this.config.fileStoragePath,
+      'watermark',
+      art.name
+    );
 
     await this.checkDir(watermarkPath);
 
@@ -104,15 +115,15 @@ export class ArtFileService {
 
   @Transactional()
   public async saveArtFile(filePath: string, art: Art) {
-    let originalPath: string;
-    let watermarkPath: string;
+    let originalPath: string, watermarkPath: string;
 
     try {
       originalPath = await this.saveOriginal(filePath, art);
       watermarkPath = await this.saveWatemark(filePath, art);
-      await this.artFileRepository.upsert({ artId: art.id, originalPath, watermarkPath }, [
-        'artId',
-      ]);
+      await this.artFileRepository.upsert(
+        { artId: art.id, originalPath, watermarkPath },
+        ['artId']
+      );
       if (existsSync(filePath)) await rm(filePath);
     } catch (e) {
       if (existsSync(originalPath)) await rm(originalPath);

@@ -62,7 +62,9 @@ async function bootstrap() {
   app.use((req: Request, res, next) => {
     const asyncStorage = app.get(ASYNC_STORAGE);
     const traceId = req.headers['x-request-id'] || v4();
-    const store = new Map().set('traceId', traceId).set('userId', req.session?.userId);
+    const store = new Map()
+      .set('traceId', traceId)
+      .set('userId', req.session?.userId);
 
     asyncStorage.run(store, () => {
       next();
@@ -70,7 +72,9 @@ async function bootstrap() {
   });
   app.useLogger(logger);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.useGlobalFilters(/* new HttpExceptionFilter(reflector), */ new QueryFailedFilter(reflector));
+  app.useGlobalFilters(
+    /* new HttpExceptionFilter(reflector), */ new QueryFailedFilter(reflector)
+  );
   app.disable('x-powered-by');
 
   await app.listen(port);

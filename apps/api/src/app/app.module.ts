@@ -12,7 +12,10 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
+import {
+  ServeStaticModule,
+  ServeStaticModuleOptions,
+} from '@nestjs/serve-static';
 import { join, resolve } from 'path';
 
 @Module({

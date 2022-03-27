@@ -1,5 +1,12 @@
 import { RootState } from '@/app/store';
-import { Art, ArtFilterQuery, ArtOrderQuery, ArtResponse, ArtTypeEdge, ConnectionArgs } from '@/graphql';
+import {
+  Art,
+  ArtFilterQuery,
+  ArtOrderQuery,
+  ArtResponse,
+  ArtTypeEdge,
+  ConnectionArgs,
+} from '@/graphql';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type ArtsState = {
@@ -46,7 +53,10 @@ const artSlice = createSlice({
       state.hasMore = action.payload.page.pageInfo?.hasNextPage || false;
       state.doFetch = false;
     },
-    updateFilter: (state, action: PayloadAction<ArtFilterQuery & { shouldFetch: boolean }>) => {
+    updateFilter: (
+      state,
+      action: PayloadAction<ArtFilterQuery & { shouldFetch: boolean }>
+    ) => {
       const { shouldFetch, ...payload } = action.payload;
       let filter = state.filter;
 
@@ -80,10 +90,17 @@ const artSlice = createSlice({
 });
 
 export const artReducer = artSlice.reducer;
-export const { artsLoaded, updateFilter, shouldFetch, clearFilter, setShowColumns } = artSlice.actions;
+export const {
+  artsLoaded,
+  updateFilter,
+  shouldFetch,
+  clearFilter,
+  setShowColumns,
+} = artSlice.actions;
 
 export const selectArts = (state: RootState) => {
-  const { data, filter, hasMore, order, pagination, doFetch, showColumns } = state.art;
+  const { data, filter, hasMore, order, pagination, doFetch, showColumns } =
+    state.art;
   const arts: Art[] = data!.map((edge) => edge!.node!);
 
   const showDataIndexes = showColumns.map((column) => {
@@ -96,5 +113,14 @@ export const selectArts = (state: RootState) => {
     return dataIndex;
   });
 
-  return { arts, filter, hasMore, order, pagination, doFetch, showColumns, showDataIndexes };
+  return {
+    arts,
+    filter,
+    hasMore,
+    order,
+    pagination,
+    doFetch,
+    showColumns,
+    showDataIndexes,
+  };
 };

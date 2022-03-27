@@ -3,7 +3,13 @@ import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
 import { projectAttributesTypes } from '@/features/project/project-attribute.types';
-import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOption } from '@/graphql';
+import {
+  Art,
+  ArtFilterQuery,
+  AttributeType,
+  ProjectFilterQuery,
+  StringFieldOption,
+} from '@/graphql';
 import {
   Button,
   Col,
@@ -35,11 +41,6 @@ function arraysEqual(a: any[], b: any[]) {
   if (a == null || b == null) return false;
   if (a.length !== b.length) return false;
 
-  // If you don't care about the order of the elements inside
-  // the array, you should sort both arrays here.
-  // Please note that calling sort on an array will modify that array.
-  // you might want to clone your array first.
-
   for (let i = 0; i < a.length; ++i) {
     if (a[i] !== b[i]) return false;
   }
@@ -57,7 +58,9 @@ const ArtFilterInput: FC<ArtFilterItemProps> = ({
   let timer: NodeJS.Timeout;
   const dispatch = useAppDispatch();
 
-  const onChangeValue = (evt: React.ChangeEvent<HTMLInputElement> | CheckboxChangeEvent) => {
+  const onChangeValue = (
+    evt: React.ChangeEvent<HTMLInputElement> | CheckboxChangeEvent
+  ) => {
     if (withTimer) clearTimeout(timer);
     onChange(evt.target.value);
     if (withTimer) timer = setTimeout(() => dispatch(shouldFetch(true)), 800);
@@ -113,7 +116,12 @@ export const artColumns = () => {
     const onChange = (value: string[]) => {
       const filterValue = value?.length > 0 ? { in: value } : {};
 
-      dispatch(updateFilter({ ...buildFilterObject(dataIndex, filterValue), shouldFetch: true }));
+      dispatch(
+        updateFilter({
+          ...buildFilterObject(dataIndex, filterValue),
+          shouldFetch: true,
+        })
+      );
     };
 
     const filterProp = Array.isArray(dataIndex)
@@ -129,7 +137,12 @@ export const artColumns = () => {
           mode="multiple"
           onChange={onChange}
           onClear={() =>
-            dispatch(updateFilter({ ...buildFilterObject(dataIndex, {}), shouldFetch: true }))
+            dispatch(
+              updateFilter({
+                ...buildFilterObject(dataIndex, {}),
+                shouldFetch: true,
+              })
+            )
           }
         />
       </Space>
@@ -138,9 +151,15 @@ export const artColumns = () => {
 
   const getYesNoFilter = (dataIndex: any) => () => {
     const onChange = (e: RadioChangeEvent) => {
-      const value = typeof e.target.value === 'boolean' ? { is: e.target.value } : {};
+      const value =
+        typeof e.target.value === 'boolean' ? { is: e.target.value } : {};
 
-      dispatch(updateFilter({ ...buildFilterObject(dataIndex, value), shouldFetch: true }));
+      dispatch(
+        updateFilter({
+          ...buildFilterObject(dataIndex, value),
+          shouldFetch: true,
+        })
+      );
     };
 
     const filterProp = Array.isArray(dataIndex)
@@ -148,10 +167,16 @@ export const artColumns = () => {
       : filter[dataIndex as keyof ArtFilterQuery];
 
     return (
-      <Row gutter={[8, 8]} style={{ padding: 8, width: 250 }} justify="space-between">
+      <Row
+        gutter={[8, 8]}
+        style={{ padding: 8, width: 250 }}
+        justify="space-between"
+      >
         <Col flex="none">
           <Radio.Group
-            value={typeof filterProp?.is === 'boolean' ? filterProp.is : undefined}
+            value={
+              typeof filterProp?.is === 'boolean' ? filterProp.is : undefined
+            }
             onChange={onChange}
           >
             <Radio value={true}>Да</Radio>
@@ -164,7 +189,12 @@ export const artColumns = () => {
             size="small"
             disabled={typeof filterProp?.is !== 'boolean'}
             onClick={(evt) => {
-              dispatch(updateFilter({ ...buildFilterObject(dataIndex, {}), shouldFetch: true }));
+              dispatch(
+                updateFilter({
+                  ...buildFilterObject(dataIndex, {}),
+                  shouldFetch: true,
+                })
+              );
             }}
           >
             Сбросить
@@ -179,13 +209,15 @@ export const artColumns = () => {
       onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
       dataIndex: 'name',
       fixed: true,
-      width: 200,
+      width: 300,
       title: 'Название',
       filteredValue: filter?.name?.contains ? [filter.name.contains] : [],
       filterDropdown: () => (
         <ArtFilterInput
           disableClear={!filter.name?.contains}
-          onClear={() => dispatch(updateFilter({ name: {}, shouldFetch: true }))}
+          onClear={() =>
+            dispatch(updateFilter({ name: {}, shouldFetch: true }))
+          }
           onChange={(value) =>
             dispatch(
               updateFilter({
@@ -214,8 +246,10 @@ export const artColumns = () => {
     {
       dataIndex: 'internal',
       title: 'Внутренний',
-      onHeaderCell: (record) => ({ dataIndex: 'internal' } as HTMLAttributes<any>),
-      filteredValue: typeof filter.internal?.is === 'boolean' ? [filter.internal.is] : [],
+      onHeaderCell: (record) =>
+        ({ dataIndex: 'internal' } as HTMLAttributes<any>),
+      filteredValue:
+        typeof filter.internal?.is === 'boolean' ? [filter.internal.is] : [],
       filterDropdown: getYesNoFilter('internal'),
       filterMultiple: false,
       render: (_, { internal }) => (internal ? 'Да' : 'Нет'),
@@ -224,7 +258,8 @@ export const artColumns = () => {
     ...(artAttributesTypes.map((type: any) => ({
       dataIndex: `${type}`,
       title: AttributesLabels[type as AttributeType],
-      onHeaderCell: (record: Art) => ({ dataIndex: `${type}` } as HTMLAttributes<any>),
+      onHeaderCell: (record: Art) =>
+        ({ dataIndex: `${type}` } as HTMLAttributes<any>),
       filteredValue:
         Object.keys(filter[type as keyof ArtFilterQuery] || {}).length > 0
           ? (filter[type as keyof ArtFilterQuery] as StringFieldOption)!.in
@@ -240,13 +275,24 @@ export const artColumns = () => {
           dataIndex: ['project', 'name'],
           title: 'Название',
           render: (_, record) =>
-            record.project && <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>,
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'name'] } as HTMLAttributes<any>),
-          filteredValue: filter?.project?.name?.contains ? [filter.project?.name.contains] : [],
+            record.project && (
+              <Link to={`/projects/${record.project.id}`}>
+                {record.project.name}
+              </Link>
+            ),
+          onHeaderCell: (record) =>
+            ({ dataIndex: ['project', 'name'] } as HTMLAttributes<any>),
+          filteredValue: filter?.project?.name?.contains
+            ? [filter.project?.name.contains]
+            : [],
           filterDropdown: () => (
             <ArtFilterInput
               disableClear={!filter.project?.name?.contains}
-              onClear={() => dispatch(updateFilter({ project: { name: {} }, shouldFetch: true }))}
+              onClear={() =>
+                dispatch(
+                  updateFilter({ project: { name: {} }, shouldFetch: true })
+                )
+              }
               onChange={(value) =>
                 dispatch(
                   updateFilter({
@@ -265,19 +311,27 @@ export const artColumns = () => {
         {
           dataIndex: ['project', 'internal'],
           title: 'Внутренний',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'internal'] } as HTMLAttributes<any>),
+          onHeaderCell: (record) =>
+            ({ dataIndex: ['project', 'internal'] } as HTMLAttributes<any>),
           filteredValue:
-            typeof filter.project?.internal?.is === 'boolean' ? [filter.project?.internal.is] : [],
+            typeof filter.project?.internal?.is === 'boolean'
+              ? [filter.project?.internal.is]
+              : [],
           filterDropdown: getYesNoFilter(['project', 'internal']),
           filterMultiple: false,
           render: (_, { project }) =>
-            typeof project?.internal === 'boolean' ? (project.internal ? 'Да' : 'Нет') : '',
+            typeof project?.internal === 'boolean'
+              ? project.internal
+                ? 'Да'
+                : 'Нет'
+              : '',
         },
 
         {
           dataIndex: ['project', 'hasDesignDoc'],
           title: 'Есть КД',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'hasDesignDoc'] } as HTMLAttributes<any>),
+          onHeaderCell: (record) =>
+            ({ dataIndex: ['project', 'hasDesignDoc'] } as HTMLAttributes<any>),
           filteredValue:
             typeof filter.project?.hasDesignDoc?.is === 'boolean'
               ? [filter.project?.hasDesignDoc.is]
@@ -285,16 +339,25 @@ export const artColumns = () => {
           filterDropdown: getYesNoFilter(['project', 'hasDesignDoc']),
           filterMultiple: false,
           render: (_, { project }) =>
-            typeof project?.hasDesignDoc === 'boolean' ? (project.hasDesignDoc ? 'Да' : 'Нет') : '',
+            typeof project?.hasDesignDoc === 'boolean'
+              ? project.hasDesignDoc
+                ? 'Да'
+                : 'Нет'
+              : '',
         },
 
         ...(projectAttributesTypes.map((type: any) => ({
           dataIndex: ['project', `${type}`],
           title: AttributesLabels[type as AttributeType],
-          onHeaderCell: (record: Art) => ({ dataIndex: ['project', `${type}`] } as HTMLAttributes<any>),
+          onHeaderCell: (record: Art) =>
+            ({ dataIndex: ['project', `${type}`] } as HTMLAttributes<any>),
           filteredValue:
-            Object.keys(filter.project?.[type as keyof ProjectFilterQuery] || {}).length > 0
-              ? (filter.project?.[type as keyof ProjectFilterQuery] as StringFieldOption)!.in
+            Object.keys(
+              filter.project?.[type as keyof ProjectFilterQuery] || {}
+            ).length > 0
+              ? (filter.project?.[
+                  type as keyof ProjectFilterQuery
+                ] as StringFieldOption)!.in
               : [],
           filterDropdown: getAttributeFilter(type, ['project', type]),
         })) as any[]),
@@ -302,7 +365,8 @@ export const artColumns = () => {
         {
           dataIndex: ['project', 'customer', 'id'],
           title: 'Заказчик',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'customerId'] } as HTMLAttributes<any>),
+          onHeaderCell: (record) =>
+            ({ dataIndex: ['project', 'customerId'] } as HTMLAttributes<any>),
           render: (_, record) => record.project?.customer?.name,
           filteredValue:
             Object.keys(filter.project?.customerId || {}).length > 0
@@ -312,7 +376,9 @@ export const artColumns = () => {
             const onChange = (value: string[]) => {
               dispatch(
                 updateFilter({
-                  project: { customerId: value?.length > 0 ? { in: value } : {} },
+                  project: {
+                    customerId: value?.length > 0 ? { in: value } : {},
+                  },
                   shouldFetch: true,
                 })
               );
@@ -321,12 +387,19 @@ export const artColumns = () => {
             return (
               <Space direction="horizontal" style={{ padding: 8 }} align="end">
                 <CustomerSelector
-                  value={(filter.project?.customerId as StringFieldOption)?.in || []}
+                  value={
+                    (filter.project?.customerId as StringFieldOption)?.in || []
+                  }
                   allowClear
                   mode="multiple"
                   onChange={onChange}
                   onClear={() =>
-                    dispatch(updateFilter({ project: { customerId: {} }, shouldFetch: true }))
+                    dispatch(
+                      updateFilter({
+                        project: { customerId: {} },
+                        shouldFetch: true,
+                      })
+                    )
                   }
                 />
               </Space>
@@ -336,15 +409,20 @@ export const artColumns = () => {
         {
           dataIndex: ['project', 'factory', 'id'],
           title: 'Завод',
-          onHeaderCell: (record) => ({ dataIndex: ['project', 'factoryId'] } as HTMLAttributes<any>),
+          onHeaderCell: (record) =>
+            ({ dataIndex: ['project', 'factoryId'] } as HTMLAttributes<any>),
           render: (_, record) => record.project?.factory?.name,
           filteredValue:
-            Object.keys(filter.project?.factoryId || {}).length > 0 ? filter.project?.factoryId!.in : [],
+            Object.keys(filter.project?.factoryId || {}).length > 0
+              ? filter.project?.factoryId!.in
+              : [],
           filterDropdown: () => {
             const onChange = (value: string[]) => {
               dispatch(
                 updateFilter({
-                  project: { factoryId: value?.length > 0 ? { in: value } : {} },
+                  project: {
+                    factoryId: value?.length > 0 ? { in: value } : {},
+                  },
                   shouldFetch: true,
                 })
               );
@@ -353,12 +431,19 @@ export const artColumns = () => {
             return (
               <Space direction="horizontal" style={{ padding: 8 }} align="end">
                 <FactorySelector
-                  value={(filter.project?.factoryId as StringFieldOption)?.in || []}
+                  value={
+                    (filter.project?.factoryId as StringFieldOption)?.in || []
+                  }
                   allowClear
                   mode="multiple"
                   onChange={onChange}
                   onClear={() =>
-                    dispatch(updateFilter({ project: { factoryId: {} }, shouldFetch: true }))
+                    dispatch(
+                      updateFilter({
+                        project: { factoryId: {} },
+                        shouldFetch: true,
+                      })
+                    )
                   }
                 />
               </Space>
@@ -369,9 +454,9 @@ export const artColumns = () => {
     },
   ];
 
-  return artColumns.filter((column) => {
-    if ((column as TableColumnType<Art>).dataIndex) {
-      return showDataIndexes.includes((column as TableColumnType<Art>).dataIndex as string);
+  return artColumns.filter((column: TableColumnType<Art>) => {
+    if (column.dataIndex) {
+      return showDataIndexes.includes(column.dataIndex as string);
     }
 
     const artColumn = column as TableColumnGroupType<Art>;
@@ -387,8 +472,12 @@ export const artColumns = () => {
         if (Array.isArray(artChildColumn.dataIndex)) {
           return !!showDataIndexes.find((showIndex) => {
             if (Array.isArray(showIndex)) {
-              return arraysEqual(showIndex, artChildColumn.dataIndex as string[]);
-            } else return (artChildColumn.dataIndex as string[])[0] === showIndex;
+              return arraysEqual(
+                showIndex,
+                artChildColumn.dataIndex as string[]
+              );
+            } else
+              return (artChildColumn.dataIndex as string[])[0] === showIndex;
           });
         }
 

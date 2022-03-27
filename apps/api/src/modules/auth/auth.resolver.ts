@@ -1,18 +1,21 @@
+import { UserService } from '@/modules/user';
 import { UserType } from '@/modules/user/dto';
-import { UserService } from '@/modules/user/user.service';
 import { AppContext } from '@/shared/types/context';
-import { Logger, UseGuards } from '@nestjs/common';
+import { forwardRef, Inject, Logger, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from './auth.guard';
-import { LoginArgs, LoginResponse } from './dto';
-import { ChangePasswordArgs } from './dto/change-password.args';
+import { ChangePasswordArgs, LoginArgs, LoginResponse } from './dto';
 import { AuthService } from './service';
 
 @Resolver()
+@UseGuards(AuthGuard)
 export class AuthResolver {
   private logger = new Logger(AuthResolver.name);
 
-  constructor(readonly authService: AuthService, readonly userService: UserService) {}
+  constructor(
+    readonly authService: AuthService,
+    @Inject(forwardRef(() => UserService)) readonly userService: UserService
+  ) {}
 
   @Mutation(() => LoginResponse)
   public async login(

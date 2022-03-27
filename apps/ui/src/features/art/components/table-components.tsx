@@ -12,7 +12,12 @@ interface HeaderCellProps {
   [key: string]: any;
 }
 
-export const HeaderCell: FC<HeaderCellProps> = ({ children, style, dataIndex, ...props }) => {
+export const HeaderCell: FC<HeaderCellProps> = ({
+  children,
+  style,
+  dataIndex,
+  ...props
+}) => {
   const { filter } = useAppSelector(selectArts);
   const filterField = Array.isArray(dataIndex)
     ? dataIndex.reduce((ff, idxPart) => ff[idxPart] || {}, filter)
@@ -20,7 +25,9 @@ export const HeaderCell: FC<HeaderCellProps> = ({ children, style, dataIndex, ..
 
   const cellStyle = {
     ...style,
-    ...(Object.keys(filterField || {}).length > 0 ? { backgroundColor: 'rgba(190,245,255,0.9)' } : {}),
+    ...(Object.keys(filterField || {}).length > 0
+      ? { backgroundColor: 'rgba(190,245,255,0.9)' }
+      : {}),
   };
 
   return (
@@ -34,7 +41,11 @@ interface TableBodyProps {
   [key: string]: any;
 }
 
-export const TableBody: FC<TableBodyProps> = ({ children, style, ...props }) => (
+export const TableBody: FC<TableBodyProps> = ({
+  children,
+  style,
+  ...props
+}) => (
   <tbody style={{ ...style, overflow: 'hidden' }} {...props}>
     {children}
   </tbody>

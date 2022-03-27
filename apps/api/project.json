@@ -32,6 +32,11 @@
             "glob": "*",
             "input": "apps/api/heroku",
             "output": "."
+          },
+          {
+            "glob": "*",
+            "input": "watermark",
+            "output": "watermark"
           }
         ]
       },

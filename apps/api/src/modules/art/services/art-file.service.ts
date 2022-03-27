@@ -19,7 +19,8 @@ export class ArtFileService {
     @InjectRepository(ArtFile) private artFileRepository: Repository<ArtFile>,
     private config: ApiConfigService
   ) {
-    this._poppler = process.platform === 'linux' ? new Poppler('./.apt/usr/bin') : new Poppler();
+    this._poppler =
+      process.platform === 'linux' ? new Poppler('./.apt/usr/bin') : new Poppler();
   }
 
   private async checkDir(path: string) {
@@ -41,11 +42,14 @@ export class ArtFileService {
   }
 
   public async createWaterMarkFromJpeg(src: string, dest: string): Promise<void> {
-    const LOGO = './watermark/1200px-Australian_Defence_Force_Academy_coat_of_arms.svg.png';
     const image = await Jimp.read(src);
+    const { height, width } = image.bitmap;
+
+    const LOGO = `./watermark/${height > width ? 'vertical' : 'horizontal'}.jpg`;
     const logo = await Jimp.read(LOGO);
 
-    logo.resize(image.bitmap.width * 0.9, image.bitmap.height * 0.9);
+    logo.resize(image.bitmap.width, image.bitmap.height);
+
     const X = (image.bitmap.width - logo.bitmap.width) / 2;
     const Y = (image.bitmap.height - logo.bitmap.height) / 2;
     const composed = image.composite(logo, X, Y, {
@@ -106,7 +110,9 @@ export class ArtFileService {
     try {
       originalPath = await this.saveOriginal(filePath, art);
       watermarkPath = await this.saveWatemark(filePath, art);
-      await this.artFileRepository.upsert({ artId: art.id, originalPath, watermarkPath }, ['artId']);
+      await this.artFileRepository.upsert({ artId: art.id, originalPath, watermarkPath }, [
+        'artId',
+      ]);
       if (existsSync(filePath)) await rm(filePath);
     } catch (e) {
       if (existsSync(originalPath)) await rm(originalPath);

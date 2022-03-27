@@ -8,6 +8,7 @@ import {
   CreateAttributeInput,
   UpdateAttributeInput,
   UpdateAttributeValueOrderInput,
+  DeleteAttributeInput,
 } from './dto';
 
 @Resolver()
@@ -29,17 +30,27 @@ export class AttributeResolver {
   }
 
   @Query(() => [BaseAttributeType])
-  public async attributes(@Args('type', { type: () => AttributeType }) type: AttributeType) {
+  public async attributes(
+    @Args('type', { type: () => AttributeType }) type: AttributeType
+  ) {
     return await this.service.getAttributes(type);
   }
 
   @Mutation(() => [BaseAttributeType])
-  public async updateAttributesOrder(@Args('input') input: UpdateAttributeValueOrderInput) {
+  public async updateAttributesOrder(
+    @Args('input') input: UpdateAttributeValueOrderInput
+  ) {
     return await this.service.updateValuesOrder(input);
   }
 
   @Mutation(() => BaseAttributeType)
   public async updateAttribute(@Args('input') input: UpdateAttributeInput) {
     return await this.service.updateValue(input);
+  }
+
+  @Mutation(() => Boolean)
+  public async deleteAttribute(@Args('input') input: DeleteAttributeInput) {
+    await this.service.delete(input);
+		return true;
   }
 }

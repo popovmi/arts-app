@@ -3,7 +3,12 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 import { AttributeType } from './attribute-type';
-import { CreateAttributeInput, UpdateAttributeInput, UpdateAttributeValueOrderInput } from './dto';
+import {
+  CreateAttributeInput,
+  DeleteAttributeInput,
+  UpdateAttributeInput,
+  UpdateAttributeValueOrderInput,
+} from './dto';
 import * as Entities from './entities';
 
 const EntitiesArray = Object.values(Entities);
@@ -46,7 +51,9 @@ export class AttributeService {
   }
 
   public async getAttributes(type: AttributeType) {
-    const result = await this.em.find(this.getType(type), { order: { valueOrder: 'ASC' } });
+    const result = await this.em.find(this.getType(type), {
+      order: { valueOrder: 'ASC' },
+    });
 
     return result;
   }
@@ -56,12 +63,19 @@ export class AttributeService {
     const Attribute = this.getType(input.type);
     const isBackward = input.direction === 'backward';
     const { newOrder, oldOrder } = input;
-    const [updateFrom, updateTo] = isBackward ? [newOrder, oldOrder - 1] : [oldOrder + 1, newOrder];
+    const [updateFrom, updateTo] = isBackward
+      ? [newOrder, oldOrder - 1]
+      : [oldOrder + 1, newOrder];
 
-    await this.em.update(Attribute, { valueOrder: oldOrder }, { valueOrder: -1 });
+    await this.em.update(
+      Attribute,
+      { valueOrder: oldOrder },
+      { valueOrder: -1 }
+    );
 
-    for (const currentOrder of Array.from({ length: updateTo - updateFrom + 1 }, (_, i) =>
-      isBackward ? updateTo - i : i + updateFrom
+    for (const currentOrder of Array.from(
+      { length: updateTo - updateFrom + 1 },
+      (_, i) => (isBackward ? updateTo - i : i + updateFrom)
     )) {
       await this.em.update(
         Attribute,
@@ -70,14 +84,20 @@ export class AttributeService {
       );
     }
 
-    await this.em.update(Attribute, { valueOrder: -1 }, { valueOrder: newOrder });
+    await this.em.update(
+      Attribute,
+      { valueOrder: -1 },
+      { valueOrder: newOrder }
+    );
 
     return await this.getAttributes(input.type);
   }
 
   public async updateValue({ type, active, name, id }: UpdateAttributeInput) {
     const Attribute = this.getType(type);
-    const attributeValue = await this.em.findOneOrFail(Attribute, { where: { id } });
+    const attributeValue = await this.em.findOneOrFail(Attribute, {
+      where: { id },
+    });
 
     Object.assign(attributeValue, {
       ...(typeof name === 'string' ? { name } : {}),
@@ -85,5 +105,9 @@ export class AttributeService {
     });
 
     return await this.em.save(Attribute, attributeValue);
+  }
+
+  public async delete({ type, id }: DeleteAttributeInput) {
+    await this.em.delete(this.getType(type), { id });
   }
 }

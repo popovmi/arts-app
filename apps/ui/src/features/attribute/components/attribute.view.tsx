@@ -1,10 +1,33 @@
 import { useAppDispatch } from '@/app/store';
-import { AttributeType, useAttributesQuery, useUpdateAttributesOrderMutation } from '@/graphql';
+import {
+  AttributeType,
+  useAttributesQuery,
+  useUpdateAttributesOrderMutation,
+  useDeleteAttributeMutation,
+} from '@/graphql';
 import { useMediaQuery } from '@/shared/hooks';
-import { EditOutlined, MenuOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, message, Popover, Table, Tabs, Typography } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  MenuOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  message,
+  Popover,
+  Space,
+  Table,
+  Tabs,
+  Typography,
+} from 'antd';
 import { FC, useState } from 'react';
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+import {
+  SortableContainer,
+  SortableElement,
+  SortableHandle,
+} from 'react-sortable-hoc';
 import { AttributesLabels, CreateAttributeForm } from '..';
 import { setEditInfo } from '../attribute.slice';
 import styles from './attribute.module.less';
@@ -12,7 +35,9 @@ import styles from './attribute.module.less';
 const { TabPane } = Tabs;
 const { Text } = Typography;
 
-const DragHandle = SortableHandle(() => <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />);
+const DragHandle = SortableHandle(() => (
+  <MenuOutlined style={{ cursor: 'grab', color: '#999' }} />
+));
 const SortableItem = SortableElement(
   (
     props: JSX.IntrinsicAttributes &
@@ -36,11 +61,16 @@ const AttributeList: FC<AttributeListProps> = ({ type }) => {
   const dispatch = useAppDispatch();
   const { data, isLoading, refetch } = useAttributesQuery({ type });
   const attributes = data?.attributes || [];
-  const [updateOrder, { isLoading: isUpdatingOrder }] = useUpdateAttributesOrderMutation();
+  const [updateOrder, { isLoading: isUpdatingOrder }] =
+    useUpdateAttributesOrderMutation();
+  const [deleteAttribute, { isLoading: isDeleting }] =
+    useDeleteAttributeMutation();
 
   const onSortEnd = ({ oldIndex, newIndex }: any) => {
     if (oldIndex !== newIndex)
-      updateOrder({ input: { type, oldOrder: oldIndex, newOrder: newIndex } }).then((result) => {
+      updateOrder({
+        input: { type, oldOrder: oldIndex, newOrder: newIndex },
+      }).then((result) => {
         if ('data' in result) {
           message.success('Порядок изменён!');
           refetch();
@@ -59,18 +89,27 @@ const AttributeList: FC<AttributeListProps> = ({ type }) => {
   );
 
   const DraggableBodyRow = ({ className, style, ...restProps }: any) => {
-    const index = attributes?.find((x) => x.valueOrder === restProps['data-row-key'])?.valueOrder;
+    const index = attributes?.find(
+      (x) => x.valueOrder === restProps['data-row-key']
+    )?.valueOrder;
 
-    return <SortableItem index={index || (attributes.length || 0) + 1} {...restProps} />;
+    return (
+      <SortableItem
+        index={index || (attributes.length || 0) + 1}
+        {...restProps}
+      />
+    );
   };
-  const loading = isLoading || isUpdatingOrder;
+  const loading = isLoading || isUpdatingOrder || isDeleting;
 
   return (
     <Card
       title={AttributesLabels[type]}
       extra={
         <Popover
-          content={<CreateAttributeForm type={type} onSuccess={() => refetch()} />}
+          content={
+            <CreateAttributeForm type={type} onSuccess={() => refetch()} />
+          }
           trigger="click"
           placement="left"
         >
@@ -97,7 +136,19 @@ const AttributeList: FC<AttributeListProps> = ({ type }) => {
             dataIndex: 'editOper',
             width: '48px',
             render: (_, { id }) => (
-              <Button icon={<EditOutlined />} onClick={() => dispatch(setEditInfo({ id, type }))} />
+              <Space>
+                <Button
+                  icon={<EditOutlined />}
+                  size="small"
+                  onClick={() => dispatch(setEditInfo({ id, type }))}
+                />
+                <Button
+                  size="small"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => deleteAttribute({ input: { id, type } })}
+                />
+              </Space>
             ),
           },
           {
@@ -106,7 +157,11 @@ const AttributeList: FC<AttributeListProps> = ({ type }) => {
           {
             dataIndex: 'active',
             render: (_, record) =>
-              record.active ? <Text type="success">Активен</Text> : <Text type="danger">Неактивен</Text>,
+              record.active ? (
+                <Text type="success">Активен</Text>
+              ) : (
+                <Text type="danger">Неактивен</Text>
+              ),
           },
           {
             dataIndex: 'sort',
@@ -130,9 +185,13 @@ interface AttributesViewProps {
   attributeInfo: AttributesInfo;
 }
 
-export const AttributeView: FC<AttributesViewProps> = ({ attributeInfo: { title, types } }) => {
+export const AttributeView: FC<AttributesViewProps> = ({
+  attributeInfo: { title, types },
+}) => {
   const [width] = useMediaQuery();
-  const [selectedAttributeValue, setSelectedAttributeValue] = useState<string>(types[0]);
+  const [selectedAttributeValue, setSelectedAttributeValue] = useState<string>(
+    types[0]
+  );
 
   return (
     <Card title={title} type="inner">

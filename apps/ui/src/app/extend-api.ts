@@ -155,5 +155,11 @@ export const api = generatedApi.enhanceEndpoints({
         { type: `${type}Attribute`, id: 'LIST' },
       ],
     },
+		deleteAttribute: {
+			invalidatesTags: (result, error, { input: { id, type } }) => [
+        { type: `${type}Attribute`, id },
+        { type: `${type}Attribute`, id: 'LIST' },
+      ],
+		}
   },
 });

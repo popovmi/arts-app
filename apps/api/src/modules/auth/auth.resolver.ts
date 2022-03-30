@@ -8,7 +8,6 @@ import { ChangePasswordArgs, LoginArgs, LoginResponse } from './dto';
 import { AuthService } from './service';
 
 @Resolver()
-@UseGuards(AuthGuard)
 export class AuthResolver {
   private logger = new Logger(AuthResolver.name);
 

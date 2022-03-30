@@ -34,9 +34,6 @@ async function bootstrap() {
   });
   const logger = app.get(LoggerService);
 
-  if (apiConfig.isProduction) {
-    app.set('trust proxy', 1);
-  }
   app.use(
     session({
       name: 'aa_sid',
@@ -48,7 +45,7 @@ async function bootstrap() {
         maxAge: 86400000,
         domain: process.env.DOMAIN || 'localhost',
         path: '/',
-        secure: apiConfig.isProduction,
+        secure: false,
         httpOnly: true,
         sameSite: 'strict',
       },

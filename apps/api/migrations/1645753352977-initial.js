@@ -320,7 +320,7 @@ module.exports = class initial1645753352977 {
         `);
     await queryRunner.query(`
 						INSERT INTO "user"("username", "fullName", "role", "password", "active")
-							VALUES ('ADMIN', 'Администратор', 'ADMIN', '$2b$10$JBPxd6tvJ8Zg/5sblPBKD.nB/ewvMl8oT730QJh.TQby/.9eVIoi2', true)
+							VALUES ('ADMIN', 'Администратор', 'ADMIN', '$2b$10$mfu69uXhGzHaAkKUqkjGNO8ahRLo7Vi3XKK2Wg.h/v6EtEN14p2JK', true)
 				`);
     await queryRunner.query(`
 						INSERT INTO "sfm"("name", "active", "valueOrder")

@@ -49,12 +49,10 @@ import { join, resolve } from 'path';
             serveRoot: '/upload',
           },
         ];
-        if (config.isProduction) {
-          staticPaths.push({
-            exclude: ['/graphql'],
-            rootPath: join(__dirname, 'ui'),
-          });
-        }
+        staticPaths.push({
+          exclude: ['/graphql'],
+          rootPath: join(__dirname, 'ui'),
+        });
 
         return staticPaths;
       },

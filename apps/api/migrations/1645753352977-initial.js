@@ -318,9 +318,153 @@ module.exports = class initial1645753352977 {
             ALTER TABLE "art_file"
             ADD CONSTRAINT "FK_ba1de964e765e0491aaa1d80d01" FOREIGN KEY ("artId") REFERENCES "art"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `);
+    await queryRunner.query(`
+						INSERT INTO "user"("username", "fullName", "role", "password", "active")
+							VALUES ('ADMIN', 'Администратор', 'ADMIN', '$2b$10$JBPxd6tvJ8Zg/5sblPBKD.nB/ewvMl8oT730QJh.TQby/.9eVIoi2', true)
+				`);
+    await queryRunner.query(`
+						INSERT INTO "sfm"("name", "active", "valueOrder")
+							VALUES 
+								('EMHART', TRUE, 1), 
+								('Bottero', TRUE, 2), 
+								('BDF', TRUE,3), 
+								('AL', TRUE, 4), 
+								('U-8M', TRUE, 5), 
+								('U-8K', TRUE, 6), 
+								('R-7', TRUE, 7), 
+								('BR-7', TRUE, 8), 
+								('S-10', TRUE,9), 
+								('Cuda', TRUE, 10), 
+								('IS', TRUE, 11), 
+								('GPS', TRUE, 12)
+				`);
+    await queryRunner.query(`
+						INSERT INTO "drop_number"("name", "active", "valueOrder")
+							VALUES 
+								('SG', TRUE, 1),
+								('DG', TRUE, 2),
+								('TG', TRUE, 3)
+				`);
+    await queryRunner.query(`
+						INSERT INTO "intercenter"("name", "active", "valueOrder")
+							VALUES 
+								('4 ¼', TRUE, 1),
+								('5', TRUE, 2),
+								('5 ½', TRUE, 3),
+								('6', TRUE, 4),
+								('6 ¼', TRUE, 5)
+		`);
+    await queryRunner.query(`
+						INSERT INTO "bottom_form"("name", "active", "valueOrder")
+							VALUES 
+								('прогиб дна менее 16мм', TRUE, 1),
+								('прогиб дна более 16мм', TRUE, 2),
+								('толстое дно', TRUE, 3),
+								('фигурное дно', TRUE, 4),
+								('обычное дно', TRUE, 5)
+		`);
+    await queryRunner.query(`
+						INSERT INTO "art_class"("name", "active", "valueOrder")
+							VALUES
+								('бутылка', TRUE, 1), 
+								('банка', TRUE, 2), 
+								('молочка', TRUE, 3),
+								('кетчуп', TRUE, 4),
+								('кровь', TRUE, 5), 
+								('сок',TRUE, 6),
+								('пробка',TRUE, 7),
+								('парфюм',TRUE, 8),
+								('PET',TRUE, 9),
+								('стакан-кружка',TRUE,10),
+								('ручкой',TRUE, 11),
+								('прочее',TRUE, 12)
+		`);
+    await queryRunner.query(`
+					INSERT INTO "form"("name", "active", "valueOrder")
+						VALUES
+							('круглая', TRUE, 1), 
+							('овальная', TRUE, 2), 
+							('фляжка', TRUE, 3),
+							('штоф', TRUE, 4),
+							('прочее', TRUE, 5), 
+							('ручкой',TRUE, 6),
+							('треугольная',TRUE, 7),
+							('пробка/крышка',TRUE, 8)
+		`);
+		await queryRunner.query(`
+					INSERT INTO "height"("name", "active", "valueOrder")
+						VALUES
+							('0-100', TRUE, 1), 
+							('101-200', TRUE, 2), 
+							('201-300', TRUE, 3),
+							('201-240', TRUE, 4),
+							('241-270', TRUE, 5), 
+							('271-300',TRUE, 6),
+							('301-400',TRUE, 7),
+							('401-500',TRUE, 8),
+							('свыше 500',TRUE, 9)
+		`);
+		await queryRunner.query(`
+					INSERT INTO "nominal_volume"("name", "active", "valueOrder")
+						VALUES
+							('0-0,05', TRUE, 1), 
+							('0,051-0,15', TRUE, 2), 
+							('0-0,15', TRUE, 3),
+							('0,16-0,25', TRUE, 4),
+							('0,26-0,49', TRUE, 5), 
+							('0,5-0,69',TRUE, 6),
+							('0,7-0,99',TRUE, 7),
+							('1,0-1,5',TRUE, 8),
+							('Более 1,5',TRUE, 9)
+		`);
+		await queryRunner.query(`
+					INSERT INTO "production_method"("name", "active", "valueOrder")
+						VALUES
+							('BB', TRUE, 1), 
+							('PB', TRUE, 2), 
+							('NNPB', TRUE, 3),
+							('LPBB (безворонковый)', TRUE, 4),
+							('пресс', TRUE, 5), 
+							('прочее',TRUE, 6)
+		`);
+		await queryRunner.query(`
+					INSERT INTO "product_type"("name", "active", "valueOrder")
+						VALUES
+							('водка', true, 1),
+							('вино', true, 2),
+							('кетчуп-соус', true, 3),
+							('пиво-сидр', true, 4),
+							('шампанское-игристое', true, 5),
+							('молоко', true, 6),
+							('лимонад', true, 7),
+							('виски, бренди, коньяк', true, 8),
+							('парфюм', true, 9),
+							('консервы', true, 10),
+							('прочее', true, 11),
+							('сок', true, 12),
+							('кровь', true, 13)
+		`);
+		await queryRunner.query(`
+					INSERT INTO "ring_type"("name", "active", "valueOrder")
+						VALUES
+							('П (камю)', true, 1),
+							('винт', true, 2),
+							('GPI', true, 3),
+							('СКО', true, 4),
+							('ТО', true, 5),
+							('минералка (Вн-28, MCA)', true, 6),
+							('пиво (КП, ВКП)', true, 7),
+							('бугель', true, 8),
+							('КПМ', true, 9),
+							('Ш, КПШ', true, 10),
+							('прочее', true, 11)
+		`);
   }
 
   async down(queryRunner) {
+    await queryRunner.query(`
+            DELETE FROM "user"
+        `);
     await queryRunner.query(`
             ALTER TABLE "art_file" DROP CONSTRAINT "FK_ba1de964e765e0491aaa1d80d01"
         `);

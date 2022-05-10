@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { ProjectType } from '@/modules/project/dto';
 import { ArtFileType } from './art-file.type';
+import { ArtCommentType } from './art-comment.type';
 
 @ObjectType('Art')
 export class ArtType {
@@ -12,6 +13,9 @@ export class ArtType {
 
   @Field(() => Boolean)
   internal: boolean;
+
+  @Field(() => [ArtCommentType], { nullable: true })
+  comments: ArtCommentType[];
 
   @Field(() => [ArtFileType], { nullable: true })
   files: ArtFileType[];

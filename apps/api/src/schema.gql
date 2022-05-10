@@ -118,10 +118,20 @@ type ProjectTypePageInfo {
   hasNextPage: Boolean!
 }
 
+type ArtComment {
+  id: String!
+  artId: String!
+  art: Art!
+  text: String!
+  authorId: User!
+  author: User!
+}
+
 type Art {
   id: String!
   name: String!
   internal: Boolean!
+  comments: [ArtComment!]
   files: [ArtFile!]
   projectId: String
   createdAt: Date

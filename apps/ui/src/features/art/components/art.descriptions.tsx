@@ -3,14 +3,24 @@ import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { ProjectsSelector } from '@/features/project/components';
 import { Art, UpdateArtInput, useUpdateArtMutation } from '@/graphql';
 import { useToggle } from '@/shared/hooks';
-import { EditOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Descriptions, Form, Input, Row, Space, Spin, Typography } from 'antd';
+import { CloseOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Checkbox,
+  Col,
+  Descriptions,
+  Form,
+  Input,
+  Row,
+  Space,
+  Spin,
+  Typography,
+} from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArtFileUpload, ArtUploadFileView } from '.';
-import { clearFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
-import { CloseOutlined } from '@ant-design/icons';
+import { clearFilter } from '../art.slice';
 
 const { Item: DItem } = Descriptions;
 const { Item: FItem, useForm } = Form;
@@ -21,13 +31,24 @@ interface ArtDescriptionsProps {
   editable?: boolean;
 }
 
-export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true }) => {
+export const ArtDescriptions: FC<ArtDescriptionsProps> = ({
+  art,
+  editable = true,
+}) => {
   const dispatch = useAppDispatch();
   const [edit, toggleEdit] = useToggle();
   const [form] = useForm<UpdateArtInput>();
-  const [update, { isLoading, isSuccess, reset }] = useUpdateArtMutation({ fixedCacheKey: 'updateArt' });
+  const [update, { isLoading, isSuccess, reset }] = useUpdateArtMutation({
+    fixedCacheKey: 'updateArt',
+  });
   const [fileInfo, setFileInfo] = useState({ filePath: '', fileExtension: '' });
-  const onUpload = ({ filePath, fileName }: { filePath: string; fileName: string }) => {
+  const onUpload = ({
+    filePath,
+    fileName,
+  }: {
+    filePath: string;
+    fileName: string;
+  }) => {
     const fileParts = fileName.split('.');
     const fileExtension = fileParts.pop()?.toLowerCase() || '';
 
@@ -42,16 +63,20 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
   useEffect(() => {
     if (isSuccess) {
       reset();
-      toggleEdit();
+      toggleEdit(false);
       form.resetFields();
     }
   }, [isSuccess]);
 
   const onFinish = async () => {
-    const values = await form.validateFields();
+    if (form.isFieldsTouched()) {
+      const updateArtInput = await form.validateFields();
 
-    Object.assign(values, { id: art.id });
-    update({ updateArtInput: values }).then((res) => 'data' in res && dispatch(clearFilter()));
+      Object.assign(updateArtInput, { id: art.id });
+      update({ updateArtInput: updateArtInput }).then(
+        (res) => 'data' in res && dispatch(clearFilter())
+      );
+    }
   };
 
   const cancelFile = () => {
@@ -60,7 +85,12 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
   };
 
   return (
-    <Form initialValues={{ ...art }} form={form} component={false} layout='horizontal'>
+    <Form
+      initialValues={{ ...art }}
+      form={form}
+      component={false}
+      layout="horizontal"
+    >
       <Spin spinning={isLoading}>
         <Descriptions
           bordered
@@ -69,12 +99,18 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
           title={
             editable && (
               <Space>
-                <Button
-                  type={edit ? 'default' : 'primary'}
-                  icon={<EditOutlined />}
-                  onClick={() => toggleEdit()}
-                />
-                {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
+                {edit ? (
+                  <Button
+                    type={'primary'}
+                    icon={<SaveOutlined />}
+                    onClick={onFinish}
+                  />
+                ) : (
+                  <Button
+                    icon={<EditOutlined />}
+                    onClick={() => toggleEdit(true)}
+                  />
+                )}
               </Space>
             )
           }
@@ -115,7 +151,11 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                 />
               </FItem>
             ) : (
-              art?.project && <Link to={`/projects/${art.project?.id}`}>{art.project?.name}</Link>
+              art?.project && (
+                <Link to={`/projects/${art.project?.id}`}>
+                  {art.project?.name}
+                </Link>
+              )
             )}
           </DItem>
 
@@ -128,7 +168,9 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                 <Col flex={'none'}>
                   <Space direction="vertical">
                     <ArtFileUpload onSuccess={onUpload} />
-                    {fileInfo.filePath && <Button icon={<CloseOutlined />} onClick={cancelFile} />}
+                    {fileInfo.filePath && (
+                      <Button icon={<CloseOutlined />} onClick={cancelFile} />
+                    )}
                   </Space>
                 </Col>
                 <Col flex={1}>

@@ -3,8 +3,7 @@ import { UserModule } from '@/modules/user';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtResolver } from './art.resolver';
-import { ArtFile } from './entity/art-file.entity';
-import { Art } from './entity/art.entity';
+import { Art, ArtComment, ArtFile } from './entity';
 import { FileUploadController } from './file-upload.controller';
 import { ArtLoader } from './loaders';
 import { ArtFileService, ArtService } from './services';
@@ -13,7 +12,7 @@ import { ArtFileService, ArtService } from './services';
   imports: [
     UserModule,
     forwardRef(() => ProjectModule),
-    TypeOrmModule.forFeature([Art, ArtFile]),
+    TypeOrmModule.forFeature([Art, ArtFile, ArtComment]),
   ],
   providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
   controllers: [FileUploadController],

@@ -20,6 +20,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ArtComment } from './art-comment.entity';
 import { ArtFile } from './art-file.entity';
 
 @Entity()
@@ -135,6 +136,9 @@ export class Art {
   })
   @JoinColumn({ name: 'ringType', referencedColumnName: 'name' })
   ringTypeEntity: RingType;
+
+  @OneToMany(() => ArtComment, (artComment) => artComment.art)
+  comments: ArtComment;
 
   @CreateDateColumn()
   createdAt: Date;

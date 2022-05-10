@@ -2,10 +2,24 @@ import { useAppDispatch } from '@/app/store';
 import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
-import { Customer, Factory, Project, UpdateProjectInput, useUpdateProjectMutation } from '@/graphql';
+import {
+  Customer,
+  Factory,
+  Project,
+  UpdateProjectInput,
+  useUpdateProjectMutation,
+} from '@/graphql';
 import { useToggle } from '@/shared/hooks';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Descriptions, Form, Space, Spin, Typography } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Descriptions,
+  Form,
+  Space,
+  Spin,
+  Typography,
+} from 'antd';
 import { FC, useEffect } from 'react';
 import { projectAttributesTypes } from '../project-attribute.types';
 import { clearFilter } from '../project.slice';
@@ -18,7 +32,9 @@ interface ProjectDescriptionsProps {
   project: Project;
 }
 
-export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) => {
+export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({
+  project,
+}) => {
   const dispatch = useAppDispatch();
   const [edit, toggleEdit] = useToggle();
   const [form] = useForm<UpdateProjectInput>();
@@ -31,24 +47,31 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
   }, []);
 
   const onFinish = async () => {
-    const values = await form.validateFields();
+    if (form.isFieldsTouched()) {
+      const updateProjectInput = await form.validateFields();
 
-    update({ updateProjectInput: { ...values, id: project.id } }).then(
-      (res) => 'data' in res && dispatch(clearFilter())
-    );
+      Object.assign(updateProjectInput, { id: project.id });
+      update({ updateProjectInput }).then(
+        (res) => 'data' in res && dispatch(clearFilter())
+      );
+    }
   };
 
   useEffect(() => {
     if (isSuccess) {
       reset();
-      toggleEdit();
+      toggleEdit(false);
       form.resetFields();
     }
   }, [isSuccess]);
 
   return (
     <Form
-      initialValues={{ ...project, customerId: project?.customer?.id, factoryId: project?.factory?.id }}
+      initialValues={{
+        ...project,
+        customerId: project?.customer?.id,
+        factoryId: project?.factory?.id,
+      }}
       form={form}
       component={false}
     >
@@ -59,12 +82,18 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
           title={
             <Space>
-              <Button
-                type={edit ? 'default' : 'primary'}
-                icon={<EditOutlined />}
-                onClick={() => toggleEdit()}
-              />
-              {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
+              {edit ? (
+                <Button
+                  type={'primary'}
+                  icon={<SaveOutlined />}
+                  onClick={onFinish}
+                />
+              ) : (
+                <Button
+                  icon={<EditOutlined />}
+                  onClick={() => toggleEdit(true)}
+                />
+              )}
             </Space>
           }
         >
@@ -87,7 +116,11 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
             )}
           </DItem>
           {projectAttributesTypes.map((type, i, arr) => (
-            <DItem key={type} label={AttributesLabels[type]} span={i === arr.length - 1 ? 2 : 1}>
+            <DItem
+              key={type}
+              label={AttributesLabels[type]}
+              span={i === arr.length - 1 ? 2 : 1}
+            >
               {edit ? (
                 <FItem noStyle name={type}>
                   <AttributeSelector active type={type} allowClear />
@@ -101,7 +134,10 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           <DItem label={'Заказчик'} span={4}>
             {edit ? (
               <FItem noStyle name="customerId">
-                <CustomerSelector allowClear current={project?.customer as Customer} />
+                <CustomerSelector
+                  allowClear
+                  current={project?.customer as Customer}
+                />
               </FItem>
             ) : (
               <Text>{project?.customer?.name}</Text>
@@ -110,7 +146,10 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
           <DItem label={'Завод'} span={4}>
             {edit ? (
               <FItem noStyle name="factoryId">
-                <FactorySelector allowClear current={project?.factory as Factory} />
+                <FactorySelector
+                  allowClear
+                  current={project?.factory as Factory}
+                />
               </FItem>
             ) : (
               <Text>{project?.factory?.name}</Text>

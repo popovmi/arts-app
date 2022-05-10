@@ -4,8 +4,8 @@ import { ArtType } from '.';
 
 @ObjectType('ArtComment')
 export class ArtCommentType {
-  @Field(() => String)
-  id: string;
+  @Field(() => Number)
+  id: number;
 
   @Field(() => String)
   artId: string;
@@ -16,7 +16,7 @@ export class ArtCommentType {
   @Field(() => String)
   text: string;
 
-  @Field(() => UserType)
+  @Field(() => String)
   authorId: string;
 
   @Field(() => UserType)

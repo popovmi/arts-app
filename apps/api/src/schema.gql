@@ -71,6 +71,15 @@ type Factory {
   updatedAt: Date!
 }
 
+type ArtComment {
+  id: Float!
+  artId: String!
+  art: Art!
+  text: String!
+  authorId: String!
+  author: User!
+}
+
 type ArtFile {
   artId: String!
   art: Art!
@@ -116,15 +125,6 @@ type ProjectTypePageInfo {
   endCursor: String
   hasPreviousPage: Boolean!
   hasNextPage: Boolean!
-}
-
-type ArtComment {
-  id: String!
-  artId: String!
-  art: Art!
-  text: String!
-  authorId: User!
-  author: User!
 }
 
 type Art {
@@ -337,6 +337,9 @@ type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createArt(createArtInput: CreateArtInput!): Art!
   updateArt(updateArtInput: UpdateArtInput!): Art!
+  addArtComment(artCommentInput: ArtCommentInput!): Art!
+  updateArtComment(id: Float!, text: String!): Boolean!
+  deleteArtComment(id: Float!): Boolean!
   createFactory(input: CreateFactoryInput!): Factory!
   updateFactory(input: UpdateFactoryInput!): Factory!
   createCustomer(input: CreateCustomerInput!): Customer!
@@ -415,6 +418,11 @@ input UpdateArtInput {
   productionMethod: String = null
   filePath: String
   ringType: String = null
+}
+
+input ArtCommentInput {
+  text: String!
+  artId: String!
 }
 
 input CreateFactoryInput {

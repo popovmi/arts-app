@@ -4,7 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
 import { In, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
-import { ArtResponse, CreateArtInput, FindArtArgs, UpdateArtInput } from '../dto';
+import {
+  ArtCommentInput,
+  ArtResponse,
+  CreateArtInput,
+  FindArtArgs,
+  UpdateArtInput,
+} from '../dto';
+import { ArtComment } from '../entity';
 import { Art } from '../entity/art.entity';
 import { ArtFileService } from './art-file.service';
 
@@ -12,6 +19,8 @@ import { ArtFileService } from './art-file.service';
 export class ArtService {
   constructor(
     @InjectRepository(Art) private artRepository: Repository<Art>,
+    @InjectRepository(ArtComment)
+    private artCommentRepository: Repository<ArtComment>,
     private artFileService: ArtFileService
   ) {}
 
@@ -22,10 +31,17 @@ export class ArtService {
   }
 
   async getArt(id: string): Promise<Art> {
-    return this.artRepository.findOne({ where: { id } });
+    return this.artRepository.findOne({
+      where: { id },
+      relations: ['comments', 'comments.author'],
+    });
   }
 
-  async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
+  async getArts({
+    filter,
+    order,
+    pagination,
+  }: FindArtArgs): Promise<ArtResponse> {
     const { take = 50, skip = 0 } = pagination.pagingParams();
     const query = filterQuery(
       this.artRepository.createQueryBuilder('arts'),
@@ -72,7 +88,9 @@ export class ArtService {
     return await this.artRepository.save(art);
   }
 
-  public async loadArtsFiles(ids: string[]): Promise<Pick<Art, 'id' | 'files'>[]> {
+  public async loadArtsFiles(
+    ids: string[]
+  ): Promise<Pick<Art, 'id' | 'files'>[]> {
     const arts = await this.artRepository.find({
       where: { id: In(ids) },
       select: ['id'],
@@ -80,5 +98,58 @@ export class ArtService {
     });
 
     return arts;
+  }
+
+  public async addArtComment({
+    artId,
+    text,
+    authorId,
+  }: ArtCommentInput & { authorId: string }) {
+    await this.artRepository.findOneOrFail({
+      where: { id: artId },
+      select: ['id'],
+    });
+
+    await this.artCommentRepository.save({ artId, text, authorId });
+    return this.getArt(artId);
+  }
+
+  public async updateArtComment({
+    commentId,
+    authorId,
+    text,
+  }: {
+    commentId: number;
+    authorId: string;
+    text: string;
+  }) {
+    const comment = await this.artCommentRepository.findOneOrFail({
+      where: { id: commentId },
+    });
+
+    if (authorId !== comment.authorId) {
+      throw new Error('Невозможно исправить чужой комментарий!');
+    }
+
+    comment.text = text;
+    await this.artCommentRepository.save(comment);
+  }
+
+  public async deleteComment({
+    commentId,
+    authorId,
+  }: {
+    commentId: number;
+    authorId: string;
+  }) {
+    const comment = await this.artCommentRepository.findOneOrFail({
+      where: { id: commentId },
+    });
+
+    if (authorId !== comment.authorId) {
+      throw new Error('Невозможно удалить чужой комментарий!');
+    }
+
+    await this.artCommentRepository.delete({ id: commentId });
   }
 }

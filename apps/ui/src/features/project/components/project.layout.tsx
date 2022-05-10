@@ -5,7 +5,7 @@ import { ProjectHeader } from './project.header';
 
 const { Content } = AntLayout;
 
-export const ProjectLayout: FC = ({ children }) => {
+export const ProjectLayout: FC<any> = ({ children }) => {
   return (
     <AntLayout>
       <ProjectHeader />

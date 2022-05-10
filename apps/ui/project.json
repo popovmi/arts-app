@@ -1,5 +1,4 @@
 {
-  "root": "apps/ui",
   "sourceRoot": "apps/ui/src",
   "projectType": "application",
   "targets": {
@@ -34,6 +33,12 @@
           "namedChunks": false,
           "extractLicenses": true,
           "vendorChunk": false
+        },
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         }
       }
     },
@@ -48,8 +53,12 @@
         "production": {
           "buildTarget": "ui:build:production",
           "hmr": false
+        },
+        "development": {
+          "buildTarget": "ui:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -62,7 +71,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/ui"],
       "options": {
-        "jestConfig": "apps/ui/jest.config.js",
+        "jestConfig": "apps/ui/jest.config.ts",
         "passWithNoTests": true
       }
     }

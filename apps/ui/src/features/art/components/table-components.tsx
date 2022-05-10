@@ -3,7 +3,7 @@ import { ArtFilterQuery } from '@/graphql';
 import { FC } from 'react';
 import { selectArts } from '..';
 
-export const HeaderRow: FC = ({ children, ...props }) => {
+export const HeaderRow: FC<any> = ({ children, ...props }) => {
   return <tr {...props}>{children}</tr>;
 };
 

@@ -32,13 +32,12 @@ export class ArtFileService {
   }
 
   private async fromPdfToJpeg(src: string, dest: string) {
-    const options = {
+    const res = await this._poppler.pdfToCairo(src, dest, {
       firstPageToConvert: 1,
       lastPageToConvert: 1,
       jpegFile: true,
       singleFile: true,
-    };
-    const res = await this._poppler.pdfToCairo(src, dest, options);
+    });
 
     if (res instanceof Error) throw res;
   }
@@ -61,8 +60,8 @@ export class ArtFileService {
     const Y = (image.bitmap.height - logo.bitmap.height) / 2;
     const composed = image.composite(logo, X, Y, {
       mode: Jimp.BLEND_SOURCE_OVER,
-      opacitySource: 0.4,
-      opacityDest: 1,
+      opacitySource: 0.2,
+      opacityDest: 0.9,
     });
 
     await composed.writeAsync(dest);

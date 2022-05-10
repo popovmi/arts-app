@@ -66,7 +66,8 @@ export class ApiConfigService {
               'request.credentials': 'same-origin',
             },
           },
-      autoSchemaFile: join(process.cwd(), 'apps/api/src/schema.gql'),
+      autoSchemaFile:
+        !this.isProduction && join(process.cwd(), 'apps/api/src/schema.gql'),
       context: ({ req, res }: { req: Request; res: Response }): AppContext => ({
         httpContext: { req, res },
         session: req.session,

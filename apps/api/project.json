@@ -1,98 +1,98 @@
 {
-  "sourceRoot": "apps/api/src",
-  "projectType": "application",
-  "targets": {
-    "build": {
-      "executor": "@nrwl/node:webpack",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist",
-        "main": "apps/api/src/main.ts",
-        "generatePackageJson": true,
-        "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": [
-          "apps/api/src/assets",
-          {
-            "glob": "ormconfig.prod.js",
-            "input": "apps/api",
-            "output": "ormconfig.js"
-          },
-          {
-            "glob": "*.js",
-            "input": "apps/api/migrations",
-            "output": "migrations"
-          },
-          {
-            "glob": ".gitignore",
-            "input": ".",
-            "output": "."
-          },
-          {
-            "glob": "*",
-            "input": "apps/api/heroku",
-            "output": "."
-          },
-          {
-            "glob": "*",
-            "input": "watermark",
-            "output": "watermark"
-          }
-        ]
-      },
-      "configurations": {
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/api/src/environments/environment.ts",
-              "with": "apps/api/src/environments/environment.prod.ts"
+    "sourceRoot": "apps/api/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/node:webpack",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist",
+                "main": "apps/api/src/main.ts",
+                "generatePackageJson": true,
+                "tsConfig": "apps/api/tsconfig.app.json",
+                "assets": [
+                    "apps/api/src/assets",
+                    {
+                        "glob": "ormconfig.prod.js",
+                        "input": "apps/api",
+                        "output": "ormconfig.js"
+                    },
+                    {
+                        "glob": "*.js",
+                        "input": "apps/api/migrations",
+                        "output": "migrations"
+                    },
+                    {
+                        "glob": ".gitignore",
+                        "input": ".",
+                        "output": "."
+                    },
+                    {
+                        "glob": "*",
+                        "input": "apps/api/heroku",
+                        "output": "."
+                    },
+                    {
+                        "glob": "*",
+                        "input": "watermark",
+                        "output": "watermark"
+                    }
+                ]
+            },
+            "configurations": {
+                "production": {
+                    "optimization": true,
+                    "extractLicenses": true,
+                    "inspect": false,
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/api/src/environments/environment.ts",
+                            "with": "apps/api/src/environments/environment.prod.ts"
+                        }
+                    ]
+                }
             }
-          ]
-        }
-      }
-    },
-    "serve": {
-      "executor": "@nrwl/node:node",
-      "options": {
-        "buildTarget": "api:build"
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/api/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/api"],
-      "options": {
-        "jestConfig": "apps/api/jest.config.ts",
-        "passWithNoTests": true
-      }
-    },
-    "update-pj": {
-      "executor": "./tools/executors/updatePJ:updatePJ",
-      "options": {
-        "engines": {
-          "node": "16.x",
-          "npm": "8.x"
         },
-        "scripts": {
-          "migration:run": "npx typeorm migration:run"
+        "serve": {
+            "executor": "@nrwl/node:node",
+            "options": {
+                "buildTarget": "api:build"
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/api/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/apps/api"],
+            "options": {
+                "jestConfig": "apps/api/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "update-pj": {
+            "executor": "./tools/executors/updatePJ:updatePJ",
+            "options": {
+                "engines": {
+                    "node": "16.x",
+                    "npm": "8.x"
+                },
+                "scripts": {
+                    "migration:run": "npx typeorm migration:run"
+                }
+            }
+        },
+        "build-app": {
+            "executor": "@nrwl/workspace:run-commands",
+            "outputs": [],
+            "options": {
+                "command": "powershell.exe ./tools/scripts/build-api.ps1"
+            }
         }
-      }
     },
-    "build-app": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [],
-      "options": {
-        "command": "powershell.exe ./tools/scripts/build-api.ps1"
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

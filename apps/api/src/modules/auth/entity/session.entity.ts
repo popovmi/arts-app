@@ -3,12 +3,12 @@ import { AppSessionData } from '../interfaces/session-data.interface';
 
 @Entity()
 export class Session {
-  @PrimaryColumn('uuid')
-  sid: string;
+    @PrimaryColumn('uuid')
+    sid: string;
 
-  @Column({ type: 'jsonb' })
-  sess: AppSessionData;
+    @Column({ type: 'jsonb' })
+    sess: AppSessionData;
 
-  @Column({ type: 'timestamp with time zone' })
-  expire: Date;
+    @Column({ type: 'timestamp with time zone' })
+    expire: Date;
 }

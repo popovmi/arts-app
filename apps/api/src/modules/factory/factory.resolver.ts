@@ -9,35 +9,35 @@ import { FactoryService } from './factory.service';
 @Resolver(() => FactoryType)
 @UseGuards(AuthGuard, RolesGuard)
 export class FactoryResolver {
-  constructor(readonly factoryService: FactoryService) {}
+    constructor(readonly factoryService: FactoryService) {}
 
-  @Mutation(() => FactoryType)
-  @Roles(Role.ADMIN)
-  public async createFactory(@Args('input') input: CreateFactoryInput) {
-    return await this.factoryService.create(input);
-  }
+    @Mutation(() => FactoryType)
+    @Roles(Role.ADMIN)
+    public async createFactory(@Args('input') input: CreateFactoryInput) {
+        return await this.factoryService.create(input);
+    }
 
-  @Query(() => [FactoryType])
-  @Roles(Role.ADMIN, Role.USER)
-  public async factories() {
-    return await this.factoryService.findAll();
-  }
+    @Query(() => [FactoryType])
+    @Roles(Role.ADMIN, Role.USER)
+    public async factories() {
+        return await this.factoryService.findAll();
+    }
 
-  @Query(() => FactoryType)
-  @Roles(Role.ADMIN, Role.USER)
-  public async factory(@Args('id') id: string) {
-    return await this.factoryService.findOne(id);
-  }
+    @Query(() => FactoryType)
+    @Roles(Role.ADMIN, Role.USER)
+    public async factory(@Args('id') id: string) {
+        return await this.factoryService.findOne(id);
+    }
 
-  @Mutation(() => FactoryType)
-  @Roles(Role.ADMIN)
-  public async updateFactory(@Args('input') input: UpdateFactoryInput) {
-    return await this.factoryService.update(input);
-  }
+    @Mutation(() => FactoryType)
+    @Roles(Role.ADMIN)
+    public async updateFactory(@Args('input') input: UpdateFactoryInput) {
+        return await this.factoryService.update(input);
+    }
 
-  // @Mutation(() => Boolean)
-  // public async remove(@Args('id') id: string) {
-  //     await this.factoryService.remove(id);
-  //     return true;
-  // }
+    // @Mutation(() => Boolean)
+    // public async remove(@Args('id') id: string) {
+    //     await this.factoryService.remove(id);
+    //     return true;
+    // }
 }

@@ -1,21 +1,21 @@
 mutation updateProject($updateProjectInput: UpdateProjectInput!) {
-  updateProject(updateProjectInput: $updateProjectInput) {
-    id
-    name
-    internal
-    hasDesignDoc
-    sfm
-    dropNumber
-    intercenter
-    factory {
-      id
-      name
+    updateProject(updateProjectInput: $updateProjectInput) {
+        id
+        name
+        internal
+        hasDesignDoc
+        sfm
+        dropNumber
+        intercenter
+        factory {
+            id
+            name
+        }
+        customer {
+            id
+            name
+        }
+        createdAt
+        updatedAt
     }
-    customer {
-      id
-      name
-    }
-    createdAt
-    updatedAt
-  }
 }

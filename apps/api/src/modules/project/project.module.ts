@@ -10,14 +10,14 @@ import { ProjectResolver } from './project.resolver';
 import { ProjectService } from './project.service';
 
 @Module({
-  imports: [
-    UserModule,
-    forwardRef(() => ArtModule),
-    forwardRef(() => FactoryModule),
-    forwardRef(() => CustomerModule),
-    TypeOrmModule.forFeature([Project]),
-  ],
-  providers: [ProjectResolver, ProjectService, ProjectLoader],
-  exports: [ProjectService],
+    imports: [
+        UserModule,
+        forwardRef(() => ArtModule),
+        forwardRef(() => FactoryModule),
+        forwardRef(() => CustomerModule),
+        TypeOrmModule.forFeature([Project]),
+    ],
+    providers: [ProjectResolver, ProjectService, ProjectLoader],
+    exports: [ProjectService],
 })
 export class ProjectModule {}

@@ -1,3 +1,3 @@
-mutation updateArtComment($id: Float!, $text: String!){
+mutation updateArtComment($id: Float!, $text: String!) {
     updateArtComment(id: $id, text: $text)
 }

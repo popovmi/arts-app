@@ -1,9 +1,9 @@
 query customers {
-  customers {
-    id
-    name
-    active
-    createdAt
-    updatedAt
-  }
+    customers {
+        id
+        name
+        active
+        createdAt
+        updatedAt
+    }
 }

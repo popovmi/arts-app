@@ -9,13 +9,13 @@ import { ArtLoader } from './loaders';
 import { ArtFileService, ArtService } from './services';
 
 @Module({
-  imports: [
-    UserModule,
-    forwardRef(() => ProjectModule),
-    TypeOrmModule.forFeature([Art, ArtFile, ArtComment]),
-  ],
-  providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
-  controllers: [FileUploadController],
-  exports: [ArtService],
+    imports: [
+        UserModule,
+        forwardRef(() => ProjectModule),
+        TypeOrmModule.forFeature([Art, ArtFile, ArtComment]),
+    ],
+    providers: [ArtResolver, ArtService, ArtFileService, ArtLoader],
+    controllers: [FileUploadController],
+    exports: [ArtService],
 })
 export class ArtModule {}

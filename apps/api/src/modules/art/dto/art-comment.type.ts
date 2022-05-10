@@ -4,21 +4,21 @@ import { ArtType } from '.';
 
 @ObjectType('ArtComment')
 export class ArtCommentType {
-  @Field(() => Number)
-  id: number;
+    @Field(() => Number)
+    id: number;
 
-  @Field(() => String)
-  artId: string;
+    @Field(() => String)
+    artId: string;
 
-  @Field(() => ArtType)
-  art: ArtType;
+    @Field(() => ArtType)
+    art: ArtType;
 
-  @Field(() => String)
-  text: string;
+    @Field(() => String)
+    text: string;
 
-  @Field(() => String)
-  authorId: string;
+    @Field(() => String)
+    authorId: string;
 
-  @Field(() => UserType)
-  author: User;
+    @Field(() => UserType)
+    author: User;
 }

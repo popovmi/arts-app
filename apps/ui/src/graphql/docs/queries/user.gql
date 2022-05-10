@@ -1,11 +1,11 @@
 query user($id: String!) {
-  user(id: $id) {
-    id
-    username
-    fullName
-    role
-    active
-    createdAt
-    updatedAt
-  }
+    user(id: $id) {
+        id
+        username
+        fullName
+        role
+        active
+        createdAt
+        updatedAt
+    }
 }

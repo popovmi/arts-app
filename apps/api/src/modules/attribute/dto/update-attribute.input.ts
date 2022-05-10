@@ -3,15 +3,15 @@ import { AttributeType } from '../attribute-type';
 
 @InputType()
 export class UpdateAttributeInput {
-  @Field(() => AttributeType)
-  type: AttributeType;
+    @Field(() => AttributeType)
+    type: AttributeType;
 
-  @Field()
-  id: number;
+    @Field()
+    id: number;
 
-  @Field({ nullable: true })
-  name: string;
+    @Field({ nullable: true })
+    name: string;
 
-  @Field({ nullable: true })
-  active: boolean;
+    @Field({ nullable: true })
+    active: boolean;
 }

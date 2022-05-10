@@ -36,7 +36,7 @@ export const ArtPage: FC = () => {
         }
         onBack={() => navigate(-1)}
       ></PageHeader>
-      <Row style={{ padding: 8 }} gutter={8}>
+      <Row style={{ padding: 8 }} gutter={[8, 8]}>
         <Col xs={24} lg={8}>
           <ArtDescriptions art={art} />
         </Col>
@@ -50,7 +50,7 @@ export const ArtPage: FC = () => {
           )}
         </Col>
         <Divider orientation={'left'}>
-          <Typography.Title level={2}  style={{ margin: 0 }}>
+          <Typography.Title level={2} style={{ margin: 0 }}>
             Комментарии
           </Typography.Title>
         </Divider>

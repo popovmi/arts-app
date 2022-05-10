@@ -239,7 +239,7 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addArtComment: Art;
+  addArtComment: ArtComment;
   changePassword: Scalars['Boolean'];
   createArt: Art;
   createAttribute: BaseAttributeType;
@@ -662,7 +662,7 @@ export type AddArtCommentMutationVariables = Exact<{
 }>;
 
 
-export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null, comments?: Array<{ __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null } };
+export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type ChangePasswordMutationVariables = Exact<{
   username: Scalars['String'];
@@ -905,37 +905,11 @@ export const AddArtCommentDocument = `
     mutation addArtComment($artCommentInput: ArtCommentInput!) {
   addArtComment(artCommentInput: $artCommentInput) {
     id
-    name
-    internal
-    files {
-      artId
-      originalPath
-      watermarkPath
-      uploadedAt
-    }
-    project {
+    text
+    author {
       id
-      name
+      fullName
     }
-    comments {
-      id
-      text
-      author {
-        id
-        fullName
-      }
-    }
-    projectId
-    createdAt
-    updatedAt
-    bottomForm
-    artClass
-    form
-    nominalVolume
-    height
-    productType
-    productionMethod
-    ringType
   }
 }
     `;

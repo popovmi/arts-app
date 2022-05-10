@@ -1,9 +1,18 @@
 import { api as generatedApi, AttributeType } from '@/graphql';
 
-const attributesTags = Object.values(AttributeType).map((type) => `${type}Attribute`);
+const attributesTags = Object.values(AttributeType).map(
+  (type) => `${type}Attribute`
+);
 
 export const api = generatedApi.enhanceEndpoints({
-  addTagTypes: ['Art', 'Project', 'User', 'Customer', 'Factory', ...attributesTags],
+  addTagTypes: [
+    'Art',
+    'Project',
+    'User',
+    'Customer',
+    'Factory',
+    ...attributesTags,
+  ],
   endpoints: {
     art: {
       providesTags: (result, error, { id }) => [{ type: 'Art', id }],
@@ -12,7 +21,10 @@ export const api = generatedApi.enhanceEndpoints({
       providesTags: (result) =>
         result?.arts.page.edges
           ? [
-              ...result.arts.page.edges.map(({ node }) => ({ type: 'Art' as const, id: node!.id })),
+              ...result.arts.page.edges.map(({ node }) => ({
+                type: 'Art' as const,
+                id: node!.id,
+              })),
               { type: 'Art', id: 'LIST' },
             ]
           : [{ type: 'Art', id: 'LIST' }],
@@ -21,7 +33,26 @@ export const api = generatedApi.enhanceEndpoints({
       invalidatesTags: [{ type: 'Art', id: 'LIST' }],
     },
     updateArt: {
-      invalidatesTags: (result, error, { updateArtInput: { id } }) => [{ type: 'Art', id }],
+      invalidatesTags: (result, error, { updateArtInput: { id } }) => [
+        { type: 'Art', id },
+      ],
+    },
+    addArtComment: {
+      onQueryStarted: async (
+        { artCommentInput: { artId } },
+        { dispatch, queryFulfilled }
+      ) => {
+        try {
+          const {
+            data: { addArtComment: comment },
+          } = await queryFulfilled;
+          dispatch(
+            generatedApi.util.updateQueryData('art', { id: artId }, (draft) => {
+              draft.art.comments = [...(draft.art.comments || []), comment];
+            })
+          );
+        } catch {}
+      },
     },
 
     project: {
@@ -125,7 +156,9 @@ export const api = generatedApi.enhanceEndpoints({
     },
 
     attribute: {
-      providesTags: (result, error, { id, type }) => [{ type: `${type}Attribute`, id }],
+      providesTags: (result, error, { id, type }) => [
+        { type: `${type}Attribute`, id },
+      ],
     },
     attributes: {
       providesTags: (result, error, { type }) =>
@@ -155,11 +188,11 @@ export const api = generatedApi.enhanceEndpoints({
         { type: `${type}Attribute`, id: 'LIST' },
       ],
     },
-		deleteAttribute: {
-			invalidatesTags: (result, error, { input: { id, type } }) => [
+    deleteAttribute: {
+      invalidatesTags: (result, error, { input: { id, type } }) => [
         { type: `${type}Attribute`, id },
         { type: `${type}Attribute`, id: 'LIST' },
       ],
-		}
+    },
   },
 });

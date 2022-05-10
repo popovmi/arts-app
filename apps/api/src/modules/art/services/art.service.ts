@@ -110,8 +110,16 @@ export class ArtService {
       select: ['id'],
     });
 
-    await this.artCommentRepository.save({ artId, text, authorId });
-    return this.getArt(artId);
+    const comment = await this.artCommentRepository.save({
+      artId,
+      text,
+      authorId,
+    });
+
+    return this.artCommentRepository.findOne({
+      where: { id: comment.id },
+      relations: ['author'],
+    });
   }
 
   public async updateArtComment({

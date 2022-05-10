@@ -337,7 +337,7 @@ type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   createArt(createArtInput: CreateArtInput!): Art!
   updateArt(updateArtInput: UpdateArtInput!): Art!
-  addArtComment(artCommentInput: ArtCommentInput!): Art!
+  addArtComment(artCommentInput: ArtCommentInput!): ArtComment!
   updateArtComment(id: Float!, text: String!): Boolean!
   deleteArtComment(id: Float!): Boolean!
   createFactory(input: CreateFactoryInput!): Factory!

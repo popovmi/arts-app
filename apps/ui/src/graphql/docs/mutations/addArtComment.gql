@@ -1,36 +1,10 @@
 mutation addArtComment($artCommentInput: ArtCommentInput!) {
   addArtComment(artCommentInput: $artCommentInput) {
     id
-    name
-    internal
-    files {
-      artId
-      originalPath
-      watermarkPath
-      uploadedAt
-    }
-    project {
+    text
+    author {
       id
-      name
+      fullName
     }
-    comments {
-      id
-      text
-      author {
-        id
-        fullName
-      }
-    }
-    projectId
-    createdAt
-    updatedAt
-    bottomForm
-    artClass
-    form
-    nominalVolume
-    height
-    productType
-    productionMethod
-    ringType
   }
 }

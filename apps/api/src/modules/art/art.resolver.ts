@@ -15,6 +15,7 @@ import {
 } from '@nestjs/graphql';
 import {
   ArtCommentInput,
+  ArtCommentType,
   ArtFileType,
   ArtResponse,
   ArtType,
@@ -71,7 +72,7 @@ export class ArtResolver {
     return await this.artService.updateArt(updateArtInput);
   }
 
-  @Mutation(() => ArtType)
+  @Mutation(() => ArtCommentType)
   public async addArtComment(
     @Args('artCommentInput') artCommentInput: ArtCommentInput,
     @Context() { currentUserId }: AppContext

@@ -76,7 +76,9 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({
       update({ updateArtInput: updateArtInput }).then(
         (res) => 'data' in res && dispatch(clearFilter())
       );
-    }
+    } else {
+		toggleEdit(false);
+	}
   };
 
   const cancelFile = () => {
@@ -95,7 +97,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({
         <Descriptions
           bordered
           size="small"
-          column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
+          column={{ xs: 1, sm: 1, md: 1, lg: 1 }}
           title={
             editable && (
               <Space>

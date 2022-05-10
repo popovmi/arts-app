@@ -45,10 +45,11 @@ export const AttributeSelector: FC<AttributeSelectorProps> = ({
 
   return (
     <Select
-      style={{ minWidth: 100, width: '100%', maxWidth: 300 }}
+      style={{ minWidth: 100,  width:'100%', textOverflow:'ellipsis' }}
       showSearch
       options={options}
       value={value}
+	//   dropdownMatchSelectWidth={false}
       allowClear={allowClear}
       onChange={onSelectChange}
       loading={loading}

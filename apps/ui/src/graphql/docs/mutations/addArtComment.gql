@@ -1,5 +1,5 @@
-query art($id: String!) {
-  art(id: $id) {
+mutation addArtComment($artCommentInput: ArtCommentInput!) {
+  addArtComment(artCommentInput: $artCommentInput) {
     id
     name
     internal

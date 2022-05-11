@@ -5,16 +5,16 @@ import { FactorySelector } from '@/features/factory';
 import { projectAttributesTypes } from '@/features/project/project-attribute.types';
 import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOption } from '@/graphql';
 import {
-    Button,
-    Col,
-    Input,
-    Radio,
-    RadioChangeEvent,
-    Row,
-    Space,
-    Image,
-    TableColumnGroupType,
-    TableColumnType,
+	Button,
+	Col,
+	Image,
+	Input,
+	Radio,
+	RadioChangeEvent,
+	Row,
+	Space,
+	TableColumnGroupType,
+	TableColumnType
 } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
@@ -29,6 +29,8 @@ interface ArtFilterItemProps {
     disableClear: boolean;
     withTimer: boolean;
 }
+
+type ArtTableColumnType = TableColumnType<Art> | TableColumnGroupType<Art>;
 
 function arraysEqual(a: any[], b: any[]) {
     if (a === b) return true;
@@ -79,7 +81,7 @@ const ArtFilterInput: FC<ArtFilterItemProps> = ({ onChange, value, onClear, disa
     );
 };
 
-export const artColumns = () => {
+export const artColumns = (): ArtTableColumnType[] => {
     const dispatch = useAppDispatch();
     const { filter, showDataIndexes } = useAppSelector(selectArts);
 
@@ -183,7 +185,7 @@ export const artColumns = () => {
         );
     };
 
-    const artColumns: Array<TableColumnType<Art> | TableColumnGroupType<Art>> = [
+    const artColumns: ArtTableColumnType[] = [
         {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'name',
@@ -408,31 +410,32 @@ export const artColumns = () => {
         },
     ];
 
-    return artColumns.filter((column: TableColumnType<Art>) => {
-        if (column.dataIndex) {
-            return showDataIndexes.includes(column.dataIndex as string);
+    return filterColumns(artColumns, showDataIndexes);
+};
+
+const filterColumns = (
+    columns: ArtTableColumnType[],
+    showDataIndexes: Array<string | string[]>
+): ArtTableColumnType[] => {
+    return columns.filter((_column: TableColumnType<Art>) => {
+        if (_column.dataIndex) {
+            if (typeof _column.dataIndex === 'string') {
+                return showDataIndexes.includes(_column.dataIndex);
+            }
+
+            if (Array.isArray(_column.dataIndex)) {
+                return !!showDataIndexes.find((showIndex) => {
+                    if (Array.isArray(showIndex)) {
+                        return arraysEqual(showIndex, _column.dataIndex as string[]);
+                    } else return (_column.dataIndex as string[])[0] === showIndex;
+                });
+            }
         }
 
-        const artColumn = column as TableColumnGroupType<Art>;
+        const artColumn = _column as TableColumnGroupType<Art>;
 
         if (artColumn.children) {
-            artColumn.children = artColumn.children.filter((childColumn) => {
-                const artChildColumn = childColumn as TableColumnType<Art>;
-
-                if (typeof artChildColumn.dataIndex === 'string') {
-                    return showDataIndexes.includes(artChildColumn.dataIndex);
-                }
-
-                if (Array.isArray(artChildColumn.dataIndex)) {
-                    return !!showDataIndexes.find((showIndex) => {
-                        if (Array.isArray(showIndex)) {
-                            return arraysEqual(showIndex, artChildColumn.dataIndex as string[]);
-                        } else return (artChildColumn.dataIndex as string[])[0] === showIndex;
-                    });
-                }
-
-                return false;
-            });
+            artColumn.children = filterColumns(artColumn.children, showDataIndexes);
         }
 
         return !!artColumn.children.length;

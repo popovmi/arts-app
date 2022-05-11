@@ -88,9 +88,19 @@ type ArtFile {
   uploadedAt: Date!
 }
 
+type ProjectComment {
+  id: Float!
+  projectId: String!
+  project: Project!
+  text: String!
+  authorId: String!
+  author: User!
+}
+
 type Project {
   id: String!
   name: String!
+  comments: [ProjectComment!]
   internal: Boolean!
   hasDesignDoc: Boolean
   sfm: String
@@ -125,15 +135,6 @@ type ProjectTypePageInfo {
   endCursor: String
   hasPreviousPage: Boolean!
   hasNextPage: Boolean!
-}
-
-type ProjectComment {
-  id: Float!
-  projectId: String!
-  project: Project!
-  text: String!
-  authorId: String!
-  author: User!
 }
 
 type Art {

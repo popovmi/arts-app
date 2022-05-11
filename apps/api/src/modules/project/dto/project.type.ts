@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { ArtType } from '@/modules/art/dto';
 import { FactoryType } from '@/modules/factory/dto';
 import { CustomerType } from '@/modules/customer/dto';
+import { ProjectCommentType } from './project-comment.type';
 
 @ObjectType('Project')
 export class ProjectType {
@@ -10,6 +11,9 @@ export class ProjectType {
 
     @Field(() => String)
     name: string;
+
+    @Field(() => [ProjectCommentType], { nullable: true })
+    comments: ProjectCommentType[];
 
     @Field(() => Boolean)
     internal: boolean;

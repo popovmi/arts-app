@@ -8,3 +8,5 @@ export * from './art.navigation';
 export * from './create-art.form';
 export * from './table-components';
 export * from './art-upload-file.view';
+export * from './art-comments.list';
+export * from './art.comment';

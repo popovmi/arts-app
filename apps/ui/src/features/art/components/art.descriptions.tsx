@@ -28,17 +28,6 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
         fixedCacheKey: 'updateArt',
     });
     const [fileInfo, setFileInfo] = useState({ filePath: '', fileExtension: '' });
-    const onUpload = ({ filePath, fileName }: { filePath: string; fileName: string }) => {
-        const fileParts = fileName.split('.');
-        const fileExtension = fileParts.pop()?.toLowerCase() || '';
-
-        form.setFieldsValue({ filePath });
-        setFileInfo({ filePath, fileExtension });
-    };
-
-    useEffect(() => {
-        return () => form.resetFields();
-    }, []);
 
     useEffect(() => {
         if (isSuccess) {
@@ -47,6 +36,18 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
             form.resetFields();
         }
     }, [isSuccess]);
+
+    useEffect(() => {
+        return () => form.resetFields();
+    }, []);
+
+    const onUpload = ({ filePath, fileName }: { filePath: string; fileName: string }) => {
+        const fileParts = fileName.split('.');
+        const fileExtension = fileParts.pop()?.toLowerCase() || '';
+
+        form.setFieldsValue({ filePath });
+        setFileInfo({ filePath, fileExtension });
+    };
 
     const onFinish = async () => {
         if (form.isFieldsTouched()) {
@@ -69,22 +70,16 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
     return (
         <Form initialValues={{ ...art }} form={form} component={false} layout="horizontal">
             <Spin spinning={isLoading}>
-                <Descriptions
-                    bordered
-                    size="small"
-                    column={{ xs: 1, sm: 1, md: 1, lg: 1 }}
-                    title={
-                        editable && (
-                            <Space>
-                                {edit ? (
-                                    <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
-                                ) : (
-                                    <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
-                                )}
-                            </Space>
-                        )
-                    }
-                >
+                {editable && (
+                    <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
+                        {edit ? (
+                            <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
+                        ) : (
+                            <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
+                        )}
+                    </Row>
+                )}
+                <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
                     <DItem label={'Внутренний'}>
                         {edit ? (
                             <FItem noStyle name="internal" valuePropName="checked">

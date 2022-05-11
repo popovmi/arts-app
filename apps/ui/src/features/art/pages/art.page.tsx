@@ -3,8 +3,7 @@ import { CenteredSpin } from '@/shared/components';
 import { Col, PageHeader, Result, Row, Typography, Divider } from 'antd';
 import { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArtDescriptions } from '../components';
-import { ArtComments } from '../components/art.comments';
+import { ArtDescriptions, ArtComments } from '../components';
 
 export const ArtPage: FC = () => {
     const { artId } = useParams();
@@ -45,7 +44,7 @@ export const ArtPage: FC = () => {
                         />
                     )}
                 </Col>
-                <Divider orientation={'left'}>
+                <Divider orientation={'left'} style={{ margin: 0 }}>
                     <Typography.Title level={2} style={{ margin: 0 }}>
                         Комментарии
                     </Typography.Title>

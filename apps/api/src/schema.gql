@@ -127,6 +127,15 @@ type ProjectTypePageInfo {
   hasNextPage: Boolean!
 }
 
+type ProjectComment {
+  id: Float!
+  projectId: String!
+  project: Project!
+  text: String!
+  authorId: String!
+  author: User!
+}
+
 type Art {
   id: String!
   name: String!
@@ -335,6 +344,9 @@ type Mutation {
   changePassword(username: String!, password: String!, passwordRepeat: String!, newPassword: String!): Boolean!
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
+  addProjectComment(projectCommentInput: ProjectCommentInput!): ProjectComment!
+  updateProjectComment(id: Float!, text: String!): ProjectComment!
+  deleteProjectComment(id: Float!): Boolean!
   createArt(createArtInput: CreateArtInput!): Art!
   updateArt(updateArtInput: UpdateArtInput!): Art!
   addArtComment(artCommentInput: ArtCommentInput!): ArtComment!
@@ -387,6 +399,11 @@ input UpdateProjectInput {
   sfm: String = null
   customerId: String = null
   factoryId: String = null
+}
+
+input ProjectCommentInput {
+  text: String!
+  projectId: String!
 }
 
 input CreateArtInput {

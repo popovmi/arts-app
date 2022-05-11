@@ -4,7 +4,7 @@ import { AttributeModule } from '@/modules/attribute/attribute.module';
 import { AuthModule } from '@/modules/auth';
 import { CustomerModule } from '@/modules/customer/customer.module';
 import { FactoryModule } from '@/modules/factory/factory.module';
-import { ProjectModule } from '@/modules/project/project.module';
+import { ProjectModule } from '@/modules/project';
 import { UserModule } from '@/modules/user';
 import { ApiConfigService, SharedModule } from '@/shared';
 import { LoggerModule } from '@/shared/logger';

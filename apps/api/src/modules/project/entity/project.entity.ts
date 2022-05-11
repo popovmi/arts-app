@@ -12,6 +12,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { ProjectComment } from './project-comment.entity';
 
 @Entity()
 export class Project {
@@ -90,4 +91,7 @@ export class Project {
     })
     @JoinColumn({ name: 'customerId', referencedColumnName: 'id' })
     customer: Customer;
+
+    @OneToMany(() => ProjectComment, (projectComment) => projectComment.project)
+    comments: ProjectComment;
 }

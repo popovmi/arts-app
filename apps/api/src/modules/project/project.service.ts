@@ -3,12 +3,22 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
 import { In, Repository } from 'typeorm';
-import { CreateProjectInput, FindProjectArgs, ProjectResponse, UpdateProjectInput } from './dto';
-import { Project } from './entity/project.entity';
+import {
+    CreateProjectInput,
+    FindProjectArgs,
+    ProjectResponse,
+    UpdateProjectInput,
+    ProjectCommentInput,
+} from './dto';
+import { Project, ProjectComment } from './entity';
 
 @Injectable()
 export class ProjectService {
-    constructor(@InjectRepository(Project) private projectRepository: Repository<Project>) {}
+    constructor(
+        @InjectRepository(Project) private projectRepository: Repository<Project>,
+        @InjectRepository(ProjectComment)
+        private projectCommentRepository: Repository<ProjectComment>
+    ) {}
 
     public async getByIds(ids: string[]): Promise<Project[]> {
         return this.projectRepository.find({
@@ -69,5 +79,57 @@ export class ProjectService {
         });
 
         return await this.projectRepository.save(project);
+    }
+
+    public async addArtComment({ projectId, text, authorId }: ProjectCommentInput & { authorId: string }) {
+        await this.projectRepository.findOneOrFail({
+            where: { id: projectId },
+            select: ['id'],
+        });
+
+        const comment = await this.projectCommentRepository.save({
+            projectId,
+            text,
+            authorId,
+        });
+
+        return this.projectCommentRepository.findOne({
+            where: { id: comment.id },
+            relations: ['author'],
+        });
+    }
+
+    public async updateArtComment({
+        commentId,
+        authorId,
+        text,
+    }: {
+        commentId: number;
+        authorId: string;
+        text: string;
+    }) {
+        const comment = await this.projectCommentRepository.findOneOrFail({
+            where: { id: commentId },
+            relations: ['author'],
+        });
+
+        if (authorId !== comment.authorId) {
+            throw new Error('Невозможно исправить чужой комментарий!');
+        }
+
+        comment.text = text;
+        return await this.projectCommentRepository.save(comment);
+    }
+
+    public async deleteComment({ commentId, authorId }: { commentId: number; authorId: string }) {
+        const comment = await this.projectCommentRepository.findOneOrFail({
+            where: { id: commentId },
+        });
+
+        if (authorId !== comment.authorId) {
+            throw new Error('Невозможно удалить чужой комментарий!');
+        }
+
+        await this.projectCommentRepository.delete({ id: commentId });
     }
 }

@@ -4,6 +4,7 @@ import { FactoryModule } from '@/modules/factory/factory.module';
 import { UserModule } from '@/modules/user';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProjectComment } from './entity';
 import { Project } from './entity/project.entity';
 import { ProjectLoader } from './loaders';
 import { ProjectResolver } from './project.resolver';
@@ -15,7 +16,7 @@ import { ProjectService } from './project.service';
         forwardRef(() => ArtModule),
         forwardRef(() => FactoryModule),
         forwardRef(() => CustomerModule),
-        TypeOrmModule.forFeature([Project]),
+        TypeOrmModule.forFeature([Project, ProjectComment]),
     ],
     providers: [ProjectResolver, ProjectService, ProjectLoader],
     exports: [ProjectService],

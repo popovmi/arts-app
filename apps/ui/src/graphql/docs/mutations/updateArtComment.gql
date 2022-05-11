@@ -1,3 +1,11 @@
 mutation updateArtComment($id: Float!, $text: String!) {
-    updateArtComment(id: $id, text: $text)
+    updateArtComment(id: $id, text: $text) {
+        id
+        text
+		artId
+        author {
+            id
+            fullName
+        }
+    }
 }

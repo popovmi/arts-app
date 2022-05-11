@@ -40,6 +40,23 @@ export const api = generatedApi.enhanceEndpoints({
                 } catch {}
             },
         },
+        updateArtComment: {
+            onQueryStarted: async ({ id, text }, { dispatch, queryFulfilled }) => {
+                try {
+                    const {
+                        data: { updateArtComment: comment },
+                    } = await queryFulfilled;
+                    dispatch(
+                        generatedApi.util.updateQueryData('art', { id: comment.artId }, (draft) => {
+                            if (draft.art.comments?.length) {
+                                const idx = draft.art.comments.findIndex((_comm) => _comm.id === comment.id);
+                                draft.art.comments![idx] = comment;
+                            }
+                        })
+                    );
+                } catch {}
+            },
+        },
 
         project: {
             providesTags: (result, error, { id }) => [{ type: 'Project', id }],

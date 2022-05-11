@@ -69,18 +69,17 @@ export class ArtResolver {
         });
     }
 
-    @Mutation(() => Boolean)
+    @Mutation(() => ArtCommentType)
     public async updateArtComment(
         @Args('id', new ParseIntPipe()) id: number,
         @Args('text') text: string,
         @Context() { currentUserId }: AppContext
     ) {
-        await this.artService.updateArtComment({
+        return this.artService.updateArtComment({
             commentId: id,
             text,
             authorId: currentUserId,
         });
-        return true;
     }
 
     @Mutation(() => Boolean)

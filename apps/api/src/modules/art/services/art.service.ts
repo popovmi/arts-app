@@ -117,6 +117,7 @@ export class ArtService {
     }) {
         const comment = await this.artCommentRepository.findOneOrFail({
             where: { id: commentId },
+            relations: ['author'],
         });
 
         if (authorId !== comment.authorId) {
@@ -124,7 +125,7 @@ export class ArtService {
         }
 
         comment.text = text;
-        await this.artCommentRepository.save(comment);
+        return await this.artCommentRepository.save(comment);
     }
 
     public async deleteComment({ commentId, authorId }: { commentId: number; authorId: string }) {

@@ -1,0 +1,3 @@
+mutation deleteProjectComment($id: Float!) {
+    deleteProjectComment(id: $id)
+}

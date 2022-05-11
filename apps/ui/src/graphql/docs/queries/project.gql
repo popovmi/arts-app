@@ -28,6 +28,14 @@ query project($id: String!) {
             productionMethod
             ringType
         }
+		comments {
+            id
+            text
+            author {
+                id
+                fullName
+            }
+        }
         factory {
             id
             name

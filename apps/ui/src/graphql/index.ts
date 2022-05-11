@@ -19,6 +19,7 @@ export type Art = {
   __typename?: 'Art';
   artClass?: Maybe<Scalars['String']>;
   bottomForm?: Maybe<Scalars['String']>;
+  comments?: Maybe<Array<ArtComment>>;
   createdAt?: Maybe<Scalars['Date']>;
   files?: Maybe<Array<ArtFile>>;
   form?: Maybe<Scalars['String']>;
@@ -33,6 +34,21 @@ export type Art = {
   projectId?: Maybe<Scalars['String']>;
   ringType?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Date']>;
+};
+
+export type ArtComment = {
+  __typename?: 'ArtComment';
+  art: Art;
+  artId: Scalars['String'];
+  author: User;
+  authorId: Scalars['String'];
+  id: Scalars['Float'];
+  text: Scalars['String'];
+};
+
+export type ArtCommentInput = {
+  artId: Scalars['String'];
+  text: Scalars['String'];
 };
 
 export type ArtFile = {
@@ -223,6 +239,7 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addArtComment: ArtComment;
   changePassword: Scalars['Boolean'];
   createArt: Art;
   createAttribute: BaseAttributeType;
@@ -230,16 +247,23 @@ export type Mutation = {
   createFactory: Factory;
   createProject: Project;
   createUser: User;
+  deleteArtComment: Scalars['Boolean'];
   deleteAttribute: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   updateArt: Art;
+  updateArtComment: ArtComment;
   updateAttribute: BaseAttributeType;
   updateAttributesOrder: Array<BaseAttributeType>;
   updateCustomer: Customer;
   updateFactory: Factory;
   updateProject: Project;
   updateUser: User;
+};
+
+
+export type MutationAddArtCommentArgs = {
+  artCommentInput: ArtCommentInput;
 };
 
 
@@ -281,6 +305,11 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteArtCommentArgs = {
+  id: Scalars['Float'];
+};
+
+
 export type MutationDeleteAttributeArgs = {
   input: DeleteAttributeInput;
 };
@@ -294,6 +323,12 @@ export type MutationLoginArgs = {
 
 export type MutationUpdateArtArgs = {
   updateArtInput: UpdateArtInput;
+};
+
+
+export type MutationUpdateArtCommentArgs = {
+  id: Scalars['Float'];
+  text: Scalars['String'];
 };
 
 
@@ -622,6 +657,13 @@ export type UserTypePageInfo = {
   startCursor?: Maybe<Scalars['String']>;
 };
 
+export type AddArtCommentMutationVariables = Exact<{
+  artCommentInput: ArtCommentInput;
+}>;
+
+
+export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
+
 export type ChangePasswordMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -674,6 +716,13 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
 
+export type DeleteArtCommentMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteArtCommentMutation = { __typename?: 'Mutation', deleteArtComment: boolean };
+
 export type DeleteAttributeMutationVariables = Exact<{
   input: DeleteAttributeInput;
 }>;
@@ -700,6 +749,14 @@ export type UpdateArtMutationVariables = Exact<{
 
 
 export type UpdateArtMutation = { __typename?: 'Mutation', updateArt: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, factoryId?: string | null, customerId?: string | null, createdAt: any, updatedAt: any } | null } };
+
+export type UpdateArtCommentMutationVariables = Exact<{
+  id: Scalars['Float'];
+  text: Scalars['String'];
+}>;
+
+
+export type UpdateArtCommentMutation = { __typename?: 'Mutation', updateArtComment: { __typename?: 'ArtComment', id: number, text: string, artId: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type UpdateAttributeMutationVariables = Exact<{
   input: UpdateAttributeInput;
@@ -748,7 +805,7 @@ export type ArtQueryVariables = Exact<{
 }>;
 
 
-export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null } };
+export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null, comments?: Array<{ __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null } };
 
 export type ArtsQueryVariables = Exact<{
   filter?: InputMaybe<ArtFilterQuery>;
@@ -844,6 +901,18 @@ export type WhoAmIQueryVariables = Exact<{ [key: string]: never; }>;
 export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'User', id: string, username: string, fullName: string, role: Role, active: boolean, createdAt: any, updatedAt: any } };
 
 
+export const AddArtCommentDocument = `
+    mutation addArtComment($artCommentInput: ArtCommentInput!) {
+  addArtComment(artCommentInput: $artCommentInput) {
+    id
+    text
+    author {
+      id
+      fullName
+    }
+  }
+}
+    `;
 export const ChangePasswordDocument = `
     mutation changePassword($username: String!, $password: String!, $passwordRepeat: String!, $newPassword: String!) {
   changePassword(
@@ -954,6 +1023,11 @@ export const CreateUserDocument = `
   }
 }
     `;
+export const DeleteArtCommentDocument = `
+    mutation deleteArtComment($id: Float!) {
+  deleteArtComment(id: $id)
+}
+    `;
 export const DeleteAttributeDocument = `
     mutation deleteAttribute($input: DeleteAttributeInput!) {
   deleteAttribute(input: $input)
@@ -1014,6 +1088,19 @@ export const UpdateArtDocument = `
       customerId
       createdAt
       updatedAt
+    }
+  }
+}
+    `;
+export const UpdateArtCommentDocument = `
+    mutation updateArtComment($id: Float!, $text: String!) {
+  updateArtComment(id: $id, text: $text) {
+    id
+    text
+    artId
+    author {
+      id
+      fullName
     }
   }
 }
@@ -1115,6 +1202,14 @@ export const ArtDocument = `
     project {
       id
       name
+    }
+    comments {
+      id
+      text
+      author {
+        id
+        fullName
+      }
     }
     projectId
     createdAt
@@ -1418,6 +1513,9 @@ export const WhoAmIDocument = `
 
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
+    addArtComment: build.mutation<AddArtCommentMutation, AddArtCommentMutationVariables>({
+      query: (variables) => ({ document: AddArtCommentDocument, variables })
+    }),
     changePassword: build.mutation<ChangePasswordMutation, ChangePasswordMutationVariables>({
       query: (variables) => ({ document: ChangePasswordDocument, variables })
     }),
@@ -1439,6 +1537,9 @@ const injectedRtkApi = api.injectEndpoints({
     createUser: build.mutation<CreateUserMutation, CreateUserMutationVariables>({
       query: (variables) => ({ document: CreateUserDocument, variables })
     }),
+    deleteArtComment: build.mutation<DeleteArtCommentMutation, DeleteArtCommentMutationVariables>({
+      query: (variables) => ({ document: DeleteArtCommentDocument, variables })
+    }),
     deleteAttribute: build.mutation<DeleteAttributeMutation, DeleteAttributeMutationVariables>({
       query: (variables) => ({ document: DeleteAttributeDocument, variables })
     }),
@@ -1450,6 +1551,9 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     updateArt: build.mutation<UpdateArtMutation, UpdateArtMutationVariables>({
       query: (variables) => ({ document: UpdateArtDocument, variables })
+    }),
+    updateArtComment: build.mutation<UpdateArtCommentMutation, UpdateArtCommentMutationVariables>({
+      query: (variables) => ({ document: UpdateArtCommentDocument, variables })
     }),
     updateAttribute: build.mutation<UpdateAttributeMutation, UpdateAttributeMutationVariables>({
       query: (variables) => ({ document: UpdateAttributeDocument, variables })
@@ -1515,5 +1619,5 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useDeleteAttributeMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributeQuery, useLazyAttributeQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
+export const { useAddArtCommentMutation, useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useDeleteArtCommentMutation, useDeleteAttributeMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateArtCommentMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributeQuery, useLazyAttributeQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
 

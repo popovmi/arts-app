@@ -1,9 +1,9 @@
 mutation updateFactory($input: UpdateFactoryInput!) {
-  updateFactory(input: $input) {
-    id
-    name
-    active
-    createdAt
-    updatedAt
-  }
+    updateFactory(input: $input) {
+        id
+        name
+        active
+        createdAt
+        updatedAt
+    }
 }

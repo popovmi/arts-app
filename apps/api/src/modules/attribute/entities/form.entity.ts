@@ -4,5 +4,5 @@ import { BaseAttribute } from './base-attribute.entity';
 
 @Entity()
 export class Form extends BaseAttribute {
-  static attributeType = AttributeType.form;
+    static attributeType = AttributeType.form;
 }

@@ -4,5 +4,5 @@ import { BaseAttribute } from './base-attribute.entity';
 
 @Entity()
 export class NominalVolume extends BaseAttribute {
-  static attributeType = AttributeType.nominalVolume;
+    static attributeType = AttributeType.nominalVolume;
 }

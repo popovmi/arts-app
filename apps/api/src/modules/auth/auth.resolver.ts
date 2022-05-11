@@ -9,57 +9,57 @@ import { AuthService } from './service';
 
 @Resolver()
 export class AuthResolver {
-  private logger = new Logger(AuthResolver.name);
+    private logger = new Logger(AuthResolver.name);
 
-  constructor(
-    readonly authService: AuthService,
-    @Inject(forwardRef(() => UserService)) readonly userService: UserService
-  ) {}
+    constructor(
+        readonly authService: AuthService,
+        @Inject(forwardRef(() => UserService)) readonly userService: UserService
+    ) {}
 
-  @Mutation(() => LoginResponse)
-  public async login(
-    @Args() loginInput: LoginArgs,
-    @Context() { session }: AppContext
-  ): Promise<LoginResponse> {
-    session.loginAttempts = (session.loginAttempts || 0) + 1;
-    session.save();
-    const user = await this.authService.validateCredentials(loginInput);
+    @Mutation(() => LoginResponse)
+    public async login(
+        @Args() loginInput: LoginArgs,
+        @Context() { session }: AppContext
+    ): Promise<LoginResponse> {
+        session.loginAttempts = (session.loginAttempts || 0) + 1;
+        session.save();
+        const user = await this.authService.validateCredentials(loginInput);
 
-    session.userId = user.id;
-    session.isLoggedIn = true;
-    session.loginAttempts = 0;
+        session.userId = user.id;
+        session.isLoggedIn = true;
+        session.loginAttempts = 0;
 
-    return { user };
-  }
+        return { user };
+    }
 
-  @Query(() => UserType)
-  @UseGuards(AuthGuard)
-  public async whoAmI(@Context() { currentUserId }: AppContext) {
-    return await this.userService.getUser(currentUserId);
-  }
+    @Query(() => UserType)
+    @UseGuards(AuthGuard)
+    public async whoAmI(@Context() { currentUserId }: AppContext) {
+        return await this.userService.getUser(currentUserId);
+    }
 
-  @Mutation(() => Boolean)
-  @UseGuards(AuthGuard)
-  public logout(@Context() { session }: AppContext): boolean {
-    session.destroy((err) => {
-      if (err) Logger.error(err);
-    });
+    @Mutation(() => Boolean)
+    @UseGuards(AuthGuard)
+    public logout(@Context() { session }: AppContext): boolean {
+        session.destroy((err) => {
+            if (err) Logger.error(err);
+        });
 
-    return true;
-  }
+        return true;
+    }
 
-  @Mutation(() => Boolean)
-  @UseGuards(AuthGuard)
-  public async changePassword(
-    @Args() changePasswordInput: ChangePasswordArgs,
-    @Context() { session }: AppContext
-  ): Promise<boolean> {
-    await this.authService.changePassword(changePasswordInput);
+    @Mutation(() => Boolean)
+    @UseGuards(AuthGuard)
+    public async changePassword(
+        @Args() changePasswordInput: ChangePasswordArgs,
+        @Context() { session }: AppContext
+    ): Promise<boolean> {
+        await this.authService.changePassword(changePasswordInput);
 
-    session.destroy((err) => {
-      if (err) this.logger.error('Error destroying session', err);
-    });
+        session.destroy((err) => {
+            if (err) this.logger.error('Error destroying session', err);
+        });
 
-    return true;
-  }
+        return true;
+    }
 }

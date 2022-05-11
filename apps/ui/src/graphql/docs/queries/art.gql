@@ -1,28 +1,36 @@
 query art($id: String!) {
-  art(id: $id) {
-    id
-    name
-    internal
-    files {
-      artId
-      originalPath
-      watermarkPath
-      uploadedAt
+    art(id: $id) {
+        id
+        name
+        internal
+        files {
+            artId
+            originalPath
+            watermarkPath
+            uploadedAt
+        }
+        project {
+            id
+            name
+        }
+        comments {
+            id
+            text
+            author {
+                id
+                fullName
+            }
+        }
+        projectId
+        createdAt
+        updatedAt
+        bottomForm
+        artClass
+        form
+        nominalVolume
+        height
+        productType
+        productionMethod
+        ringType
     }
-    project {
-      id
-      name
-    }
-    projectId
-    createdAt
-    updatedAt
-    bottomForm
-    artClass
-    form
-    nominalVolume
-    height
-    productType
-    productionMethod
-    ringType
-  }
 }

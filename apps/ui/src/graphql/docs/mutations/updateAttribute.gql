@@ -1,10 +1,10 @@
 mutation updateAttribute($input: UpdateAttributeInput!) {
-  updateAttribute(input: $input) {
-    id
-    name
-    active
-    valueOrder
-    createdAt
-    updatedAt
-  }
+    updateAttribute(input: $input) {
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
 }

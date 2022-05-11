@@ -7,31 +7,31 @@ import { PasswordService } from './password.service';
 
 @Injectable()
 export class AuthService {
-  private logger = new Logger(AuthService.name);
+    private logger = new Logger(AuthService.name);
 
-  constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
-    readonly passwordService: PasswordService
-  ) {}
+    constructor(
+        @InjectRepository(User) private userRepository: Repository<User>,
+        readonly passwordService: PasswordService
+    ) {}
 
-  public async validateCredentials({ username, password }: LoginArgs) {
-    this.logger.debug(`Login request: ${username}`);
-    const user = await this.userRepository.findOne({
-      where: { username: ILike(username), active: true },
-    });
+    public async validateCredentials({ username, password }: LoginArgs) {
+        this.logger.debug(`Login request: ${username}`);
+        const user = await this.userRepository.findOne({
+            where: { username: ILike(username), active: true },
+        });
 
-    if (!user || !(await this.passwordService.compare(password, user.password)))
-      throw new UnauthorizedException('Неверные данные для входа');
+        if (!user || !(await this.passwordService.compare(password, user.password)))
+            throw new UnauthorizedException('Неверные данные для входа');
 
-    return user;
-  }
+        return user;
+    }
 
-  public async changePassword({ username, password, newPassword }: ChangePasswordArgs) {
-    const user = await this.validateCredentials({ username, password });
+    public async changePassword({ username, password, newPassword }: ChangePasswordArgs) {
+        const user = await this.validateCredentials({ username, password });
 
-    await this.userRepository.update(
-      { id: user.id },
-      { password: await this.passwordService.hash(newPassword) }
-    );
-  }
+        await this.userRepository.update(
+            { id: user.id },
+            { password: await this.passwordService.hash(newPassword) }
+        );
+    }
 }

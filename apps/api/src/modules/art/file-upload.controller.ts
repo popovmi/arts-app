@@ -6,25 +6,25 @@ import { v4 } from 'uuid';
 
 @Controller('upload')
 export class FileUploadController {
-  @Post('art')
-  @UseInterceptors(
-    FileInterceptor('artFile', {
-      fileFilter: (req: Request, { mimetype }, cb) => {
-        !['application/pdf', 'image/jpeg'].includes(mimetype)
-          ? cb(new BadRequestException('Invalid mimetype'), false)
-          : cb(null, true);
-      },
-      storage: multer.diskStorage({
-        destination: './upload',
-        filename: function (req: Request, file, cb) {
-          const fileName = v4() + '.' + file.originalname.split('.').pop();
+    @Post('art')
+    @UseInterceptors(
+        FileInterceptor('artFile', {
+            fileFilter: (req: Request, { mimetype }, cb) => {
+                !['application/pdf', 'image/jpeg'].includes(mimetype)
+                    ? cb(new BadRequestException('Invalid mimetype'), false)
+                    : cb(null, true);
+            },
+            storage: multer.diskStorage({
+                destination: './upload',
+                filename: function (req: Request, file, cb) {
+                    const fileName = v4() + '.' + file.originalname.split('.').pop();
 
-          cb(null, fileName);
-        },
-      }),
-    })
-  )
-  async upload(@UploadedFile() file: Express.Multer.File) {
-    return { filePath: `upload/${file.filename}`, fileName: file.originalname };
-  }
+                    cb(null, fileName);
+                },
+            }),
+        })
+    )
+    async upload(@UploadedFile() file: Express.Multer.File) {
+        return { filePath: `upload/${file.filename}`, fileName: file.originalname };
+    }
 }

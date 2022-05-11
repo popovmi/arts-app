@@ -5,45 +5,45 @@ import { CustomerType } from '@/modules/customer/dto';
 
 @ObjectType('Project')
 export class ProjectType {
-  @Field(() => String)
-  id: string;
+    @Field(() => String)
+    id: string;
 
-  @Field(() => String)
-  name: string;
+    @Field(() => String)
+    name: string;
 
-  @Field(() => Boolean)
-  internal: boolean;
+    @Field(() => Boolean)
+    internal: boolean;
 
-  @Field(() => Boolean, { nullable: true })
-  hasDesignDoc: boolean;
+    @Field(() => Boolean, { nullable: true })
+    hasDesignDoc: boolean;
 
-  @Field(() => String, { nullable: true })
-  sfm: string;
+    @Field(() => String, { nullable: true })
+    sfm: string;
 
-  @Field(() => String, { nullable: true })
-  dropNumber: string;
+    @Field(() => String, { nullable: true })
+    dropNumber: string;
 
-  @Field(() => String, { nullable: true })
-  intercenter: string;
+    @Field(() => String, { nullable: true })
+    intercenter: string;
 
-  @Field(() => [ArtType], { nullable: true })
-  arts: ArtType[];
+    @Field(() => [ArtType], { nullable: true })
+    arts: ArtType[];
 
-  @Field(() => FactoryType, { nullable: true })
-  factory: FactoryType;
+    @Field(() => FactoryType, { nullable: true })
+    factory: FactoryType;
 
-  @Field(() => CustomerType, { nullable: true })
-  customer: CustomerType;
+    @Field(() => CustomerType, { nullable: true })
+    customer: CustomerType;
 
-  @Field(() => String, { nullable: true })
-  factoryId: string;
+    @Field(() => String, { nullable: true })
+    factoryId: string;
 
-  @Field(() => String, { nullable: true })
-  customerId: string;
+    @Field(() => String, { nullable: true })
+    customerId: string;
 
-  @Field(() => Date)
-  createdAt: Date;
+    @Field(() => Date)
+    createdAt: Date;
 
-  @Field(() => Date)
-  updatedAt: Date;
+    @Field(() => Date)
+    updatedAt: Date;
 }

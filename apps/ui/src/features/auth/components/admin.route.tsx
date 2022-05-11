@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 export const AdminRoute: FC = () => {
-  const { isAdmin } = useUser();
+    const { isAdmin } = useUser();
 
-  if (!isAdmin) return <Navigate to={'projects'} />;
+    if (!isAdmin) return <Navigate to={'projects'} />;
 
-  return <Outlet />;
+    return <Outlet />;
 };

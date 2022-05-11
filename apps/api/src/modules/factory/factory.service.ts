@@ -6,48 +6,48 @@ import { Factory } from './entities/factory.entity';
 
 @Injectable()
 export class FactoryService {
-  constructor(@InjectRepository(Factory) private factoryRepo: Repository<Factory>) {}
+    constructor(@InjectRepository(Factory) private factoryRepo: Repository<Factory>) {}
 
-  public async getByIds(ids: string[]) {
-    return await this.factoryRepo.find({ where: { id: In(ids) } });
-  }
+    public async getByIds(ids: string[]) {
+        return await this.factoryRepo.find({ where: { id: In(ids) } });
+    }
 
-  public async create(input: CreateFactoryInput) {
-    const factory = await this.factoryRepo.save(input);
+    public async create(input: CreateFactoryInput) {
+        const factory = await this.factoryRepo.save(input);
 
-    return factory;
-  }
+        return factory;
+    }
 
-  public async findAll() {
-    const factories = await this.factoryRepo.find({ order: { createdAt: 'ASC', name: 'ASC' } });
+    public async findAll() {
+        const factories = await this.factoryRepo.find({ order: { createdAt: 'ASC', name: 'ASC' } });
 
-    return factories;
-  }
+        return factories;
+    }
 
-  public async findOne(id: string) {
-    const factories = await this.factoryRepo.findOne({ where: { id } });
+    public async findOne(id: string) {
+        const factories = await this.factoryRepo.findOne({ where: { id } });
 
-    return factories;
-  }
+        return factories;
+    }
 
-  public async update({ id, ...input }: UpdateFactoryInput) {
-    const factory = await this.factoryRepo.findOneOrFail({ where: { id } });
+    public async update({ id, ...input }: UpdateFactoryInput) {
+        const factory = await this.factoryRepo.findOneOrFail({ where: { id } });
 
-    Object.assign(factory, input);
-    await this.factoryRepo.save(factory);
+        Object.assign(factory, input);
+        await this.factoryRepo.save(factory);
 
-    return factory;
-  }
+        return factory;
+    }
 
-  public async remove(id: string) {
-    await this.factoryRepo.findOneOrFail({ where: { id }, select: ['id'] });
-    await this.factoryRepo.delete({ id });
-  }
+    public async remove(id: string) {
+        await this.factoryRepo.findOneOrFail({ where: { id }, select: ['id'] });
+        await this.factoryRepo.delete({ id });
+    }
 
-  public async isActive(id: string) {
-    await this.factoryRepo.findOneOrFail({
-      where: { id, active: true },
-      select: ['id'],
-    });
-  }
+    public async isActive(id: string) {
+        await this.factoryRepo.findOneOrFail({
+            where: { id, active: true },
+            select: ['id'],
+        });
+    }
 }

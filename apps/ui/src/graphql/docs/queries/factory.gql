@@ -1,9 +1,9 @@
 query factory($id: String!) {
-  factory(id: $id) {
-    id
-    name
-    active
-    createdAt
-    updatedAt
-  }
+    factory(id: $id) {
+        id
+        name
+        active
+        createdAt
+        updatedAt
+    }
 }

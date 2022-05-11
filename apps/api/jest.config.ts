@@ -1,16 +1,16 @@
 module.exports = {
-  displayName: 'api',
+    displayName: 'api',
 
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
+    globals: {
+        'ts-jest': {
+            tsconfig: '<rootDir>/tsconfig.spec.json',
+        },
     },
-  },
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': 'ts-jest',
-  },
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/api',
-  preset: '../../jest.preset.ts',
+    testEnvironment: 'node',
+    transform: {
+        '^.+\\.[tj]s$': 'ts-jest',
+    },
+    moduleFileExtensions: ['ts', 'js', 'html'],
+    coverageDirectory: '../../coverage/apps/api',
+    preset: '../../jest.preset.ts',
 };

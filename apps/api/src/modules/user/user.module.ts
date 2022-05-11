@@ -6,8 +6,8 @@ import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
 @Module({
-  imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([User])],
-  providers: [UserResolver, UserService],
-  exports: [UserService, TypeOrmModule],
+    imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([User])],
+    providers: [UserResolver, UserService],
+    exports: [UserService, TypeOrmModule],
 })
 export class UserModule {}

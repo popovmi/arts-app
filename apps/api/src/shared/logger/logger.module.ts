@@ -6,13 +6,13 @@ import { LoggerService } from './logger.service';
 const asyncLocalStorage = new AsyncLocalStorage();
 
 @Module({
-  providers: [
-    LoggerService,
-    {
-      provide: ASYNC_STORAGE,
-      useValue: asyncLocalStorage,
-    },
-  ],
-  exports: [LoggerService],
+    providers: [
+        LoggerService,
+        {
+            provide: ASYNC_STORAGE,
+            useValue: asyncLocalStorage,
+        },
+    ],
+    exports: [LoggerService],
 })
 export class LoggerModule {}

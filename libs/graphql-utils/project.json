@@ -1,22 +1,22 @@
 {
-  "sourceRoot": "libs/graphql-utils/src",
-  "projectType": "library",
-  "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/graphql-utils/**/*.ts"]
-      }
+    "sourceRoot": "libs/graphql-utils/src",
+    "projectType": "library",
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/graphql-utils/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/graphql-utils"],
+            "options": {
+                "jestConfig": "libs/graphql-utils/jest.config.ts",
+                "passWithNoTests": true
+            }
+        }
     },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/graphql-utils"],
-      "options": {
-        "jestConfig": "libs/graphql-utils/jest.config.ts",
-        "passWithNoTests": true
-      }
-    }
-  },
-  "tags": []
+    "tags": []
 }

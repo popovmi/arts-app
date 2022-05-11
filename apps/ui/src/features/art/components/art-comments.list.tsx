@@ -25,7 +25,7 @@ export const ArtComments: FC<{ art: Art }> = ({ art }) => {
     return (
         <CenteredSpin wrapperClassName={'ant-col ant-col-xs-24'} spinning={isLoading}>
             <Row style={{ width: '100%', padding: '0 24 24 24' }}>
-                <Col span={24}>
+                <Col span={24} style={{ maxHeight: 400, overflowY: 'auto' }}>
                     <List
                         itemLayout="horizontal"
                         dataSource={comments || []}

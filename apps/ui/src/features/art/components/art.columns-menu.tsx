@@ -110,6 +110,7 @@ export const ArtColumnsMenu: FC = () => {
     return (
         <TreeSelect
             style={{ width: '100%' }}
+			dropdownMatchSelectWidth={false}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto', minWidth: 250 }}
             treeData={treeData}
             placeholder="Показать/скрыть столбцы"

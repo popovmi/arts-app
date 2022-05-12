@@ -52,8 +52,8 @@ export class ArtFileService {
         const Y = (image.bitmap.height - logo.bitmap.height) / 2;
         const composed = image.composite(logo, X, Y, {
             mode: Jimp.BLEND_SOURCE_OVER,
-            opacitySource: 0.2,
-            opacityDest: 0.9,
+            opacitySource: 1,
+            opacityDest: 0.2,
         });
 
         await composed.writeAsync(dest);

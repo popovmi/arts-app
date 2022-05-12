@@ -43,10 +43,14 @@ export class ArtService {
         )
             .skip(skip)
             .take(take);
+        query.addSelect(`left("arts"."name", strpos("arts"."name", '-') - 1) "code"`);
+        query.addSelect(
+            `length(left("arts"."name", strpos("arts"."name", '-') - 1))::integer "code_length"`
+        );
         const count = await query.getCount();
-
+        query.addOrderBy(`code_length`, 'ASC');
+        query.addOrderBy('code', 'ASC');
         // orderQuery(query, { ...order });
-        query.orderBy('arts.name', 'ASC');
 
         const arts = await query.getMany();
         const page = connectionFromArraySlice(arts, pagination, {

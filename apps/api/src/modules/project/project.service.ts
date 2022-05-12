@@ -48,10 +48,16 @@ export class ProjectService {
         )
             .skip(skip)
             .take(take);
+        query.addSelect(`left("projects"."name", strpos("projects"."name", '-') - 1) "code"`);
+        query.addSelect(
+            `length(left("projects"."name", strpos("projects"."name", '-') - 1))::integer "code_length"`
+        );
+
         const count = await query.getCount();
 
+        query.addOrderBy(`code_length`, 'ASC');
+        query.addOrderBy('code', 'ASC');
         // orderQuery(query, { ...order });
-        query.orderBy('projects.name', 'ASC');
 
         const projects = await query.getMany();
         const page = connectionFromArraySlice(projects, pagination, {

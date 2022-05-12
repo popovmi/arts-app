@@ -1,25 +1,25 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "type": "object",
-  "cli": "nx",
-  "properties": {
-    "scripts": {
-      "type": "object",
-      "description": "scripts"
-    },
-    "engines": {
-      "type": "object",
-      "description": "engines",
-      "properties": {
-        "node": {
-          "type": "string",
-          "description": "node.js version"
+    "$schema": "http://json-schema.org/schema",
+    "type": "object",
+    "cli": "nx",
+    "properties": {
+        "scripts": {
+            "type": "object",
+            "description": "scripts"
         },
-        "npm": {
-          "type": "string",
-          "description": "npm version"
+        "engines": {
+            "type": "object",
+            "description": "engines",
+            "properties": {
+                "node": {
+                    "type": "string",
+                    "description": "node.js version"
+                },
+                "npm": {
+                    "type": "string",
+                    "description": "npm version"
+                }
+            }
         }
-      }
     }
-  }
 }

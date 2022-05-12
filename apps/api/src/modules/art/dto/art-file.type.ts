@@ -3,18 +3,18 @@ import { ArtType } from '.';
 
 @ObjectType('ArtFile')
 export class ArtFileType {
-  @Field(() => String)
-  artId: string;
+    @Field(() => String)
+    artId: string;
 
-  @Field(() => ArtType)
-  art: ArtType;
+    @Field(() => ArtType)
+    art: ArtType;
 
-  @Field(() => String)
-  originalPath: string;
+    @Field(() => String)
+    originalPath: string;
 
-  @Field(() => String)
-  watermarkPath: string;
+    @Field(() => String)
+    watermarkPath: string;
 
-  @Field(() => Date)
-  uploadedAt: Date;
+    @Field(() => Date)
+    uploadedAt: Date;
 }

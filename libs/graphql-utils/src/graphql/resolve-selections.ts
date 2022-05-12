@@ -77,7 +77,12 @@ export const resolveSelections = (
             }
 
             if (typeof fieldSelection !== 'string' && fieldSelection.selections) {
-                resolvedSelections = resolveSelections(fieldSelection.selections, info, resolvedSelections, field);
+                resolvedSelections = resolveSelections(
+                    fieldSelection.selections,
+                    info,
+                    resolvedSelections,
+                    field
+                );
             }
         }
     }

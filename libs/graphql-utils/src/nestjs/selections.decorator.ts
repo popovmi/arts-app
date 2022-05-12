@@ -35,7 +35,9 @@ export const Selections = (
                                   typeof f === 'string'
                                       ? {
                                             field: f,
-                                            selector: [...fieldSelections.split('.'), ...f.split('.')].join('.'),
+                                            selector: [...fieldSelections.split('.'), ...f.split('.')].join(
+                                                '.'
+                                            ),
                                         }
                                       : f
                               )

@@ -4,5 +4,5 @@ import { BaseAttribute } from './base-attribute.entity';
 
 @Entity()
 export class Height extends BaseAttribute {
-  static attributeType = AttributeType.height;
+    static attributeType = AttributeType.height;
 }

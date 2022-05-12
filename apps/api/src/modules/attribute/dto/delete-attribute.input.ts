@@ -3,9 +3,9 @@ import { AttributeType } from '../attribute-type';
 
 @InputType()
 export class DeleteAttributeInput {
-  @Field(() => AttributeType)
-  type: AttributeType;
+    @Field(() => AttributeType)
+    type: AttributeType;
 
-  @Field()
-  id: number;
+    @Field()
+    id: number;
 }

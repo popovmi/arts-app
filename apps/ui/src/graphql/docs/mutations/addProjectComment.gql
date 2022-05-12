@@ -1,0 +1,10 @@
+mutation addProjectComment($projectCommentInput: ProjectCommentInput!) {
+    addProjectComment(projectCommentInput: $projectCommentInput) {
+        id
+        text
+        author {
+            id
+            fullName
+        }
+    }
+}

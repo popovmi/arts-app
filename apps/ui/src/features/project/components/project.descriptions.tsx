@@ -5,7 +5,7 @@ import { FactorySelector } from '@/features/factory';
 import { Customer, Factory, Project, UpdateProjectInput, useUpdateProjectMutation } from '@/graphql';
 import { useToggle } from '@/shared/hooks';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Descriptions, Form, Space, Spin, Typography } from 'antd';
+import { Button, Checkbox, Descriptions, Form, Row, Spin, Typography } from 'antd';
 import { FC, useEffect } from 'react';
 import { projectAttributesTypes } from '../project-attribute.types';
 import { clearFilter } from '../project.slice';
@@ -15,109 +15,109 @@ const { Item: FItem, useForm } = Form;
 const { Text } = Typography;
 
 interface ProjectDescriptionsProps {
-  project: Project;
+    project: Project;
 }
 
 export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) => {
-  const dispatch = useAppDispatch();
-  const [edit, toggleEdit] = useToggle();
-  const [form] = useForm<UpdateProjectInput>();
-  const [update, { isLoading, isSuccess, reset }] = useUpdateProjectMutation({
-    fixedCacheKey: 'updateProject',
-  });
+    const dispatch = useAppDispatch();
+    const [edit, toggleEdit] = useToggle();
+    const [form] = useForm<UpdateProjectInput>();
+    const [update, { isLoading, isSuccess, reset }] = useUpdateProjectMutation({
+        fixedCacheKey: 'updateProject',
+    });
 
-  useEffect(() => {
-    return () => form.resetFields();
-  }, []);
+    useEffect(() => {
+        return () => form.resetFields();
+    }, []);
 
-  const onFinish = async () => {
-    const values = await form.validateFields();
+    const onFinish = async () => {
+        if (form.isFieldsTouched()) {
+            const updateProjectInput = await form.validateFields();
 
-    update({ updateProjectInput: { ...values, id: project.id } }).then(
-      (res) => 'data' in res && dispatch(clearFilter())
-    );
-  };
+            Object.assign(updateProjectInput, { id: project.id });
+            update({ updateProjectInput }).then((res) => 'data' in res && dispatch(clearFilter()));
+        } else {
+            toggleEdit();
+        }
+    };
 
-  useEffect(() => {
-    if (isSuccess) {
-      reset();
-      toggleEdit();
-      form.resetFields();
-    }
-  }, [isSuccess]);
+    useEffect(() => {
+        if (isSuccess) {
+            reset();
+            toggleEdit(false);
+            form.resetFields();
+        }
+    }, [isSuccess]);
 
-  return (
-    <Form
-      initialValues={{ ...project, customerId: project?.customer?.id, factoryId: project?.factory?.id }}
-      form={form}
-      component={false}
-    >
-      <Spin spinning={isLoading}>
-        <Descriptions
-          bordered
-          size="small"
-          column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
-          title={
-            <Space>
-              <Button
-                type={edit ? 'default' : 'primary'}
-                icon={<EditOutlined />}
-                onClick={() => toggleEdit()}
-              />
-              {edit && <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />}
-            </Space>
-          }
+    return (
+        <Form
+            initialValues={{
+                ...project,
+                customerId: project?.customer?.id,
+                factoryId: project?.factory?.id,
+            }}
+            form={form}
+            component={false}
         >
-          <DItem label={'Внутренний'} span={1}>
-            {edit ? (
-              <FItem noStyle name="internal" valuePropName="checked">
-                <Checkbox />
-              </FItem>
-            ) : (
-              <Text>{project.internal ? 'Да' : 'Нет'}</Text>
-            )}
-          </DItem>
-          <DItem label={'Есть КД'} span={2}>
-            {edit ? (
-              <FItem noStyle name="hasDesignDoc" valuePropName="checked">
-                <Checkbox />
-              </FItem>
-            ) : (
-              <Text>{project.hasDesignDoc ? 'Да' : 'Нет'}</Text>
-            )}
-          </DItem>
-          {projectAttributesTypes.map((type, i, arr) => (
-            <DItem key={type} label={AttributesLabels[type]} span={i === arr.length - 1 ? 2 : 1}>
-              {edit ? (
-                <FItem noStyle name={type}>
-                  <AttributeSelector active type={type} allowClear />
-                </FItem>
-              ) : (
-                <Text>{project[type as keyof Project]}</Text>
-              )}
-            </DItem>
-          ))}
+            <Spin spinning={isLoading}>
+                <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
+                    {edit ? (
+                        <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
+                    ) : (
+                        <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
+                    )}
+                </Row>
+                <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
+                    <DItem label={'Внутренний'} span={1}>
+                        {edit ? (
+                            <FItem noStyle name="internal" valuePropName="checked">
+                                <Checkbox />
+                            </FItem>
+                        ) : (
+                            <Text>{project.internal ? 'Да' : 'Нет'}</Text>
+                        )}
+                    </DItem>
+                    <DItem label={'Есть КД'} span={2}>
+                        {edit ? (
+                            <FItem noStyle name="hasDesignDoc" valuePropName="checked">
+                                <Checkbox />
+                            </FItem>
+                        ) : (
+                            <Text>{project.hasDesignDoc ? 'Да' : 'Нет'}</Text>
+                        )}
+                    </DItem>
+                    {projectAttributesTypes.map((type, i, arr) => (
+                        <DItem key={type} label={AttributesLabels[type]} span={i === arr.length - 1 ? 2 : 1}>
+                            {edit ? (
+                                <FItem noStyle name={type}>
+                                    <AttributeSelector active type={type} allowClear />
+                                </FItem>
+                            ) : (
+                                <Text>{project[type as keyof Project]}</Text>
+                            )}
+                        </DItem>
+                    ))}
 
-          <DItem label={'Заказчик'} span={4}>
-            {edit ? (
-              <FItem noStyle name="customerId">
-                <CustomerSelector allowClear current={project?.customer as Customer} />
-              </FItem>
-            ) : (
-              <Text>{project?.customer?.name}</Text>
-            )}
-          </DItem>
-          <DItem label={'Завод'} span={4}>
-            {edit ? (
-              <FItem noStyle name="factoryId">
-                <FactorySelector allowClear current={project?.factory as Factory} />
-              </FItem>
-            ) : (
-              <Text>{project?.factory?.name}</Text>
-            )}
-          </DItem>
-        </Descriptions>
-      </Spin>
-    </Form>
-  );
+                    <DItem label={'Заказчик'} span={4}>
+                        {edit ? (
+                            <FItem noStyle name="customerId">
+                                <CustomerSelector allowClear current={project?.customer as Customer} />
+                            </FItem>
+                        ) : (
+                            <Text>{project?.customer?.name}</Text>
+                        )}
+                    </DItem>
+                    <DItem label={'Завод'} span={4}>
+                        {edit ? (
+                            <FItem noStyle name="factoryId">
+                                <FactorySelector allowClear current={project?.factory as Factory} />
+                            </FItem>
+                        ) : (
+                            <Text>{project?.factory?.name}</Text>
+                        )}
+                    </DItem>
+                </Descriptions>
+            </Spin>
+        </Form>
+    );
 };

@@ -6,22 +6,22 @@ import { Type } from 'class-transformer';
 
 @InputType()
 export class FactoryFilterQuery {
-  @Field(() => [FactoryFilterQuery], { nullable: true })
-  [LogicalOperator.AND]?: FactoryFilterQuery[];
+    @Field(() => [FactoryFilterQuery], { nullable: true })
+    [LogicalOperator.AND]?: FactoryFilterQuery[];
 
-  @Field(() => [FactoryFilterQuery], { nullable: true })
-  [LogicalOperator.OR]?: FactoryFilterQuery[];
+    @Field(() => [FactoryFilterQuery], { nullable: true })
+    [LogicalOperator.OR]?: FactoryFilterQuery[];
 
-  @Field(() => StringFieldOption, { nullable: true })
-  name?: StringFieldOption;
+    @Field(() => StringFieldOption, { nullable: true })
+    name?: StringFieldOption;
 }
 
 @ArgsType()
 export class FindFactoryArgs {
-  @Field(() => FactoryFilterQuery, { nullable: true })
-  filter: FactoryFilterQuery;
+    @Field(() => FactoryFilterQuery, { nullable: true })
+    filter: FactoryFilterQuery;
 
-  @Field(() => ConnectionArgs, { nullable: true, defaultValue: {} })
-  @Type(() => ConnectionArgs)
-  pagination: ConnectionArgs;
+    @Field(() => ConnectionArgs, { nullable: true, defaultValue: {} })
+    @Type(() => ConnectionArgs)
+    pagination: ConnectionArgs;
 }

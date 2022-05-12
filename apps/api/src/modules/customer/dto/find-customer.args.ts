@@ -6,22 +6,22 @@ import { Type } from 'class-transformer';
 
 @InputType()
 export class CustomerFilterQuery {
-  @Field(() => [CustomerFilterQuery], { nullable: true })
-  [LogicalOperator.AND]?: CustomerFilterQuery[];
+    @Field(() => [CustomerFilterQuery], { nullable: true })
+    [LogicalOperator.AND]?: CustomerFilterQuery[];
 
-  @Field(() => [CustomerFilterQuery], { nullable: true })
-  [LogicalOperator.OR]?: CustomerFilterQuery[];
+    @Field(() => [CustomerFilterQuery], { nullable: true })
+    [LogicalOperator.OR]?: CustomerFilterQuery[];
 
-  @Field(() => StringFieldOption, { nullable: true })
-  name?: StringFieldOption;
+    @Field(() => StringFieldOption, { nullable: true })
+    name?: StringFieldOption;
 }
 
 @ArgsType()
 export class FindCustomerArgs {
-  @Field(() => CustomerFilterQuery, { nullable: true })
-  filter: CustomerFilterQuery;
+    @Field(() => CustomerFilterQuery, { nullable: true })
+    filter: CustomerFilterQuery;
 
-  @Field(() => ConnectionArgs, { nullable: true, defaultValue: {} })
-  @Type(() => ConnectionArgs)
-  pagination: ConnectionArgs;
+    @Field(() => ConnectionArgs, { nullable: true, defaultValue: {} })
+    @Type(() => ConnectionArgs)
+    pagination: ConnectionArgs;
 }

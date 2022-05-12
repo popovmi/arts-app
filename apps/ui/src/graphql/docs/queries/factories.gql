@@ -1,9 +1,9 @@
 query factories($filter: FactoryFilterQuery, $pagination: ConnectionArgs) {
-  factories(filter: $filter, pagination: $pagination) {
-    id
-    name
-    active
-    createdAt
-    updatedAt
-  }
+    factories(filter: $filter, pagination: $pagination) {
+        id
+        name
+        active
+        createdAt
+        updatedAt
+    }
 }

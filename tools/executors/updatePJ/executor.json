@@ -1,9 +1,9 @@
 {
-  "executors": {
-    "updatePJ": {
-      "implementation": "./impl",
-      "schema": "./schema.json",
-      "description": "Updates dist package.json with extra fields"
+    "executors": {
+        "updatePJ": {
+            "implementation": "./impl",
+            "schema": "./schema.json",
+            "description": "Updates dist package.json with extra fields"
+        }
     }
-  }
 }

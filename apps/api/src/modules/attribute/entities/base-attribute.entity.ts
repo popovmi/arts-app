@@ -1,23 +1,23 @@
 import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export class BaseAttribute {
-  static attributeType = undefined;
+    static attributeType = undefined;
 
-  @PrimaryGeneratedColumn('increment')
-  id: number;
+    @PrimaryGeneratedColumn('increment')
+    id: number;
 
-  @Column({ type: 'text', unique: true })
-  name: string;
+    @Column({ type: 'text', unique: true })
+    name: string;
 
-  @Column({ type: 'boolean', default: true })
-  active: boolean;
+    @Column({ type: 'boolean', default: true })
+    active: boolean;
 
-  @Column({ type: 'integer', unique: true })
-  valueOrder: number;
+    @Column({ type: 'integer', unique: true })
+    valueOrder: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
 }

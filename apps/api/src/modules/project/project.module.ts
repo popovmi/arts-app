@@ -18,7 +18,7 @@ import { ProjectService } from './project.service';
         CustomerModule,
         // forwardRef(() => FactoryModule),
         // forwardRef(() => CustomerModule),
-        TypeOrmModule.forFeature([Project]),
+        TypeOrmModule.forFeature([Project, ProjectComment]),
     ],
     providers: [ProjectResolver, ProjectService, ProjectLoader],
     exports: [ProjectService],

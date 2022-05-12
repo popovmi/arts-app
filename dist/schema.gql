@@ -187,9 +187,9 @@ type Query {
   projects(filter: ProjectFilterQuery, pagination: ConnectionArgs = {}, order: ProjectOrderQuery): ProjectResponse!
   art(id: String!): Art!
   arts(filter: ArtFilterQuery, pagination: ConnectionArgs = {}, order: ArtOrderQuery): ArtResponse!
-  factories: [Factory!]!
+  factories(filter: FactoryFilterQuery, pagination: ConnectionArgs = {}): [Factory!]!
   factory(id: String!): Factory!
-  customers: [Customer!]!
+  customers(filter: CustomerFilterQuery, pagination: ConnectionArgs = {}): [Customer!]!
   customer(id: String!): Customer!
   attribute(type: AttributeType!, id: Int!): BaseAttributeType!
   attributes(type: AttributeType!): [BaseAttributeType!]!
@@ -312,6 +312,18 @@ input ArtOrderQuery {
   productType: OrderDirection
   productionMethod: OrderDirection
   ringType: OrderDirection
+}
+
+input FactoryFilterQuery {
+  AND: [FactoryFilterQuery!]
+  OR: [FactoryFilterQuery!]
+  name: StringFieldOption
+}
+
+input CustomerFilterQuery {
+  AND: [CustomerFilterQuery!]
+  OR: [CustomerFilterQuery!]
+  name: StringFieldOption
 }
 
 type BaseAttributeType {

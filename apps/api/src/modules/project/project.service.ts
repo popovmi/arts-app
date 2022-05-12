@@ -35,7 +35,7 @@ export class ProjectService {
     }
 
     public async getProject(id: string): Promise<Project> {
-        return this.projectRepository.findOne({ where: { id } });
+        return this.projectRepository.findOne({ where: { id }, relations: ['comments', 'comments.author'] });
     }
 
     async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {

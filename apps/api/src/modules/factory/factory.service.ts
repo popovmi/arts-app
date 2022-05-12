@@ -1,12 +1,15 @@
+import { filterQuery } from '@/shared/utils/query-builder';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { CreateFactoryInput, UpdateFactoryInput } from './dto';
+import { CreateFactoryInput, FindFactoryArgs, UpdateFactoryInput } from './dto';
 import { Factory } from './entities/factory.entity';
 
 @Injectable()
 export class FactoryService {
-  constructor(@InjectRepository(Factory) private factoryRepo: Repository<Factory>) {}
+  constructor(
+    @InjectRepository(Factory) private factoryRepo: Repository<Factory>
+  ) {}
 
   public async getByIds(ids: string[]) {
     return await this.factoryRepo.find({ where: { id: In(ids) } });
@@ -18,10 +21,26 @@ export class FactoryService {
     return factory;
   }
 
-  public async findAll() {
-    const factories = await this.factoryRepo.find({ order: { createdAt: 'ASC', name: 'ASC' } });
+  public async findAll({ filter }: FindFactoryArgs) {
+    // const { take = 50, skip = 0 } = pagination.pagingParams();
+    const query = filterQuery(
+      this.factoryRepo.createQueryBuilder('factories'),
+      'factories',
+      filter,
+      []
+    );
+    //   .skip(skip)
+    //   .take(take);
+    // const count = await query.getCount();
+    query.orderBy('factories.name', 'ASC');
 
-    return factories;
+    const customers = await query.getMany();
+    // const page = connectionFromArraySlice(customers, pagination, {
+    //   arrayLength: count,
+    //   sliceStart: skip || 0,
+    // });
+    return customers;
+    // return { page, pageData: { count, take, skip } };
   }
 
   public async findOne(id: string) {

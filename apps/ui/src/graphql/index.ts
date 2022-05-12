@@ -202,6 +202,12 @@ export type Customer = {
   updatedAt: Scalars['Date'];
 };
 
+export type CustomerFilterQuery = {
+  AND?: InputMaybe<Array<CustomerFilterQuery>>;
+  OR?: InputMaybe<Array<CustomerFilterQuery>>;
+  name?: InputMaybe<StringFieldOption>;
+};
+
 export type DeleteAttributeInput = {
   id: Scalars['Float'];
   type: AttributeType;
@@ -214,6 +220,12 @@ export type Factory = {
   id: Scalars['String'];
   name: Scalars['String'];
   updatedAt: Scalars['Date'];
+};
+
+export type FactoryFilterQuery = {
+  AND?: InputMaybe<Array<FactoryFilterQuery>>;
+  OR?: InputMaybe<Array<FactoryFilterQuery>>;
+  name?: InputMaybe<StringFieldOption>;
 };
 
 export type LoginResponse = {
@@ -451,6 +463,18 @@ export type QueryAttributesArgs = {
 
 export type QueryCustomerArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryCustomersArgs = {
+  filter?: InputMaybe<CustomerFilterQuery>;
+  pagination?: InputMaybe<ConnectionArgs>;
+};
+
+
+export type QueryFactoriesArgs = {
+  filter?: InputMaybe<FactoryFilterQuery>;
+  pagination?: InputMaybe<ConnectionArgs>;
 };
 
 
@@ -781,12 +805,18 @@ export type CustomerQueryVariables = Exact<{
 
 export type CustomerQuery = { __typename?: 'Query', customer: { __typename?: 'Customer', id: string, name: string, active: boolean, createdAt: any, updatedAt: any } };
 
-export type CustomersQueryVariables = Exact<{ [key: string]: never; }>;
+export type CustomersQueryVariables = Exact<{
+  filter?: InputMaybe<CustomerFilterQuery>;
+  pagination?: InputMaybe<ConnectionArgs>;
+}>;
 
 
 export type CustomersQuery = { __typename?: 'Query', customers: Array<{ __typename?: 'Customer', id: string, name: string, active: boolean, createdAt: any, updatedAt: any }> };
 
-export type FactoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type FactoriesQueryVariables = Exact<{
+  filter?: InputMaybe<FactoryFilterQuery>;
+  pagination?: InputMaybe<ConnectionArgs>;
+}>;
 
 
 export type FactoriesQuery = { __typename?: 'Query', factories: Array<{ __typename?: 'Factory', id: string, name: string, active: boolean, createdAt: any, updatedAt: any }> };
@@ -1227,8 +1257,8 @@ export const CustomerDocument = `
 }
     `;
 export const CustomersDocument = `
-    query customers {
-  customers {
+    query customers($filter: CustomerFilterQuery, $pagination: ConnectionArgs) {
+  customers(filter: $filter, pagination: $pagination) {
     id
     name
     active
@@ -1238,8 +1268,8 @@ export const CustomersDocument = `
 }
     `;
 export const FactoriesDocument = `
-    query factories {
-  factories {
+    query factories($filter: FactoryFilterQuery, $pagination: ConnectionArgs) {
+  factories(filter: $filter, pagination: $pagination) {
     id
     name
     active

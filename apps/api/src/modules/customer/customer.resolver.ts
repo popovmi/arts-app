@@ -4,7 +4,12 @@ import { Roles } from '@/shared/decorators/roles.decorator';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CustomerService } from './customer.service';
-import { CreateCustomerInput, CustomerType, UpdateCustomerInput } from './dto';
+import {
+  CreateCustomerInput,
+  CustomerType,
+  FindCustomerArgs,
+  UpdateCustomerInput,
+} from './dto';
 
 @Resolver(() => CustomerType)
 @UseGuards(AuthGuard, RolesGuard)
@@ -19,8 +24,8 @@ export class CustomerResolver {
 
   @Query(() => [CustomerType])
   @Roles(Role.ADMIN, Role.USER)
-  public async customers() {
-    return await this.customerService.findAll();
+  public async customers(@Args() args: FindCustomerArgs) {
+    return await this.customerService.findAll(args);
   }
 
   @Query(() => CustomerType)

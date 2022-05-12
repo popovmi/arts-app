@@ -3,7 +3,12 @@ import { Role } from '@/modules/user';
 import { Roles } from '@/shared/decorators/roles.decorator';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateFactoryInput, FactoryType, UpdateFactoryInput } from './dto';
+import {
+  CreateFactoryInput,
+  FactoryType,
+  FindFactoryArgs,
+  UpdateFactoryInput,
+} from './dto';
 import { FactoryService } from './factory.service';
 
 @Resolver(() => FactoryType)
@@ -19,8 +24,8 @@ export class FactoryResolver {
 
   @Query(() => [FactoryType])
   @Roles(Role.ADMIN, Role.USER)
-  public async factories() {
-    return await this.factoryService.findAll();
+  public async factories(@Args() args: FindFactoryArgs) {
+    return await this.factoryService.findAll(args);
   }
 
   @Query(() => FactoryType)

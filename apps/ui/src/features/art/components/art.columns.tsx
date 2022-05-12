@@ -7,7 +7,6 @@ import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOpti
 import {
     Button,
     Col,
-    Image,
     Input,
     Radio,
     RadioChangeEvent,
@@ -189,8 +188,6 @@ export const artColumns = (): ArtTableColumnType[] => {
         {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'name',
-            fixed: true,
-            width: 300,
             title: 'Название',
             filteredValue: filter?.name?.contains ? [filter.name.contains] : [],
             filterDropdown: () => (
@@ -211,15 +208,17 @@ export const artColumns = (): ArtTableColumnType[] => {
             ),
             filterMultiple: false,
             render: (_, record) => (
-                <Space>
-                    <Link to={`/arts/${record.id}`}>{record.name}</Link>
-                    {record.files && record.files?.length > 0 && (
-                        <Image
-                            src={`/static/${record.files![0].watermarkPath}`}
-                            style={{ maxWidth: 60, maxHeight: 80 }}
-                        />
-                    )}
-                </Space>
+                <Link to={`/arts/${record.id}`} target="_blank">
+                    {record.name}
+                </Link>
+                // <Space>
+                //     {record.files && record.files?.length > 0 && (
+                //         <Image
+                //             src={`/static/${record.files![0].watermarkPath}`}
+                //             style={{ maxWidth: 60, maxHeight: 80 }}
+                //         />
+                //     )}
+                // </Space>
             ),
         },
         {
@@ -252,7 +251,9 @@ export const artColumns = (): ArtTableColumnType[] => {
                     title: 'Название',
                     render: (_, record) =>
                         record.project && (
-                            <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>
+                            <Link to={`/projects/${record.project.id}`} target="_blank">
+                                {record.project.name}
+                            </Link>
                         ),
                     onHeaderCell: (record) => ({ dataIndex: ['project', 'name'] } as HTMLAttributes<any>),
                     filteredValue: filter?.project?.name?.contains ? [filter.project?.name.contains] : [],

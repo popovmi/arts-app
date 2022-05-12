@@ -131,7 +131,6 @@ export const projectColumns = () => {
         {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'name',
-            fixed: true,
             title: 'Название',
             filteredValue: filter?.name?.contains ? [filter.name.contains] : [],
             filterDropdown: () => (
@@ -151,7 +150,7 @@ export const projectColumns = () => {
                 />
             ),
             filterMultiple: false,
-            render: (_, record) => <Link to={`/projects/${record.id}`}>{record.name}</Link>,
+            render: (_, record) => <Link to={`/projects/${record.id}`} target='_blank'>{record.name}</Link>,
         },
         {
             dataIndex: 'internal',

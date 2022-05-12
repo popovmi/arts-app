@@ -2,10 +2,11 @@ import { ArtDescriptions } from '@/features/art/components';
 import { Art, Project, useProjectQuery } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
 import { ArrowRightOutlined, MehOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, PageHeader, Result, Row, Tabs, Tooltip, Typography } from 'antd';
+import { Button, Col, Divider, PageHeader, Result, Row, Space, Tabs, Tooltip, Typography } from 'antd';
 import { FC, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ProjectDescriptions } from '../components';
+import { ProjectComments } from '../components/project-comments.list';
 
 export const ProjectPage: FC = () => {
     const { projectId } = useParams();
@@ -25,65 +26,42 @@ export const ProjectPage: FC = () => {
         <>
             <PageHeader
                 title={
-                    <Typography.Title level={1} className="ant-col ant-col-24">
-                        {project.name}
-                    </Typography.Title>
+                    <>
+                        <Typography.Title level={1} type="secondary" style={{ display: 'inline' }}>
+                            Проект{' '}
+                        </Typography.Title>
+                        <Typography.Title level={1} style={{ display: 'inline' }}>
+                            {project.name}
+                        </Typography.Title>
+                    </>
                 }
                 onBack={() => navigate(-1)}
-            >
-                <ProjectDescriptions project={project} />
-            </PageHeader>
-            <Divider orientation="left">
-                <Typography.Title level={2}>ART-ы</Typography.Title>
-            </Divider>
+            ></PageHeader>
+
             <Row gutter={8} style={{ paddingInline: 8 }}>
-                <Col span={24}>
-                    <Tabs tabPosition={'top'} activeKey={currentArt}>
-                        {arts.map((a) => (
-                            <Tabs.TabPane
-                                tab={
-                                    <>
-                                        <Tooltip title="Показать">
-                                            <Button type="link" onClick={() => setCurrentArt(a.id)}>
-                                                {a.name}
-                                            </Button>
-                                        </Tooltip>
-                                        <Divider type="vertical" />
-                                        <Tooltip title="Перейти к ART-у">
-                                            <Button
-                                                type="link"
-                                                size="small"
-                                                onClick={() => navigate(`/arts/${a.id}`)}
-                                                icon={<ArrowRightOutlined />}
-                                            />
-                                        </Tooltip>
-                                    </>
-                                }
-                                key={a.id}
-                            >
-                                <Row gutter={8}>
-                                    <Col span={24}>
-                                        <ArtDescriptions art={{ ...a, project } as Art} editable={false} />
-                                    </Col>
-                                    <Col span={24}>
-                                        {a.files?.length && (
-                                            <img
-                                                style={{ maxWidth: '100%' }}
-                                                src={`/static/${a.files[0].watermarkPath}`}
-                                                alt={'Изображение ART-a'}
-                                            />
-                                        )}
-                                    </Col>
-                                </Row>
-                            </Tabs.TabPane>
-                        ))}
-                    </Tabs>
+                <Col xs={24} lg={6}>
+                    <ProjectDescriptions project={project} />
                 </Col>
-                {!arts.length && (
-                    <Col span={24}>
-                        <Result icon={<MehOutlined />} title="В проект пока не добавлен ни один ART" />
-                    </Col>
-                )}
+                <Col xs={24} lg={18}>
+                    <Divider orientation={'left'} style={{ margin: 0 }}>
+                        <Typography.Title level={2} style={{ margin: 0 }}>
+                            ART-ы
+                        </Typography.Title>
+                    </Divider>
+                    <Space>
+                        {arts.map((a) => (
+                            <Link key={a.id} to={`/arts/${a.id}`}>
+                                {a.name}
+                            </Link>
+                        ))}
+                    </Space>
+                    <Divider orientation={'left'} style={{ margin: 0 }}>
+                        <Typography.Title level={2} style={{ margin: 0 }}>
+                            Комментарии
+                        </Typography.Title>
+                    </Divider>
+                    <ProjectComments project={project} />
+                </Col>
             </Row>
         </>
     );

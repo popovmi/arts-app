@@ -5,7 +5,7 @@ import { FactorySelector } from '@/features/factory';
 import { Customer, Factory, Project, UpdateProjectInput, useUpdateProjectMutation } from '@/graphql';
 import { useToggle } from '@/shared/hooks';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Descriptions, Form, Space, Spin, Typography } from 'antd';
+import { Button, Checkbox, Descriptions, Form, Row, Spin, Typography } from 'antd';
 import { FC, useEffect } from 'react';
 import { projectAttributesTypes } from '../project-attribute.types';
 import { clearFilter } from '../project.slice';
@@ -36,6 +36,8 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
 
             Object.assign(updateProjectInput, { id: project.id });
             update({ updateProjectInput }).then((res) => 'data' in res && dispatch(clearFilter()));
+        } else {
+            toggleEdit();
         }
     };
 
@@ -58,20 +60,14 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
             component={false}
         >
             <Spin spinning={isLoading}>
-                <Descriptions
-                    bordered
-                    size="small"
-                    column={{ xs: 1, sm: 1, md: 1, lg: 3 }}
-                    title={
-                        <Space>
-                            {edit ? (
-                                <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
-                            ) : (
-                                <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
-                            )}
-                        </Space>
-                    }
-                >
+                <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
+                    {edit ? (
+                        <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
+                    ) : (
+                        <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
+                    )}
+                </Row>
+                <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
                     <DItem label={'Внутренний'} span={1}>
                         {edit ? (
                             <FItem noStyle name="internal" valuePropName="checked">

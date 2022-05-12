@@ -2,7 +2,7 @@ mutation updateArtComment($id: Float!, $text: String!) {
     updateArtComment(id: $id, text: $text) {
         id
         text
-		artId
+        artId
         author {
             id
             fullName

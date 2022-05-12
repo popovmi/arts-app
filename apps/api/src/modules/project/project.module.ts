@@ -1,6 +1,6 @@
 import { ArtModule } from '@/modules/art/art.module';
-import { CustomerModule } from '@/modules/customer/customer.module';
-import { FactoryModule } from '@/modules/factory/factory.module';
+import { CustomerModule } from '@/modules/customer';
+import { FactoryModule } from '@/modules/factory';
 import { UserModule } from '@/modules/user';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,9 +14,11 @@ import { ProjectService } from './project.service';
     imports: [
         UserModule,
         forwardRef(() => ArtModule),
-        forwardRef(() => FactoryModule),
-        forwardRef(() => CustomerModule),
-        TypeOrmModule.forFeature([Project, ProjectComment]),
+        FactoryModule,
+        CustomerModule,
+        // forwardRef(() => FactoryModule),
+        // forwardRef(() => CustomerModule),
+        TypeOrmModule.forFeature([Project]),
     ],
     providers: [ProjectResolver, ProjectService, ProjectLoader],
     exports: [ProjectService],

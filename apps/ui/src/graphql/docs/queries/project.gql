@@ -28,7 +28,7 @@ query project($id: String!) {
             productionMethod
             ringType
         }
-		comments {
+        comments {
             id
             text
             author {

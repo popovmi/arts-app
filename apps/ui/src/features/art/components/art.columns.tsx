@@ -5,16 +5,16 @@ import { FactorySelector } from '@/features/factory';
 import { projectAttributesTypes } from '@/features/project/project-attribute.types';
 import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOption } from '@/graphql';
 import {
-	Button,
-	Col,
-	Image,
-	Input,
-	Radio,
-	RadioChangeEvent,
-	Row,
-	Space,
-	TableColumnGroupType,
-	TableColumnType
+    Button,
+    Col,
+    Image,
+    Input,
+    Radio,
+    RadioChangeEvent,
+    Row,
+    Space,
+    TableColumnGroupType,
+    TableColumnType,
 } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';

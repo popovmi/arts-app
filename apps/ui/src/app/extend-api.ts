@@ -82,7 +82,7 @@ export const api = generatedApi.enhanceEndpoints({
                 { type: 'Project', id: 'LIST' },
             ],
         },
-		 addProjectComment: {
+        addProjectComment: {
             onQueryStarted: async ({ projectCommentInput: { projectId } }, { dispatch, queryFulfilled }) => {
                 try {
                     const {
@@ -105,7 +105,9 @@ export const api = generatedApi.enhanceEndpoints({
                     dispatch(
                         generatedApi.util.updateQueryData('project', { id: comment.projectId }, (draft) => {
                             if (draft.project.comments?.length) {
-                                const idx = draft.project.comments.findIndex((_comm) => _comm.id === comment.id);
+                                const idx = draft.project.comments.findIndex(
+                                    (_comm) => _comm.id === comment.id
+                                );
                                 draft.project.comments![idx] = comment;
                             }
                         })
@@ -113,7 +115,6 @@ export const api = generatedApi.enhanceEndpoints({
                 } catch {}
             },
         },
-
 
         user: {
             providesTags: (result, error, { id }) => [{ type: 'User', id }],

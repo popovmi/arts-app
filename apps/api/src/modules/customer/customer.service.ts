@@ -1,7 +1,8 @@
+import { filterQuery } from '@/shared/utils/query-builder';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { CreateCustomerInput, UpdateCustomerInput } from './dto';
+import { CreateCustomerInput, FindCustomerArgs, UpdateCustomerInput } from './dto';
 import { Customer } from './entities/customer.entity';
 
 @Injectable()
@@ -18,10 +19,26 @@ export class CustomerService {
         return customer;
     }
 
-    public async findAll() {
-        const customers = await this.customerRepository.find({ order: { createdAt: 'ASC', name: 'ASC' } });
+    public async findAll({ filter }: FindCustomerArgs) {
+        // const { take = 50, skip = 0 } = pagination.pagingParams();
+        const query = filterQuery(
+            this.customerRepository.createQueryBuilder('customers'),
+            'customers',
+            filter,
+            []
+        );
+        //   .skip(skip)
+        //   .take(take);
+        // const count = await query.getCount();
+        query.orderBy('customers.name', 'ASC');
 
+        const customers = await query.getMany();
+        // const page = connectionFromArraySlice(customers, pagination, {
+        //   arrayLength: count,
+        //   sliceStart: skip || 0,
+        // });
         return customers;
+        // return { page, pageData: { count, take, skip } };
     }
 
     public async findOne(id: string) {

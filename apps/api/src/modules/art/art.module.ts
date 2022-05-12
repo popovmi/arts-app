@@ -1,4 +1,4 @@
-import { ProjectModule } from '@/modules/project/project.module';
+import { ProjectModule } from '@/modules/project';
 import { UserModule } from '@/modules/user';
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

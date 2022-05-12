@@ -240,6 +240,7 @@ export type LoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   addArtComment: ArtComment;
+  addProjectComment: ProjectComment;
   changePassword: Scalars['Boolean'];
   createArt: Art;
   createAttribute: BaseAttributeType;
@@ -249,6 +250,7 @@ export type Mutation = {
   createUser: User;
   deleteArtComment: Scalars['Boolean'];
   deleteAttribute: Scalars['Boolean'];
+  deleteProjectComment: Scalars['Boolean'];
   login: LoginResponse;
   logout: Scalars['Boolean'];
   updateArt: Art;
@@ -258,12 +260,18 @@ export type Mutation = {
   updateCustomer: Customer;
   updateFactory: Factory;
   updateProject: Project;
+  updateProjectComment: ProjectComment;
   updateUser: User;
 };
 
 
 export type MutationAddArtCommentArgs = {
   artCommentInput: ArtCommentInput;
+};
+
+
+export type MutationAddProjectCommentArgs = {
+  projectCommentInput: ProjectCommentInput;
 };
 
 
@@ -315,6 +323,11 @@ export type MutationDeleteAttributeArgs = {
 };
 
 
+export type MutationDeleteProjectCommentArgs = {
+  id: Scalars['Float'];
+};
+
+
 export type MutationLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -357,6 +370,12 @@ export type MutationUpdateProjectArgs = {
 };
 
 
+export type MutationUpdateProjectCommentArgs = {
+  id: Scalars['Float'];
+  text: Scalars['String'];
+};
+
+
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
 };
@@ -378,6 +397,7 @@ export type PageData = {
 export type Project = {
   __typename?: 'Project';
   arts?: Maybe<Array<Art>>;
+  comments?: Maybe<Array<ProjectComment>>;
   createdAt: Scalars['Date'];
   customer?: Maybe<Customer>;
   customerId?: Maybe<Scalars['String']>;
@@ -391,6 +411,21 @@ export type Project = {
   name: Scalars['String'];
   sfm?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Date'];
+};
+
+export type ProjectComment = {
+  __typename?: 'ProjectComment';
+  author: User;
+  authorId: Scalars['String'];
+  id: Scalars['Float'];
+  project: Project;
+  projectId: Scalars['String'];
+  text: Scalars['String'];
+};
+
+export type ProjectCommentInput = {
+  projectId: Scalars['String'];
+  text: Scalars['String'];
 };
 
 export type ProjectFilterQuery = {
@@ -664,6 +699,13 @@ export type AddArtCommentMutationVariables = Exact<{
 
 export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
+export type AddProjectCommentMutationVariables = Exact<{
+  projectCommentInput: ProjectCommentInput;
+}>;
+
+
+export type AddProjectCommentMutation = { __typename?: 'Mutation', addProjectComment: { __typename?: 'ProjectComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
+
 export type ChangePasswordMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -730,6 +772,13 @@ export type DeleteAttributeMutationVariables = Exact<{
 
 export type DeleteAttributeMutation = { __typename?: 'Mutation', deleteAttribute: boolean };
 
+export type DeleteProjectCommentMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteProjectCommentMutation = { __typename?: 'Mutation', deleteProjectComment: boolean };
+
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -792,6 +841,14 @@ export type UpdateProjectMutationVariables = Exact<{
 
 
 export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+
+export type UpdateProjectCommentMutationVariables = Exact<{
+  id: Scalars['Float'];
+  text: Scalars['String'];
+}>;
+
+
+export type UpdateProjectCommentMutation = { __typename?: 'Mutation', updateProjectComment: { __typename?: 'ProjectComment', id: number, text: string, projectId: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
@@ -860,7 +917,7 @@ export type ProjectQueryVariables = Exact<{
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, comments?: Array<{ __typename?: 'ProjectComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
 
 export type ProjectsQueryVariables = Exact<{
   filter?: InputMaybe<ProjectFilterQuery>;
@@ -904,6 +961,18 @@ export type WhoAmIQuery = { __typename?: 'Query', whoAmI: { __typename?: 'User',
 export const AddArtCommentDocument = `
     mutation addArtComment($artCommentInput: ArtCommentInput!) {
   addArtComment(artCommentInput: $artCommentInput) {
+    id
+    text
+    author {
+      id
+      fullName
+    }
+  }
+}
+    `;
+export const AddProjectCommentDocument = `
+    mutation addProjectComment($projectCommentInput: ProjectCommentInput!) {
+  addProjectComment(projectCommentInput: $projectCommentInput) {
     id
     text
     author {
@@ -1031,6 +1100,11 @@ export const DeleteArtCommentDocument = `
 export const DeleteAttributeDocument = `
     mutation deleteAttribute($input: DeleteAttributeInput!) {
   deleteAttribute(input: $input)
+}
+    `;
+export const DeleteProjectCommentDocument = `
+    mutation deleteProjectComment($id: Float!) {
+  deleteProjectComment(id: $id)
 }
     `;
 export const LoginDocument = `
@@ -1171,6 +1245,19 @@ export const UpdateProjectDocument = `
     }
     createdAt
     updatedAt
+  }
+}
+    `;
+export const UpdateProjectCommentDocument = `
+    mutation updateProjectComment($id: Float!, $text: String!) {
+  updateProjectComment(id: $id, text: $text) {
+    id
+    text
+    projectId
+    author {
+      id
+      fullName
+    }
   }
 }
     `;
@@ -1385,6 +1472,14 @@ export const ProjectDocument = `
       productionMethod
       ringType
     }
+    comments {
+      id
+      text
+      author {
+        id
+        fullName
+      }
+    }
     factory {
       id
       name
@@ -1516,6 +1611,9 @@ const injectedRtkApi = api.injectEndpoints({
     addArtComment: build.mutation<AddArtCommentMutation, AddArtCommentMutationVariables>({
       query: (variables) => ({ document: AddArtCommentDocument, variables })
     }),
+    addProjectComment: build.mutation<AddProjectCommentMutation, AddProjectCommentMutationVariables>({
+      query: (variables) => ({ document: AddProjectCommentDocument, variables })
+    }),
     changePassword: build.mutation<ChangePasswordMutation, ChangePasswordMutationVariables>({
       query: (variables) => ({ document: ChangePasswordDocument, variables })
     }),
@@ -1543,6 +1641,9 @@ const injectedRtkApi = api.injectEndpoints({
     deleteAttribute: build.mutation<DeleteAttributeMutation, DeleteAttributeMutationVariables>({
       query: (variables) => ({ document: DeleteAttributeDocument, variables })
     }),
+    deleteProjectComment: build.mutation<DeleteProjectCommentMutation, DeleteProjectCommentMutationVariables>({
+      query: (variables) => ({ document: DeleteProjectCommentDocument, variables })
+    }),
     login: build.mutation<LoginMutation, LoginMutationVariables>({
       query: (variables) => ({ document: LoginDocument, variables })
     }),
@@ -1569,6 +1670,9 @@ const injectedRtkApi = api.injectEndpoints({
     }),
     updateProject: build.mutation<UpdateProjectMutation, UpdateProjectMutationVariables>({
       query: (variables) => ({ document: UpdateProjectDocument, variables })
+    }),
+    updateProjectComment: build.mutation<UpdateProjectCommentMutation, UpdateProjectCommentMutationVariables>({
+      query: (variables) => ({ document: UpdateProjectCommentDocument, variables })
     }),
     updateUser: build.mutation<UpdateUserMutation, UpdateUserMutationVariables>({
       query: (variables) => ({ document: UpdateUserDocument, variables })
@@ -1619,5 +1723,5 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useAddArtCommentMutation, useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useDeleteArtCommentMutation, useDeleteAttributeMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateArtCommentMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributeQuery, useLazyAttributeQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
+export const { useAddArtCommentMutation, useAddProjectCommentMutation, useChangePasswordMutation, useCreateArtMutation, useCreateAttributeMutation, useCreateCustomerMutation, useCreateFactoryMutation, useCreateProjectMutation, useCreateUserMutation, useDeleteArtCommentMutation, useDeleteAttributeMutation, useDeleteProjectCommentMutation, useLoginMutation, useLogoutMutation, useUpdateArtMutation, useUpdateArtCommentMutation, useUpdateAttributeMutation, useUpdateAttributesOrderMutation, useUpdateCustomerMutation, useUpdateFactoryMutation, useUpdateProjectMutation, useUpdateProjectCommentMutation, useUpdateUserMutation, useArtQuery, useLazyArtQuery, useArtsQuery, useLazyArtsQuery, useAttributeQuery, useLazyAttributeQuery, useAttributesQuery, useLazyAttributesQuery, useCustomerQuery, useLazyCustomerQuery, useCustomersQuery, useLazyCustomersQuery, useFactoriesQuery, useLazyFactoriesQuery, useFactoryQuery, useLazyFactoryQuery, useProjectQuery, useLazyProjectQuery, useProjectsQuery, useLazyProjectsQuery, useProjectsLovQuery, useLazyProjectsLovQuery, useUserQuery, useLazyUserQuery, useUsersQuery, useLazyUsersQuery, useWhoAmIQuery, useLazyWhoAmIQuery } = injectedRtkApi;
 

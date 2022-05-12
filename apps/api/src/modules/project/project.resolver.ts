@@ -1,12 +1,21 @@
 import { ArtType } from '@/modules/art/dto';
 import { AuthGuard, RolesGuard } from '@/modules/auth';
-import { Role } from '@/modules/user';
-import { Roles } from '@/shared/decorators/roles.decorator';
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CustomerType } from '@/modules/customer/dto';
 import { FactoryType } from '@/modules/factory/dto';
-import { CreateProjectInput, FindProjectArgs, ProjectResponse, ProjectType, UpdateProjectInput } from './dto';
+import { Role } from '@/modules/user';
+import { Roles } from '@/shared/decorators/roles.decorator';
+import { AppContext } from '@/shared/types';
+import { ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+    CreateProjectInput,
+    FindProjectArgs,
+    ProjectCommentInput,
+    ProjectCommentType,
+    ProjectResponse,
+    ProjectType,
+    UpdateProjectInput,
+} from './dto';
 import { ProjectLoader } from './loaders';
 import { ProjectService } from './project.service';
 
@@ -49,5 +58,41 @@ export class ProjectResolver {
     @Mutation(() => ProjectType)
     async updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput) {
         return await this.projectService.updateProject(updateProjectInput);
+    }
+
+    @Mutation(() => ProjectCommentType)
+    public async addProjectComment(
+        @Args('projectCommentInput') projectCommentInput: ProjectCommentInput,
+        @Context() { currentUserId }: AppContext
+    ) {
+        return this.projectService.addArtComment({
+            ...projectCommentInput,
+            authorId: currentUserId,
+        });
+    }
+
+    @Mutation(() => ProjectCommentType)
+    public async updateProjectComment(
+        @Args('id', new ParseIntPipe()) id: number,
+        @Args('text') text: string,
+        @Context() { currentUserId }: AppContext
+    ) {
+        return this.projectService.updateArtComment({
+            commentId: id,
+            text,
+            authorId: currentUserId,
+        });
+    }
+
+    @Mutation(() => Boolean)
+    public async deleteProjectComment(
+        @Args('id', new ParseIntPipe()) id: number,
+        @Context() { currentUserId }: AppContext
+    ) {
+        await this.projectService.deleteComment({
+            commentId: id,
+            authorId: currentUserId,
+        });
+        return true;
     }
 }

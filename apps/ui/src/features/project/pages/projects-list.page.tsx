@@ -34,12 +34,13 @@ export const ProjectsListPage: FC = () => {
         delayInMs: 500,
     });
 
+    const columns = projectColumns();
     return (
         <Row style={{ overflow: 'auto', overflowX: 'hidden', height: '100%' }} ref={root.rootRef}>
             <Table
                 dataSource={projects}
                 rowKey="id"
-                columns={projectColumns()}
+                columns={columns}
                 components={{ header: { cell: HeaderCell, row: HeaderRow } }}
                 pagination={false}
                 loading={loading}
@@ -47,28 +48,34 @@ export const ProjectsListPage: FC = () => {
                 sticky
                 scroll={{ x: 1000 }}
                 size="small"
-                title={() => (
-                    <Space style={{ width: '100%' }}>
-                        <Tooltip title="Создать проект">
-                            <Button
-                                size="small"
-                                type="primary"
-                                icon={<PlusOutlined />}
-                                onClick={() => {
-                                    navigate('/projects/create');
-                                }}
-                            />
-                        </Tooltip>
-                        <Tooltip title="Сбросить фильтры">
-                            <Button
-                                size="small"
-                                icon={<ClearOutlined />}
-                                onClick={() => {
-                                    dispatch(clearFilter());
-                                }}
-                            />
-                        </Tooltip>
-                    </Space>
+                summary={(pageData) => (
+                    <Table.Summary fixed={'top'}>
+                        <Table.Summary.Row>
+                            <Table.Summary.Cell index={0} colSpan={columns.length}>
+                                <Space style={{ width: '100%' }}>
+                                    <Tooltip title="Создать проект">
+                                        <Button
+                                            size="small"
+                                            type="primary"
+                                            icon={<PlusOutlined />}
+                                            onClick={() => {
+                                                navigate('/projects/create');
+                                            }}
+                                        />
+                                    </Tooltip>
+                                    <Tooltip title="Сбросить фильтры">
+                                        <Button
+                                            icon={<ClearOutlined />}
+                                            size="small"
+                                            onClick={() => {
+                                                dispatch(clearFilter());
+                                            }}
+                                        />
+                                    </Tooltip>
+                                </Space>
+                            </Table.Summary.Cell>
+                        </Table.Summary.Row>
+                    </Table.Summary>
                 )}
             />
             {projects.length > 0 && hasMore && (

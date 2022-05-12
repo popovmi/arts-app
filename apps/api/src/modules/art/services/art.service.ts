@@ -44,9 +44,7 @@ export class ArtService {
             .skip(skip)
             .take(take);
         query.addSelect(`left("arts"."name", strpos("arts"."name", '-') - 1) "code"`);
-        query.addSelect(
-            `length(left("arts"."name", strpos("arts"."name", '-') - 1))::integer "code_length"`
-        );
+        query.addSelect(`length(left("arts"."name", strpos("arts"."name", '-') - 1))::integer "code_length"`);
         const count = await query.getCount();
         query.addOrderBy(`code_length`, 'ASC');
         query.addOrderBy('code', 'ASC');

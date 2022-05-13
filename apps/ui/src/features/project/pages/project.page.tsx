@@ -1,19 +1,21 @@
-import { ArtDescriptions } from '@/features/art/components';
-import { Art, Project, useProjectQuery } from '@/graphql';
+import { Project, useProjectQuery, useUpdateProjectMutation } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { ArrowRightOutlined, MehOutlined } from '@ant-design/icons';
-import { Button, Col, Divider, PageHeader, Result, Row, Space, Tabs, Tooltip, Typography } from 'antd';
+import { Col, Divider, PageHeader, Result, Row, Space, Typography } from 'antd';
 import { FC, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ProjectDescriptions } from '../components';
 import { ProjectComments } from '../components/project-comments.list';
+import { ProjectTitle } from '../components/project-title';
 
 export const ProjectPage: FC = () => {
     const { projectId } = useParams();
     const navigate = useNavigate();
     const { data, isLoading, isFetching } = useProjectQuery({ id: projectId! });
-    const loading = isLoading || isFetching;
+    const [update, { isLoading: isUpdating, isSuccess, reset }] = useUpdateProjectMutation({
+        fixedCacheKey: 'updateProjectName',
+    });
 
+    const loading = isLoading || isFetching;
     const project = (data?.project || {}) as Project;
     const arts = data?.project.arts || [];
 
@@ -26,14 +28,10 @@ export const ProjectPage: FC = () => {
         <>
             <PageHeader
                 title={
-                    <>
-                        <Typography.Title level={1} type="secondary" style={{ display: 'inline' }}>
-                            Проект{' '}
-                        </Typography.Title>
-                        <Typography.Title level={1} style={{ display: 'inline' }}>
-                            {project.name}
-                        </Typography.Title>
-                    </>
+                    <ProjectTitle
+                        name={project.name}
+                        onUpdate={(val) => update({ updateProjectInput: { id: project.id, name: val } })}
+                    />
                 }
                 onBack={() => navigate(-1)}
             ></PageHeader>

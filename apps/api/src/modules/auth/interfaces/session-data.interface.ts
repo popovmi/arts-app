@@ -1,5 +1,5 @@
 export interface AppSessionData {
-  userId?: string;
-  isLoggedIn: boolean;
-  loginAttempts: number;
+    userId?: string;
+    isLoggedIn: boolean;
+    loginAttempts: number;
 }

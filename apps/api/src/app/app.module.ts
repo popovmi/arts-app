@@ -2,9 +2,9 @@ import { DbModule } from '@/db/db.module';
 import { ArtModule } from '@/modules/art/art.module';
 import { AttributeModule } from '@/modules/attribute/attribute.module';
 import { AuthModule } from '@/modules/auth';
-import { CustomerModule } from '@/modules/customer/customer.module';
-import { FactoryModule } from '@/modules/factory/factory.module';
-import { ProjectModule } from '@/modules/project/project.module';
+import { CustomerModule } from '@/modules/customer';
+import { FactoryModule } from '@/modules/factory';
+import { ProjectModule } from '@/modules/project';
 import { UserModule } from '@/modules/user';
 import { ApiConfigService, SharedModule } from '@/shared';
 import { LoggerModule } from '@/shared/logger';
@@ -12,65 +12,62 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import {
-  ServeStaticModule,
-  ServeStaticModuleOptions,
-} from '@nestjs/serve-static';
+import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { join, resolve } from 'path';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
 
-    SharedModule,
+        SharedModule,
 
-    LoggerModule,
+        LoggerModule,
 
-    DbModule,
+        DbModule,
 
-    GraphQLModule.forRootAsync({
-      driver: ApolloDriver,
-      inject: [ApiConfigService],
-      useFactory: (config: ApiConfigService) => config.graphQLConfig,
-    }),
+        GraphQLModule.forRootAsync({
+            driver: ApolloDriver,
+            inject: [ApiConfigService],
+            useFactory: (config: ApiConfigService) => config.graphQLConfig,
+        }),
 
-    ServeStaticModule.forRootAsync({
-      inject: [ApiConfigService],
-      useFactory: async (config: ApiConfigService) => {
-        const staticPaths: ServeStaticModuleOptions[] = [
-          {
-            exclude: ['/graphql'],
-            rootPath: resolve(config.fileStoragePath),
-            serveRoot: '/static',
-          },
-          {
-            exclude: ['/graphql'],
-            rootPath: './upload',
-            serveRoot: '/upload',
-          },
-        ];
-        staticPaths.push({
-          exclude: ['/graphql'],
-          rootPath: join(__dirname, 'ui'),
-        });
+        ServeStaticModule.forRootAsync({
+            inject: [ApiConfigService],
+            useFactory: async (config: ApiConfigService) => {
+                const staticPaths: ServeStaticModuleOptions[] = [
+                    {
+                        exclude: ['/graphql'],
+                        rootPath: resolve(config.fileStoragePath),
+                        serveRoot: '/static',
+                    },
+                    {
+                        exclude: ['/graphql'],
+                        rootPath: './upload',
+                        serveRoot: '/upload',
+                    },
+                ];
+                staticPaths.push({
+                    exclude: ['/graphql'],
+                    rootPath: join(__dirname, 'ui'),
+                });
 
-        return staticPaths;
-      },
-    }),
+                return staticPaths;
+            },
+        }),
 
-    UserModule,
+        UserModule,
 
-    AuthModule,
+        AuthModule,
 
-    ProjectModule,
+        ProjectModule,
 
-    ArtModule,
+        ArtModule,
 
-    AttributeModule,
+        AttributeModule,
 
-    FactoryModule,
+        FactoryModule,
 
-    CustomerModule,
-  ],
+        CustomerModule,
+    ],
 })
 export class AppModule {}

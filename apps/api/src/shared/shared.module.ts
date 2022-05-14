@@ -4,7 +4,7 @@ import { ApiConfigService } from './services/api-config.service';
 
 @Global()
 @Module({
-  providers: [DateScalar, ApiConfigService],
-  exports: [DateScalar, ApiConfigService],
+    providers: [DateScalar, ApiConfigService],
+    exports: [DateScalar, ApiConfigService],
 })
 export class SharedModule {}

@@ -4,15 +4,15 @@ import { AttributeType } from '../attribute-type';
 
 @InputType()
 export class CreateAttributeInput {
-  @Field(() => AttributeType)
-  type: AttributeType;
+    @Field(() => AttributeType)
+    type: AttributeType;
 
-  @IsString()
-  @Field()
-  name: string;
+    @IsString()
+    @Field()
+    name: string;
 
-  @IsBoolean()
-  @IsOptional()
-  @Field()
-  active?: boolean;
+    @IsBoolean()
+    @IsOptional()
+    @Field()
+    active?: boolean;
 }

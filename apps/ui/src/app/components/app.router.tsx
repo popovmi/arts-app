@@ -9,62 +9,62 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { AppLayout } from './app.layout';
 
 export const AppRouter: FC = () => {
-  const routes: RouteObject[] = [
-    {
-      path: '/',
-      element: <AppLayout />,
-      children: [
-        { path: '/login', element: <LoginPage /> },
+    const routes: RouteObject[] = [
         {
-          path: '/',
-          element: <AuthRoute />,
-          children: [
-            {
-              path: '/',
-              children: [
-                { path: 'update', element: <PasswordUpdatePage /> },
+            path: '/',
+            element: <AppLayout />,
+            children: [
+                { path: '/login', element: <LoginPage /> },
                 {
-                  path: 'projects',
-                  children: [
-                    { index: true, element: <ProjectsListPage /> },
-                    { path: 'create', element: <CreateProjectPage /> },
-                    { path: ':projectId', element: <ProjectPage /> },
-                  ],
+                    path: '/',
+                    element: <AuthRoute />,
+                    children: [
+                        {
+                            path: '/',
+                            children: [
+                                { path: 'update', element: <PasswordUpdatePage /> },
+                                {
+                                    path: 'projects',
+                                    children: [
+                                        { index: true, element: <ProjectsListPage /> },
+                                        { path: 'create', element: <CreateProjectPage /> },
+                                        { path: ':projectId', element: <ProjectPage /> },
+                                    ],
+                                },
+                                {
+                                    path: 'arts',
+                                    children: [
+                                        { index: true, element: <ArtsListPage /> },
+                                        { path: 'create', element: <CreateArtPage /> },
+                                        { path: ':artId', element: <ArtPage /> },
+                                    ],
+                                },
+                                {
+                                    path: 'admin',
+                                    element: <AdminRoute />,
+                                    children: [
+                                        {
+                                            path: 'users',
+                                            element: <UsersListPage />,
+                                        },
+                                        {
+                                            path: 'companies',
+                                            element: <CompanyPage />,
+                                        },
+                                        {
+                                            path: 'attributes',
+                                            element: <AttributePage />,
+                                        },
+                                    ],
+                                },
+                                { path: '*', element: <Navigate to={'/projects'} /> },
+                            ],
+                        },
+                    ],
                 },
-                {
-                  path: 'arts',
-                  children: [
-                    { index: true, element: <ArtsListPage /> },
-                    { path: 'create', element: <CreateArtPage /> },
-                    { path: ':artId', element: <ArtPage /> },
-                  ],
-                },
-                {
-                  path: 'admin',
-                  element: <AdminRoute />,
-                  children: [
-                    {
-                      path: 'users',
-                      element: <UsersListPage />,
-                    },
-                    {
-                      path: 'companies',
-                      element: <CompanyPage />,
-                    },
-                    {
-                      path: 'attributes',
-                      element: <AttributePage />,
-                    },
-                  ],
-                },
-                { path: '*', element: <Navigate to={'/projects'} /> },
-              ],
-            },
-          ],
+            ],
         },
-      ],
-    },
-  ];
+    ];
 
-  return <>{useRoutes(routes)}</>;
+    return <>{useRoutes(routes)}</>;
 };

@@ -1,4 +1,10 @@
-import { FieldNode, FragmentDefinitionNode, GraphQLResolveInfo, OperationDefinitionNode, parse } from 'graphql';
+import {
+    FieldNode,
+    FragmentDefinitionNode,
+    GraphQLResolveInfo,
+    OperationDefinitionNode,
+    parse,
+} from 'graphql';
 
 export interface FieldSelections {
     field: string;

@@ -1,11 +1,11 @@
 const { MigrationInterface, QueryRunner } = require('typeorm');
 
 module.exports = class initial1645753352977 {
-  name = 'initial1645753352977';
+    name = 'initial1645753352977';
 
-  async up(queryRunner) {
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
-    await queryRunner.query(`
+    async up(queryRunner) {
+        await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
+        await queryRunner.query(`
             CREATE TABLE "art_class" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -18,7 +18,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_a26fa042c98259a3308ef8e740f" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "bottom_form" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -31,7 +31,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_54be5c2b5dc06fcf401fe63db87" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "drop_number" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -44,7 +44,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_ad83b567683fad027212aa37087" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "form" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -57,7 +57,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_8f72b95aa2f8ba82cf95dc7579e" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "height" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -70,7 +70,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_90f1773799ae13708b533416960" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "intercenter" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -83,7 +83,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_e61ba14025a69b0b88f2a7801b0" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "nominal_volume" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -96,7 +96,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_f45b93acf0b86cabb3f8d0ca231" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "product_type" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -109,7 +109,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_e0843930fbb8854fe36ca39dae1" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "production_method" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -122,7 +122,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_018b710aed3f8fd41338d44bfa9" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "ring_type" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -135,7 +135,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_cfbac3daf7b7451f5ec2060ff4f" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "sfm" (
                 "id" SERIAL NOT NULL,
                 "name" text NOT NULL,
@@ -148,7 +148,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_f5a9acb30984bc2b8db8f3787fb" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "customer" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "name" character varying NOT NULL,
@@ -159,7 +159,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_a7a13f4cacb744524e44dfdad32" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "factory" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "name" character varying NOT NULL,
@@ -170,7 +170,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_1372e5a7d114a3fa80736ba66bb" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "project" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "name" text NOT NULL,
@@ -187,7 +187,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_4d68b1358bb5b766d3e78f32f57" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "art" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "name" text NOT NULL,
@@ -207,10 +207,10 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_d7867f9fa7239b188ec631066bb" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE INDEX "IDX_b1f943542bccfc6de53342fa2e" ON "art" ("projectId")
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "art_file" (
                 "artId" uuid NOT NULL,
                 "originalPath" text NOT NULL,
@@ -219,7 +219,7 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_ba1de964e765e0491aaa1d80d01" PRIMARY KEY ("artId")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "session" (
                 "sid" uuid NOT NULL,
                 "sess" jsonb NOT NULL,
@@ -227,10 +227,10 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_7575923e18b495ed2307ae629ae" PRIMARY KEY ("sid")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TYPE "public"."user_role_enum" AS ENUM('ADMIN', 'USER')
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE "user" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "username" text NOT NULL,
@@ -244,85 +244,85 @@ module.exports = class initial1645753352977 {
                 CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id")
             )
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project"
             ADD CONSTRAINT "FK_a31d1c8bf3a42d68e8ef6d0fa1f" FOREIGN KEY ("sfm") REFERENCES "sfm"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project"
             ADD CONSTRAINT "FK_cb4a5f99ab1f14d8915c6408755" FOREIGN KEY ("dropNumber") REFERENCES "drop_number"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project"
             ADD CONSTRAINT "FK_da28e57152690879fc4ed33a0dc" FOREIGN KEY ("intercenter") REFERENCES "intercenter"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project"
             ADD CONSTRAINT "FK_a0407fa48bcabe7abe1bbf67f5a" FOREIGN KEY ("factoryId") REFERENCES "factory"("id") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project"
             ADD CONSTRAINT "FK_b76640329fa79f0b0e9d031c35b" FOREIGN KEY ("customerId") REFERENCES "customer"("id") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_b1f943542bccfc6de53342fa2e1" FOREIGN KEY ("projectId") REFERENCES "project"("id") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_b9015a2bba4142487c8df44187b" FOREIGN KEY ("bottomForm") REFERENCES "bottom_form"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_4fcd0b5c2fac549fa1a77d8071f" FOREIGN KEY ("artClass") REFERENCES "art_class"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_a1991f9684ec12aac103e90a6f9" FOREIGN KEY ("form") REFERENCES "form"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_90aaa74c0e36383a74cd91381c8" FOREIGN KEY ("nominalVolume") REFERENCES "nominal_volume"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_13a46770aec2f6b468c545df28d" FOREIGN KEY ("height") REFERENCES "height"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_080ea27feb10895781f4f7b9a42" FOREIGN KEY ("productType") REFERENCES "product_type"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_8b11945309959c67c52c107b8b5" FOREIGN KEY ("productionMethod") REFERENCES "production_method"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art"
             ADD CONSTRAINT "FK_acc98fcdb14f9aa2068497dfe2c" FOREIGN KEY ("ringType") REFERENCES "ring_type"("name") ON DELETE
             SET NULL ON UPDATE CASCADE
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art_file"
             ADD CONSTRAINT "FK_ba1de964e765e0491aaa1d80d01" FOREIGN KEY ("artId") REFERENCES "art"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
 						INSERT INTO "user"("username", "fullName", "role", "password", "active")
 							VALUES ('ADMIN', 'Администратор', 'ADMIN', '$2b$10$mfu69uXhGzHaAkKUqkjGNO8ahRLo7Vi3XKK2Wg.h/v6EtEN14p2JK', true)
 				`);
-    await queryRunner.query(`
+        await queryRunner.query(`
 						INSERT INTO "sfm"("name", "active", "valueOrder")
 							VALUES 
 								('EMHART', TRUE, 1), 
@@ -338,14 +338,14 @@ module.exports = class initial1645753352977 {
 								('IS', TRUE, 11), 
 								('GPS', TRUE, 12)
 				`);
-    await queryRunner.query(`
+        await queryRunner.query(`
 						INSERT INTO "drop_number"("name", "active", "valueOrder")
 							VALUES 
 								('SG', TRUE, 1),
 								('DG', TRUE, 2),
 								('TG', TRUE, 3)
 				`);
-    await queryRunner.query(`
+        await queryRunner.query(`
 						INSERT INTO "intercenter"("name", "active", "valueOrder")
 							VALUES 
 								('4 ¼', TRUE, 1),
@@ -354,7 +354,7 @@ module.exports = class initial1645753352977 {
 								('6', TRUE, 4),
 								('6 ¼', TRUE, 5)
 		`);
-    await queryRunner.query(`
+        await queryRunner.query(`
 						INSERT INTO "bottom_form"("name", "active", "valueOrder")
 							VALUES 
 								('прогиб дна менее 16мм', TRUE, 1),
@@ -363,7 +363,7 @@ module.exports = class initial1645753352977 {
 								('фигурное дно', TRUE, 4),
 								('обычное дно', TRUE, 5)
 		`);
-    await queryRunner.query(`
+        await queryRunner.query(`
 						INSERT INTO "art_class"("name", "active", "valueOrder")
 							VALUES
 								('бутылка', TRUE, 1), 
@@ -379,7 +379,7 @@ module.exports = class initial1645753352977 {
 								('ручкой',TRUE, 11),
 								('прочее',TRUE, 12)
 		`);
-    await queryRunner.query(`
+        await queryRunner.query(`
 					INSERT INTO "form"("name", "active", "valueOrder")
 						VALUES
 							('круглая', TRUE, 1), 
@@ -391,7 +391,7 @@ module.exports = class initial1645753352977 {
 							('треугольная',TRUE, 7),
 							('пробка/крышка',TRUE, 8)
 		`);
-		await queryRunner.query(`
+        await queryRunner.query(`
 					INSERT INTO "height"("name", "active", "valueOrder")
 						VALUES
 							('0-100', TRUE, 1), 
@@ -404,7 +404,7 @@ module.exports = class initial1645753352977 {
 							('401-500',TRUE, 8),
 							('свыше 500',TRUE, 9)
 		`);
-		await queryRunner.query(`
+        await queryRunner.query(`
 					INSERT INTO "nominal_volume"("name", "active", "valueOrder")
 						VALUES
 							('0-0,05', TRUE, 1), 
@@ -417,7 +417,7 @@ module.exports = class initial1645753352977 {
 							('1,0-1,5',TRUE, 8),
 							('Более 1,5',TRUE, 9)
 		`);
-		await queryRunner.query(`
+        await queryRunner.query(`
 					INSERT INTO "production_method"("name", "active", "valueOrder")
 						VALUES
 							('BB', TRUE, 1), 
@@ -427,7 +427,7 @@ module.exports = class initial1645753352977 {
 							('пресс', TRUE, 5), 
 							('прочее',TRUE, 6)
 		`);
-		await queryRunner.query(`
+        await queryRunner.query(`
 					INSERT INTO "product_type"("name", "active", "valueOrder")
 						VALUES
 							('водка', true, 1),
@@ -444,7 +444,7 @@ module.exports = class initial1645753352977 {
 							('сок', true, 12),
 							('кровь', true, 13)
 		`);
-		await queryRunner.query(`
+        await queryRunner.query(`
 					INSERT INTO "ring_type"("name", "active", "valueOrder")
 						VALUES
 							('П (камю)', true, 1),
@@ -459,116 +459,116 @@ module.exports = class initial1645753352977 {
 							('Ш, КПШ', true, 10),
 							('прочее', true, 11)
 		`);
-  }
+    }
 
-  async down(queryRunner) {
-    await queryRunner.query(`
+    async down(queryRunner) {
+        await queryRunner.query(`
             DELETE FROM "user"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art_file" DROP CONSTRAINT "FK_ba1de964e765e0491aaa1d80d01"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_acc98fcdb14f9aa2068497dfe2c"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_8b11945309959c67c52c107b8b5"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_080ea27feb10895781f4f7b9a42"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_13a46770aec2f6b468c545df28d"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_90aaa74c0e36383a74cd91381c8"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_a1991f9684ec12aac103e90a6f9"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_4fcd0b5c2fac549fa1a77d8071f"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_b9015a2bba4142487c8df44187b"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "art" DROP CONSTRAINT "FK_b1f943542bccfc6de53342fa2e1"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project" DROP CONSTRAINT "FK_b76640329fa79f0b0e9d031c35b"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project" DROP CONSTRAINT "FK_a0407fa48bcabe7abe1bbf67f5a"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project" DROP CONSTRAINT "FK_da28e57152690879fc4ed33a0dc"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project" DROP CONSTRAINT "FK_cb4a5f99ab1f14d8915c6408755"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             ALTER TABLE "project" DROP CONSTRAINT "FK_a31d1c8bf3a42d68e8ef6d0fa1f"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "user"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TYPE "public"."user_role_enum"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "session"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "art_file"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP INDEX "public"."IDX_b1f943542bccfc6de53342fa2e"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "art"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "project"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "factory"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "customer"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "sfm"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "ring_type"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "production_method"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "product_type"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "nominal_volume"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "intercenter"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "height"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "form"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "drop_number"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "bottom_form"
         `);
-    await queryRunner.query(`
+        await queryRunner.query(`
             DROP TABLE "art_class"
         `);
-  }
+    }
 };

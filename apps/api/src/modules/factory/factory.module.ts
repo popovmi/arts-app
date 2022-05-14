@@ -6,8 +6,8 @@ import { FactoryResolver } from './factory.resolver';
 import { FactoryService } from './factory.service';
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forFeature([Factory])],
-  providers: [FactoryService, FactoryResolver],
-  exports: [FactoryService],
+    imports: [UserModule, TypeOrmModule.forFeature([Factory])],
+    providers: [FactoryService, FactoryResolver],
+    exports: [FactoryService],
 })
 export class FactoryModule {}

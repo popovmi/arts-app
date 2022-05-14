@@ -9,48 +9,48 @@ const { Item } = Form;
 const { Password } = Input;
 
 export const LoginPage: FC = () => {
-  const location = useLocation();
-  const locState: any = location.state;
+    const location = useLocation();
+    const locState: any = location.state;
 
-  const navigateTo =
-    (locState?.from?.pathname.indexOf('update') < 0 && locState?.from?.pathname) || '/projects';
-  const navigate = useNavigate();
+    const navigateTo =
+        (locState?.from?.pathname.indexOf('update') < 0 && locState?.from?.pathname) || '/projects';
+    const navigate = useNavigate();
 
-  const [tryAuthenticate, { isError, error, isLoading }] = useLoginMutation({ fixedCacheKey: 'auth' });
-  const { user, refetch } = useUser();
+    const [tryAuthenticate, { isError, error, isLoading }] = useLoginMutation({ fixedCacheKey: 'auth' });
+    const { user, refetch } = useUser();
 
-  useEffect(() => {
-    if (user) {
-      navigate(navigateTo);
-    }
-  }, [user]);
+    useEffect(() => {
+        if (user) {
+            navigate(navigateTo);
+        }
+    }, [user]);
 
-  if (isLoading) return <CenteredSpin />;
+    if (isLoading) return <CenteredSpin />;
 
-  const onFinish = async (values: MutationLoginArgs) => {
-    tryAuthenticate({ ...values }).then((result) => {
-      'data' in result && refetch();
-    });
-  };
+    const onFinish = async (values: MutationLoginArgs) => {
+        tryAuthenticate({ ...values }).then((result) => {
+            'data' in result && refetch();
+        });
+    };
 
-  return (
-    <Row justify="center" align="middle" style={{ height: '100%' }}>
-      <Col xs={18} sm={8} md={6} xl={4}>
-        <Form name="loginForm" onFinish={onFinish}>
-          <Item name="username" rules={[{ required: true, message: 'Введите логин!' }]}>
-            <Input placeholder="Логин" />
-          </Item>
-          <Item name="password" rules={[{ required: true, message: 'Введите пароль!' }]}>
-            <Password placeholder="Пароль" />
-          </Item>
-          <Item>
-            <Button type="primary" htmlType="submit" block={true}>
-              Вход
-            </Button>
-          </Item>
-          {isError && <Typography.Text type="danger">{error!.message}</Typography.Text>}
-        </Form>
-      </Col>
-    </Row>
-  );
+    return (
+        <Row justify="center" align="middle" style={{ height: '100%' }}>
+            <Col xs={18} sm={8} md={6} xl={4}>
+                <Form name="loginForm" onFinish={onFinish}>
+                    <Item name="username" rules={[{ required: true, message: 'Введите логин!' }]}>
+                        <Input placeholder="Логин" />
+                    </Item>
+                    <Item name="password" rules={[{ required: true, message: 'Введите пароль!' }]}>
+                        <Password placeholder="Пароль" />
+                    </Item>
+                    <Item>
+                        <Button type="primary" htmlType="submit" block={true}>
+                            Вход
+                        </Button>
+                    </Item>
+                    {isError && <Typography.Text type="danger">{error!.message}</Typography.Text>}
+                </Form>
+            </Col>
+        </Row>
+    );
 };

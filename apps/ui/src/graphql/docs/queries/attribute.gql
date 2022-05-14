@@ -1,10 +1,10 @@
 query attribute($type: AttributeType!, $id: Int!) {
-  attribute(type: $type, id: $id) {
-    id
-    name
-    active
-    valueOrder
-    createdAt
-    updatedAt
-  }
+    attribute(type: $type, id: $id) {
+        id
+        name
+        active
+        valueOrder
+        createdAt
+        updatedAt
+    }
 }

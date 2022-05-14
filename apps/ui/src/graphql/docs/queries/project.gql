@@ -1,42 +1,50 @@
 query project($id: String!) {
-  project(id: $id) {
-    id
-    name
-    internal
-    hasDesignDoc
-    sfm
-    dropNumber
-    intercenter
-    arts {
-      id
-      name
-      internal
-      files {
-        artId
-        originalPath
-        watermarkPath
-        uploadedAt
-      }
-      createdAt
-      updatedAt
-      bottomForm
-      artClass
-      form
-      nominalVolume
-      height
-      productType
-      productionMethod
-      ringType
+    project(id: $id) {
+        id
+        name
+        internal
+        hasDesignDoc
+        sfm
+        dropNumber
+        intercenter
+        arts {
+            id
+            name
+            internal
+            files {
+                artId
+                originalPath
+                watermarkPath
+                uploadedAt
+            }
+            createdAt
+            updatedAt
+            bottomForm
+            artClass
+            form
+            nominalVolume
+            height
+            productType
+            productionMethod
+            ringType
+        }
+        comments {
+            id
+            text
+            author {
+                id
+                fullName
+            }
+        }
+        factory {
+            id
+            name
+        }
+        customer {
+            id
+            name
+        }
+        createdAt
+        updatedAt
     }
-    factory {
-      id
-      name
-    }
-    customer {
-      id
-      name
-    }
-    createdAt
-    updatedAt
-  }
 }

@@ -1,21 +1,21 @@
 mutation createProject($createProjectInput: CreateProjectInput!) {
-  createProject(createProjectInput: $createProjectInput) {
-    id
-    name
-    internal
-    hasDesignDoc
-    sfm
-    dropNumber
-    intercenter
-    factory {
-      id
-      name
+    createProject(createProjectInput: $createProjectInput) {
+        id
+        name
+        internal
+        hasDesignDoc
+        sfm
+        dropNumber
+        intercenter
+        factory {
+            id
+            name
+        }
+        customer {
+            id
+            name
+        }
+        createdAt
+        updatedAt
     }
-    customer {
-      id
-      name
-    }
-    createdAt
-    updatedAt
-  }
 }

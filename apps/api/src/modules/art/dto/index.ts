@@ -1,3 +1,5 @@
+export * from './art-comment.input';
+export * from './art-comment.type';
 export * from './art-file.type';
 export * from './art.type';
 export * from './arts.response';

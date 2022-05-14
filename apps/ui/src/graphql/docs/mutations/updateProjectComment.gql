@@ -1,0 +1,11 @@
+mutation updateProjectComment($id: Float!, $text: String!) {
+    updateProjectComment(id: $id, text: $text) {
+        id
+        text
+        projectId
+        author {
+            id
+            fullName
+        }
+    }
+}

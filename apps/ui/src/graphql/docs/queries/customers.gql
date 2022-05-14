@@ -1,9 +1,9 @@
-query customers {
-  customers {
-    id
-    name
-    active
-    createdAt
-    updatedAt
-  }
+query customers($filter: CustomerFilterQuery, $pagination: ConnectionArgs) {
+    customers(filter: $filter, pagination: $pagination) {
+        id
+        name
+        active
+        createdAt
+        updatedAt
+    }
 }

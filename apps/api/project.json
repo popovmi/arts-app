@@ -1,6 +1,7 @@
 {
     "sourceRoot": "apps/api/src",
     "projectType": "application",
+    "version": "0.0.2",
     "targets": {
         "build": {
             "executor": "@nrwl/node:webpack",

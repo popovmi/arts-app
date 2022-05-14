@@ -9,7 +9,8 @@
     "implicitDependencies": {
         "package.json": {
             "dependencies": "*",
-            "devDependencies": "*"
+            "devDependencies": "*",
+            "version": "*"
         },
         ".eslintrc.json": "*"
     },

@@ -1,4 +1,4 @@
-import { Project, useProjectQuery, useUpdateProjectMutation } from '@/graphql';
+import { Project, useProjectQuery } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Col, Divider, Result, Row, Space, Typography } from 'antd';
@@ -12,9 +12,6 @@ export const ProjectPage: FC = () => {
     const { projectId } = useParams();
     const navigate = useNavigate();
     const { data, isLoading, isFetching } = useProjectQuery({ id: projectId! });
-    const [update /*,  { isLoading: isUpdating, isSuccess, reset } */] = useUpdateProjectMutation({
-        fixedCacheKey: 'updateProjectName',
-    });
 
     const loading = isLoading || isFetching;
     const project = (data?.project || {}) as Project;
@@ -32,21 +29,9 @@ export const ProjectPage: FC = () => {
                     <ArrowLeftOutlined style={{ fontSize: '16px' }} onClick={() => navigate(-1)} />
                 </Col>
                 <Col flex={1}>
-                    <ProjectTitle
-                        name={project.name}
-                        onUpdate={(val) => update({ updateProjectInput: { id: project.id, name: val } })}
-                    />
+                    <ProjectTitle project={project} />
                 </Col>
             </Row>
-            {/* <PageHeader
-                title={
-                    <ProjectTitle
-                        name={project.name}
-                        onUpdate={(val) => update({ updateProjectInput: { id: project.id, name: val } })}
-                    />
-                }
-                onBack={() => navigate(-1)}
-            ></PageHeader> */}
 
             <Row gutter={8} style={{ paddingInline: 8 }}>
                 <Col xs={24} lg={6}>

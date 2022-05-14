@@ -63,13 +63,6 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
             component={false}
         >
             <Spin spinning={isLoading}>
-                <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
-                    {isEdit ? (
-                        <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
-                    ) : (
-                        <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
-                    )}
-                </Row>
                 <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
                     <DItem label={'Внутренний'} span={1}>
                         {isEdit ? (
@@ -120,6 +113,13 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                         )}
                     </DItem>
                 </Descriptions>
+                <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
+                    {isEdit ? (
+                        <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
+                    ) : (
+                        <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
+                    )}
+                </Row>
             </Spin>
         </Form>
     );

@@ -1,5 +1,5 @@
 import { useCreateArtMutation } from '@/graphql';
-import { Button, PageHeader, Result, Space } from 'antd';
+import { Button, PageHeader, Result, Space, Typography } from 'antd';
 import { FC, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CreateArtForm } from '../components';
@@ -17,7 +17,10 @@ export const CreateArtPage: FC = () => {
 
     return (
         <>
-            <PageHeader title="Новый ART" onBack={() => navigate(-1)} />
+            <PageHeader
+                title={<Typography.Title level={1}>Новый ART</Typography.Title>}
+                onBack={() => navigate(-1)}
+            />
             {isSuccess ? (
                 <Result title="ART создан" status={'success'}>
                     <Space>

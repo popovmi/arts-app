@@ -1,7 +1,8 @@
 import { Project, useProjectQuery, useUpdateProjectMutation } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { Col, Divider, PageHeader, Result, Row, Space, Typography } from 'antd';
-import { FC, useState } from 'react';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Col, Divider, Result, Row, Space, Typography } from 'antd';
+import { FC } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ProjectDescriptions } from '../components';
 import { ProjectComments } from '../components/project-comments.list';
@@ -11,7 +12,7 @@ export const ProjectPage: FC = () => {
     const { projectId } = useParams();
     const navigate = useNavigate();
     const { data, isLoading, isFetching } = useProjectQuery({ id: projectId! });
-    const [update, { isLoading: isUpdating, isSuccess, reset }] = useUpdateProjectMutation({
+    const [update /*,  { isLoading: isUpdating, isSuccess, reset } */] = useUpdateProjectMutation({
         fixedCacheKey: 'updateProjectName',
     });
 
@@ -19,14 +20,25 @@ export const ProjectPage: FC = () => {
     const project = (data?.project || {}) as Project;
     const arts = data?.project.arts || [];
 
-    const [currentArt, setCurrentArt] = useState(arts[0]?.id || '');
+    // const [currentArt, setCurrentArt] = useState(arts[0]?.id || '');
 
     if (loading) return <CenteredSpin />;
     if (!project) return <Result title="Проект не найден" status={'404'} />;
 
     return (
         <>
-            <PageHeader
+            <Row align="middle" style={{ padding: 8 }} gutter={[8, 8]}>
+                <Col>
+                    <ArrowLeftOutlined style={{ fontSize: '16px' }} onClick={() => navigate(-1)} />
+                </Col>
+                <Col flex={1}>
+                    <ProjectTitle
+                        name={project.name}
+                        onUpdate={(val) => update({ updateProjectInput: { id: project.id, name: val } })}
+                    />
+                </Col>
+            </Row>
+            {/* <PageHeader
                 title={
                     <ProjectTitle
                         name={project.name}
@@ -34,7 +46,7 @@ export const ProjectPage: FC = () => {
                     />
                 }
                 onBack={() => navigate(-1)}
-            ></PageHeader>
+            ></PageHeader> */}
 
             <Row gutter={8} style={{ paddingInline: 8 }}>
                 <Col xs={24} lg={6}>

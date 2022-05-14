@@ -26,9 +26,22 @@ export const enhanceProjectsApi = (api: typeof generatedApi) => {
             },
             updateProject: {
                 invalidatesTags: (result, error, { updateProjectInput: { id } }) => [
-                    { type: PROJECT_API_TAG, id },
+                    // { type: PROJECT_API_TAG, id },
                     { type: PROJECT_API_TAG, id: 'LIST' },
                 ],
+                onQueryStarted: async ({ updateProjectInput: { id } }, { dispatch, queryFulfilled }) => {
+                    try {
+                        const {
+                            data: { updateProject },
+                        } = await queryFulfilled;
+
+                        dispatch(
+                            generatedApi.util.updateQueryData('project', { id }, (draft) => {
+                                draft.project = { ...draft.project, ...updateProject };
+                            })
+                        );
+                    } catch {}
+                },
             },
             addProjectComment: {
                 onQueryStarted: async (

@@ -20,22 +20,24 @@ interface ProjectDescriptionsProps {
 
 export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) => {
     const dispatch = useAppDispatch();
-    const [edit, toggleEdit] = useToggle();
+    const [isEdit, toggleEdit] = useToggle();
     const [form] = useForm<UpdateProjectInput>();
     const [update, { isLoading, isSuccess, reset }] = useUpdateProjectMutation({
         fixedCacheKey: 'updateProject',
     });
 
     useEffect(() => {
-        return () => form.resetFields();
-    }, []);
+        if (isEdit) form.resetFields();
+    }, [isEdit]);
 
     const onFinish = async () => {
         if (form.isFieldsTouched()) {
             const updateProjectInput = await form.validateFields();
 
             Object.assign(updateProjectInput, { id: project.id });
-            update({ updateProjectInput }).then((res) => 'data' in res && dispatch(clearFilter()));
+            update({ updateProjectInput }).then((res) => {
+                if ('data' in res) dispatch(clearFilter());
+            });
         } else {
             toggleEdit();
         }
@@ -44,9 +46,10 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
     useEffect(() => {
         if (isSuccess) {
             reset();
-            toggleEdit(false);
             form.resetFields();
+            toggleEdit(false);
         }
+        return () => form.resetFields();
     }, [isSuccess]);
 
     return (
@@ -61,7 +64,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
         >
             <Spin spinning={isLoading}>
                 <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
-                    {edit ? (
+                    {isEdit ? (
                         <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
                     ) : (
                         <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
@@ -69,7 +72,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                 </Row>
                 <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
                     <DItem label={'Внутренний'} span={1}>
-                        {edit ? (
+                        {isEdit ? (
                             <FItem noStyle name="internal" valuePropName="checked">
                                 <Checkbox />
                             </FItem>
@@ -78,7 +81,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                         )}
                     </DItem>
                     <DItem label={'Есть КД'} span={2}>
-                        {edit ? (
+                        {isEdit ? (
                             <FItem noStyle name="hasDesignDoc" valuePropName="checked">
                                 <Checkbox />
                             </FItem>
@@ -88,7 +91,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                     </DItem>
                     {projectAttributesTypes.map((type, i, arr) => (
                         <DItem key={type} label={AttributesLabels[type]} span={i === arr.length - 1 ? 2 : 1}>
-                            {edit ? (
+                            {isEdit ? (
                                 <FItem noStyle name={type}>
                                     <AttributeSelector active type={type} allowClear />
                                 </FItem>
@@ -99,7 +102,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                     ))}
 
                     <DItem label={'Заказчик'} span={4}>
-                        {edit ? (
+                        {isEdit ? (
                             <FItem noStyle name="customerId">
                                 <CustomerSelector allowClear current={project?.customer as Customer} />
                             </FItem>
@@ -108,7 +111,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                         )}
                     </DItem>
                     <DItem label={'Завод'} span={4}>
-                        {edit ? (
+                        {isEdit ? (
                             <FItem noStyle name="factoryId">
                                 <FactorySelector allowClear current={project?.factory as Factory} />
                             </FItem>

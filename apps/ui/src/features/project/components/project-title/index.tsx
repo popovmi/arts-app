@@ -1,7 +1,5 @@
 import { useToggle } from '@/shared/hooks';
-import { EditOutlined } from '@ant-design/icons';
-import { Space, Typography } from 'antd';
-import { useState } from 'react';
+import { Col, Row, Typography } from 'antd';
 import styles from './project-title.module.css';
 
 interface ProjectTitleProps {
@@ -12,33 +10,41 @@ interface ProjectTitleProps {
 export const ProjectTitle: React.FC<ProjectTitleProps> = ({ name, onUpdate }) => {
     const [isEdit, toggleIsEdit] = useToggle();
     return (
-        <Space style={{ width: '100%', padding: 4 }}>
-            <Typography.Title
-                className={styles['unselectable']}
-                level={1}
-                type="secondary"
-                style={{ display: 'inline' }}
-            >
-                Проект{' '}
-            </Typography.Title>
-            <Typography.Title
-                level={1}
-                className={isEdit ? '' : styles['header_name']}
-                onClick={() => toggleIsEdit()}
-                style={{ display: 'inline' }}
-                editable={{
-                    editing: isEdit,
-                    onCancel: toggleIsEdit,
-                    triggerType: ['text'],
-                    onEnd: toggleIsEdit,
-                    onChange: (value) => {
-                        onUpdate(value);
-                        toggleIsEdit();
-                    },
-                }}
-            >
-                {name}
-            </Typography.Title>
-        </Space>
+        <Row style={{ padding: 8 }} gutter={[8, 8]}>
+            <Col flex="none">
+                <Typography.Title
+                    className={styles['unselectable']}
+                    level={1}
+                    type="secondary"
+                    style={{ display: 'inline' }}
+                >
+                    Проект{' '}
+                </Typography.Title>
+            </Col>
+            <Col flex={1}>
+                <Typography.Title
+                    level={1}
+                    className={isEdit ? '' : styles['header_name']}
+                    onClick={() => toggleIsEdit()}
+                    style={isEdit ? { width: 'auto' } : { display: 'inline' }}
+                    editable={{
+                        enterIcon: false,
+                        editing: isEdit,
+                        // autoSize: true,
+                        onCancel: toggleIsEdit,
+                        triggerType: ['text'],
+                        onEnd: toggleIsEdit,
+                        onChange: (value) => {
+                            if (value !== name) {
+                                onUpdate(value);
+                            }
+                            toggleIsEdit();
+                        },
+                    }}
+                >
+                    {name}
+                </Typography.Title>
+            </Col>
+        </Row>
     );
 };

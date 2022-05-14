@@ -1,9 +1,10 @@
 import { Art, useArtQuery } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { Col, PageHeader, Result, Row, Typography, Divider } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Col, Divider, Result, Row, Typography } from 'antd';
 import { FC } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArtDescriptions, ArtComments } from '../components';
+import { ArtComments, ArtDescriptions, ArtTitle } from '../components';
 
 export const ArtPage: FC = () => {
     const { artId } = useParams();
@@ -18,19 +19,14 @@ export const ArtPage: FC = () => {
 
     return (
         <>
-            <PageHeader
-                title={
-                    <span>
-                        <Typography.Title level={1} type="secondary" style={{ display: 'inline' }}>
-                            ART{' '}
-                        </Typography.Title>
-                        <Typography.Title level={1} style={{ display: 'inline' }}>
-                            {art.name}
-                        </Typography.Title>
-                    </span>
-                }
-                onBack={() => navigate(-1)}
-            ></PageHeader>
+            <Row align="middle" style={{ padding: 8 }} gutter={[8, 8]}>
+                <Col>
+                    <ArrowLeftOutlined style={{ fontSize: '16px' }} onClick={() => navigate(-1)} />
+                </Col>
+                <Col flex={1}>
+                    <ArtTitle art={art} />
+                </Col>
+            </Row>
             <Row style={{ padding: 8 }} gutter={[8, 8]}>
                 <Col xs={24} lg={8}>
                     <ArtDescriptions art={art} />

@@ -22,12 +22,16 @@ interface ArtDescriptionsProps {
 
 export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true }) => {
     const dispatch = useAppDispatch();
-    const [edit, toggleEdit] = useToggle();
+    const [isEdit, toggleEdit] = useToggle();
     const [form] = useForm<UpdateArtInput>();
     const [update, { isLoading, isSuccess, reset }] = useUpdateArtMutation({
         fixedCacheKey: 'updateArt',
     });
     const [fileInfo, setFileInfo] = useState({ filePath: '', fileExtension: '' });
+
+    useEffect(() => {
+        if (isEdit) form.resetFields();
+    }, [isEdit]);
 
     useEffect(() => {
         if (isSuccess) {
@@ -72,7 +76,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
             <Spin spinning={isLoading}>
                 {editable && (
                     <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
-                        {edit ? (
+                        {isEdit ? (
                             <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
                         ) : (
                             <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
@@ -81,7 +85,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                 )}
                 <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
                     <DItem label={'Внутренний'}>
-                        {edit ? (
+                        {isEdit ? (
                             <FItem noStyle name="internal" valuePropName="checked">
                                 <Checkbox />
                             </FItem>
@@ -91,7 +95,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                     </DItem>
                     {artAttributesTypes.map((type) => (
                         <DItem key={type} label={AttributesLabels[type]}>
-                            {edit ? (
+                            {isEdit ? (
                                 <FItem noStyle name={type}>
                                     <AttributeSelector
                                         active
@@ -107,7 +111,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                     ))}
 
                     <DItem label={'Проект'} span={3}>
-                        {edit ? (
+                        {isEdit ? (
                             <FItem noStyle name="projectId">
                                 <ProjectsSelector
                                     allowClear
@@ -122,7 +126,7 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                         )}
                     </DItem>
 
-                    {edit && (
+                    {isEdit && (
                         <DItem label={'Файл'}>
                             <FItem noStyle name="filePath" style={{ height: 0, width: 0 }}>
                                 <Input readOnly style={{ display: 'none' }} />

@@ -13,9 +13,9 @@
         "build:ui": "nx run build ui",
         "build": "npm run build:api && npm run build:ui",
         "start": "node dist/main.js",
-        "migration:generate": " ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -f apps/api/ormconfig.local.js -o -p  -n",
+        "migration:generate": " ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -f apps/api/ormconfig.local.js -o -p -n",
         "migration:revert": "ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -f apps/api/ormconfig.local.js",
-        "migration:create": "ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -f apps/api/ormconfig.local.js",
+        "migration:create": "ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -f apps/api/ormconfig.local.js -o -n",
         "migration:run": "ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -f apps/api/ormconfig.local.js",
         "init-db": "ts-node --project=apps/api/tsconfig.app.json --transpile-only -r tsconfig-paths/register apps/api/src/db/init-test-data"
     },

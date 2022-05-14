@@ -14,6 +14,7 @@ import {
 import { v4 } from 'uuid';
 import { QueryFailedFilter } from './shared/filters';
 import { ASYNC_STORAGE, LoggerService } from './shared/logger';
+import { loggerMiddleware } from './shared/logger/logger.middleware';
 
 const PGSession = pgSession(session);
 
@@ -56,15 +57,7 @@ async function bootstrap() {
             }),
         })
     );
-    app.use((req: Request, res, next) => {
-        const asyncStorage = app.get(ASYNC_STORAGE);
-        const traceId = req.headers['x-request-id'] || v4();
-        const store = new Map().set('traceId', traceId).set('userId', req.session?.userId);
-
-        asyncStorage.run(store, () => {
-            next();
-        });
-    });
+    app.use(loggerMiddleware(app));
     app.useLogger(logger);
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     app.useGlobalFilters(/* new HttpExceptionFilter(reflector), */ new QueryFailedFilter(reflector));

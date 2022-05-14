@@ -25,7 +25,22 @@ export const enhanceArtsApi = (api: typeof generatedApi) => {
                 invalidatesTags: [{ type: ART_API_TAG, id: 'LIST' }],
             },
             updateArt: {
-                invalidatesTags: (result, error, { updateArtInput: { id } }) => [{ type: ART_API_TAG, id }],
+                invalidatesTags: (result, error, { updateArtInput: { id } }) => [
+                    { type: ART_API_TAG, id: 'LIST' },
+                ],
+                onQueryStarted: async ({ updateArtInput: { id } }, { dispatch, queryFulfilled }) => {
+                    try {
+                        const {
+                            data: { updateArt },
+                        } = await queryFulfilled;
+
+                        dispatch(
+                            generatedApi.util.updateQueryData('art', { id }, (draft) => {
+                                draft.art = { ...draft.art, ...updateArt };
+                            })
+                        );
+                    } catch {}
+                },
             },
             addArtComment: {
                 onQueryStarted: async ({ artCommentInput: { artId } }, { dispatch, queryFulfilled }) => {

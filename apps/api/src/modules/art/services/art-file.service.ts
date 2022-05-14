@@ -62,7 +62,7 @@ export class ArtFileService {
     private async saveWatemark(filePath: string, art: Art) {
         const fileName = resolve(filePath).split('/').pop();
         const fileExtension = fileName.split('.')[1];
-        let watermarkPath = resolve(this.config.fileStoragePath, 'watermark', art.name);
+        let watermarkPath = resolve(this.config.fileStoragePath, 'watermark', art.id);
 
         await this.checkDir(watermarkPath);
 
@@ -82,22 +82,18 @@ export class ArtFileService {
                 throw new Error('Некорректный формат файла');
         }
 
-        return join('watermark', art.name + '.jpg');
+        return join('watermark', art.id + '.jpg');
     }
 
     private async saveOriginal(filePath: string, art: Art) {
         const fileName = resolve(filePath).split('/').pop();
         const fileExtension = fileName.split('.')[1];
-        const originalFilePath = join(
-            this.config.fileStoragePath,
-            'original',
-            `${art.name}.${fileExtension}`
-        );
+        const originalFilePath = join(this.config.fileStoragePath, 'original', `${art.id}.${fileExtension}`);
 
         await this.checkDir(originalFilePath);
         await copyFile(filePath, originalFilePath);
 
-        return join('original', `${art.name}.${fileExtension}`);
+        return join('original', `${art.id}.${fileExtension}`);
     }
 
     @Transactional()

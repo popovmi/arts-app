@@ -11,9 +11,7 @@ export const loggerMiddleware = (app: INestApplication) => (req: Request, res, n
         // .set('requestUA', req.headers['user-agent'])
         .set('sessionId', req.session?.id)
         .set('userId', req.session?.userId)
-        .set('telegramId', req.headers['x-telegram-id'])
-        .set('requestIP', (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.ip)
-        .set('telegramUpdateId', req.headers['x-telegram-update-id']);
+        .set('requestIP', (req.headers['x-forwarded-for'] as string)?.split(',')[0] || req.ip);
     asyncStorage.enterWith(store);
     next();
 };

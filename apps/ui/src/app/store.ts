@@ -4,7 +4,7 @@ import { userReducer } from '@/features/user/user.slice';
 import { attributeReducer } from '@/features/attribute/attribute.slice';
 import { customerReducer } from '@/features/customer/customer.slice';
 import { factoryReducer } from '@/features/factory/factory.slice';
-import { api } from '@/app/extend-api';
+import { api } from '@/app/enhance-api';
 import { AnyAction, combineReducers, configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { message } from 'antd';

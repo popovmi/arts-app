@@ -1,4 +1,4 @@
-import { filterQuery, orderQuery } from '@/shared/utils/query-builder';
+import { filterQuery } from '@/shared/utils/query-builder';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
@@ -6,9 +6,9 @@ import { In, Repository } from 'typeorm';
 import {
     CreateProjectInput,
     FindProjectArgs,
+    ProjectCommentInput,
     ProjectResponse,
     UpdateProjectInput,
-    ProjectCommentInput,
 } from './dto';
 import { Project, ProjectComment } from './entity';
 
@@ -38,7 +38,7 @@ export class ProjectService {
         return this.projectRepository.findOne({ where: { id }, relations: ['comments', 'comments.author'] });
     }
 
-    async getProjects({ filter, order, pagination }: FindProjectArgs): Promise<ProjectResponse> {
+    async getProjects({ filter, pagination }: FindProjectArgs): Promise<ProjectResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
         const query = filterQuery(
             this.projectRepository.createQueryBuilder('projects'),
@@ -48,18 +48,18 @@ export class ProjectService {
         )
             .skip(skip)
             .take(take);
+
+        const count = await query.getCount();
+
         query.addSelect(`left("projects"."name", strpos("projects"."name", '-') - 1) "code"`);
         query.addSelect(
             `length(left("projects"."name", strpos("projects"."name", '-') - 1))::integer "code_length"`
         );
-
-        const count = await query.getCount();
-
         query.addOrderBy(`code_length`, 'ASC');
         query.addOrderBy('code', 'ASC');
-        // orderQuery(query, { ...order });
 
         const projects = await query.getMany();
+
         const page = connectionFromArraySlice(projects, pagination, {
             arrayLength: count,
             sliceStart: skip || 0,
@@ -68,12 +68,12 @@ export class ProjectService {
         return { page, pageData: { count, take, skip } };
     }
 
-    public async createProject(createProjectInput: CreateProjectInput): Promise<Project> {
+    public createProject(createProjectInput: CreateProjectInput): Promise<Project> {
         const project = this.projectRepository.create({
-            ...createProjectInput,
+            ...createProjectInput.format(),
         });
 
-        return await this.projectRepository.save(project);
+        return this.projectRepository.save(project);
     }
 
     public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {
@@ -84,7 +84,7 @@ export class ProjectService {
             ...updateInput,
         });
 
-        return await this.projectRepository.save(project);
+        return this.projectRepository.save(project);
     }
 
     public async addArtComment({ projectId, text, authorId }: ProjectCommentInput & { authorId: string }) {
@@ -120,11 +120,11 @@ export class ProjectService {
         });
 
         if (authorId !== comment.authorId) {
-            throw new Error('Невозможно исправить чужой комментарий!');
+            throw new Error('Невозможно редактировать чужой комментарий!');
         }
 
         comment.text = text;
-        return await this.projectCommentRepository.save(comment);
+        return this.projectCommentRepository.save(comment);
     }
 
     public async deleteComment({ commentId, authorId }: { commentId: number; authorId: string }) {

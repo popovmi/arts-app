@@ -10,6 +10,10 @@ type ArtsState = {
     hasMore: boolean;
     doFetch: boolean;
     showColumns: string[];
+    preview: {
+        visible: boolean;
+        artId: string | undefined;
+    };
 };
 
 const artSlice = createSlice({
@@ -34,6 +38,10 @@ const artSlice = createSlice({
             'ringType',
             // 'project',
         ],
+        preview: {
+            visible: false,
+            artId: undefined,
+        },
     } as ArtsState,
     reducers: {
         artsLoaded: (state, action: PayloadAction<ArtResponse>) => {
@@ -76,14 +84,19 @@ const artSlice = createSlice({
         setShowColumns: (state, action) => {
             state.showColumns = action.payload;
         },
+        setPreview: (state, action: PayloadAction<ArtsState['preview']>) => {
+            state.preview.artId = action.payload.artId;
+            state.preview.visible = action.payload.visible;
+        },
     },
 });
 
 export const artReducer = artSlice.reducer;
-export const { artsLoaded, updateFilter, shouldFetch, clearFilter, setShowColumns } = artSlice.actions;
+export const { artsLoaded, updateFilter, shouldFetch, clearFilter, setShowColumns, setPreview } =
+    artSlice.actions;
 
 export const selectArts = (state: RootState) => {
-    const { data, filter, hasMore, order, pagination, doFetch, showColumns } = state.art;
+    const { data, filter, hasMore, order, pagination, doFetch, showColumns, preview } = state.art;
     const arts: Art[] = data!.map((edge) => edge!.node!);
 
     const showDataIndexes = showColumns.map((column) => {
@@ -105,5 +118,6 @@ export const selectArts = (state: RootState) => {
         doFetch,
         showColumns,
         showDataIndexes,
+        preview,
     };
 };

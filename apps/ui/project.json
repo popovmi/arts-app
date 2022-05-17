@@ -14,19 +14,14 @@
                 "main": "apps/ui/src/main.tsx",
                 "polyfills": "apps/ui/src/polyfills.ts",
                 "tsConfig": "apps/ui/tsconfig.app.json",
-                "assets": ["apps/ui/src/favicon.ico", "apps/ui/src/assets"],
+                "assets": ["apps/ui/src/favicon.ico"],
                 "styles": ["apps/ui/src/styles.less"],
                 "scripts": [],
                 "webpackConfig": "@nrwl/react/plugins/webpack"
             },
             "configurations": {
                 "production": {
-                    "fileReplacements": [
-                        {
-                            "replace": "apps/ui/src/environments/environment.ts",
-                            "with": "apps/ui/src/environments/environment.prod.ts"
-                        }
-                    ],
+                    "fileReplacements": [],
                     "optimization": true,
                     "outputHashing": "all",
                     "sourceMap": false,

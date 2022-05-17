@@ -4,6 +4,7 @@ import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
 import { projectAttributesTypes } from '@/features/project/project-attribute.types';
 import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOption } from '@/graphql';
+import { ExpandOutlined } from '@ant-design/icons';
 import {
     Button,
     Col,
@@ -20,6 +21,7 @@ import { FC, HTMLAttributes, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { selectArts, shouldFetch, updateFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
+import { setPreview } from '../art.slice';
 
 interface ArtFilterItemProps {
     value: any;
@@ -80,7 +82,7 @@ const ArtFilterInput: FC<ArtFilterItemProps> = ({ onChange, value, onClear, disa
     );
 };
 
-export const artColumns = (): ArtTableColumnType[] => {
+export const useArtColumns = (): ArtTableColumnType[] => {
     const dispatch = useAppDispatch();
     const { filter, showDataIndexes } = useAppSelector(selectArts);
 
@@ -208,9 +210,14 @@ export const artColumns = (): ArtTableColumnType[] => {
             ),
             filterMultiple: false,
             render: (_, record) => (
-                <Link to={`/arts/${record.id}`} target="_blank">
-                    {record.name}
-                </Link>
+                <Space>
+                    <Link to={`/arts/${record.id}`} target="_blank">
+                        {record.name}
+                    </Link>
+                    <ExpandOutlined
+                        onClick={() => dispatch(setPreview({ artId: record.id, visible: true }))}
+                    />
+                </Space>
                 // <Space>
                 //     {record.files && record.files?.length > 0 && (
                 //         <Image

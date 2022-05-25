@@ -3,7 +3,7 @@ import { AttributeSelector } from '@/features/attribute';
 import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
 import { AttributeType, BooleanFieldOption, Project, ProjectFilterQuery, StringFieldOption } from '@/graphql';
-import { Button, Col, Input, Radio, RadioChangeEvent, Row, Space, TableColumnProps } from 'antd';
+import { Button, Col, Input, Radio, RadioChangeEvent, Row, Space, TableColumnProps, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -150,7 +150,16 @@ export const useProjectColumns = () => {
                 />
             ),
             filterMultiple: false,
-            render: (_, record) => <Link to={`/projects/${record.id}`}>{record.name}</Link>,
+            render: (_, record) => (
+                <Tooltip title={record.name}>
+                    <Link
+                        style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                        to={`/projects/${record.id}`}
+                    >
+                        {record.name}
+                    </Link>
+                </Tooltip>
+            ),
         },
         {
             dataIndex: 'internal',

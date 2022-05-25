@@ -119,7 +119,7 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
             {loading ? (
                 <CenteredSpin spinning={true} />
             ) : (
-                <Row style={{ height: '100%', padding: 8 }}>
+                <Row style={{ height: '100%', padding: 8 }} justify={'space-between'}>
                     <Col
                         xs={3}
                         lg={2}
@@ -170,7 +170,12 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
                     <Col
                         xs={3}
                         lg={2}
-                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            textAlign: 'center',
+                        }}
                     >
                         <Space direction="vertical">
                             <NextArrow

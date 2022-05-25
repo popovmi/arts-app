@@ -15,6 +15,7 @@ import {
     Space,
     TableColumnGroupType,
     TableColumnType,
+    Tooltip,
 } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { FC, HTMLAttributes, useEffect } from 'react';
@@ -210,14 +211,14 @@ export const useArtColumns = (): ArtTableColumnType[] => {
             ),
             filterMultiple: false,
             render: (_, record) => (
-                <Row gutter={[4, 4]} justify={'space-between'}>
-                    <Col flex={1}>
-                        <Link
-                            to={`/arts/${record.id}`}
-                            style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-                        >
-                            {record.name}
-                        </Link>
+                <Row gutter={[4, 4]} justify={'space-between'} wrap={false}>
+                    <Col
+                        flex={1}
+                        style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                    >
+                        <Tooltip title={record.name}>
+                            <Link to={`/arts/${record.id}`}>{record.name}</Link>
+                        </Tooltip>
                     </Col>
                     <Col flex={'none'}>
                         <ExpandOutlined

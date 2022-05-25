@@ -1,0 +1,6 @@
+mutation createManyArts($artsInput: [CreateArtInput!]!){
+    createManyArts(artsInput: $artsInput){
+        id
+        name
+	}
+}

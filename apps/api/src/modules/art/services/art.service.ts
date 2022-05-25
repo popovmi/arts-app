@@ -1,4 +1,4 @@
-import { filterQuery, orderQuery } from '@/shared/utils/query-builder';
+import { filterQuery } from '@/shared/utils/query-builder';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
@@ -31,7 +31,7 @@ export class ArtService {
         });
     }
 
-    async getArts({ filter, order, pagination }: FindArtArgs): Promise<ArtResponse> {
+    async getArts({ filter, pagination }: FindArtArgs): Promise<ArtResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
         const query = filterQuery(
             this.artRepository.createQueryBuilder('arts'),
@@ -140,5 +140,17 @@ export class ArtService {
         }
 
         await this.artCommentRepository.delete({ id: commentId });
+    }
+
+    @Transactional()
+    public async createManyArts(artsInput: CreateArtInput[]) {
+        const arts: Art[] = [];
+        for (const artInput of artsInput) {
+            const { filePath, ...input } = artInput;
+            const art = await this.artRepository.save({ ...input });
+            arts.push(art);
+            if (filePath) await this.artFileService.saveArtFile(filePath, art);
+        }
+        return arts;
     }
 }

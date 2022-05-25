@@ -9,6 +9,7 @@ module.exports.changePassword = fs.readFileSync(path.join(__dirname, 'changePass
 module.exports.createProject = fs.readFileSync(path.join(__dirname, 'createProject.gql'), 'utf8');
 module.exports.updateProject = fs.readFileSync(path.join(__dirname, 'updateProject.gql'), 'utf8');
 module.exports.createArt = fs.readFileSync(path.join(__dirname, 'createArt.gql'), 'utf8');
+module.exports.createManyArts = fs.readFileSync(path.join(__dirname, 'createManyArts.gql'), 'utf8');
 module.exports.updateArt = fs.readFileSync(path.join(__dirname, 'updateArt.gql'), 'utf8');
 module.exports.createFactory = fs.readFileSync(path.join(__dirname, 'createFactory.gql'), 'utf8');
 module.exports.updateFactory = fs.readFileSync(path.join(__dirname, 'updateFactory.gql'), 'utf8');

@@ -25,41 +25,41 @@ export class ArtResolver {
     constructor(private artService: ArtService, private artLoader: ArtLoader) {}
 
     @Query(() => ArtType)
-    public async art(@Args('id') id: string) {
+    public art(@Args('id') id: string) {
         return this.artService.getArt(id);
     }
 
     @Query(() => ArtResponse)
-    public async arts(@Args() args: FindArtArgs) {
-        return await this.artService.getArts(args);
+    public arts(@Args() args: FindArtArgs) {
+        return this.artService.getArts(args);
     }
 
     @ResolveField('project', () => ProjectType, { nullable: true })
-    public async getProject(@Parent() art: ArtType) {
+    public getProject(@Parent() art: ArtType) {
         const { projectId } = art;
 
-        return projectId ? await this.artLoader.batchProjects.load(projectId) : null;
+        return projectId ? this.artLoader.batchProjects.load(projectId) : null;
     }
 
     @ResolveField('files', () => [ArtFileType], { nullable: true })
-    public async getFiles(@Parent() art: ArtType) {
+    public getFiles(@Parent() art: ArtType) {
         const { id } = art;
 
-        return await this.artLoader.batchArtsFiles.load(id);
+        return this.artLoader.batchArtsFiles.load(id);
     }
 
     @Mutation(() => ArtType)
-    public async createArt(@Args('createArtInput') createArtInput: CreateArtInput) {
-        return await this.artService.createArt(createArtInput);
+    public createArt(@Args('createArtInput') createArtInput: CreateArtInput) {
+        return this.artService.createArt(createArtInput);
     }
 
     @Mutation(() => ArtType)
-    public async updateArt(@Args('updateArtInput') updateArtInput: UpdateArtInput) {
-        return await this.artService.updateArt(updateArtInput);
+    public updateArt(@Args('updateArtInput') updateArtInput: UpdateArtInput) {
+        return this.artService.updateArt(updateArtInput);
     }
 
     @Mutation(() => ArtCommentType)
-    public async addArtComment(
+    public addArtComment(
         @Args('artCommentInput') artCommentInput: ArtCommentInput,
         @Context() { currentUserId }: AppContext
     ) {
@@ -70,7 +70,7 @@ export class ArtResolver {
     }
 
     @Mutation(() => ArtCommentType)
-    public async updateArtComment(
+    public updateArtComment(
         @Args('id', new ParseIntPipe()) id: number,
         @Args('text') text: string,
         @Context() { currentUserId }: AppContext
@@ -92,5 +92,13 @@ export class ArtResolver {
             authorId: currentUserId,
         });
         return true;
+    }
+
+    @Mutation(() => [ArtType])
+    public createManyArts(
+        @Args('artsInput', { type: () => [CreateArtInput] }) artsInput: CreateArtInput[],
+        @Context() { currentUserId }: AppContext
+    ) {
+        return this.artService.createManyArts(artsInput);
     }
 }

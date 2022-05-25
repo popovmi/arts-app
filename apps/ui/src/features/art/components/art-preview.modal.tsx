@@ -79,20 +79,23 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
     }, [openArtId]);
 
     const next = () => {
+        if (currentIndex < arts.length - 1) {
+            setCurrentIndex(currentIndex + 1);
+            ref?.current?.next();
+        }
         if (currentIndex === arts.length - 1 && hasMore && fetchArts) {
             fetchArts().then(() => {
                 setCurrentIndex(currentIndex + 1);
                 ref?.current?.next();
             });
-        } else {
-            setCurrentIndex(currentIndex + 1);
-            ref?.current?.next();
         }
     };
 
     const previous = () => {
-        setCurrentIndex(currentIndex + 1);
-        ref?.current?.prev();
+        if (currentIndex > 0) {
+            setCurrentIndex(currentIndex + 1);
+            ref?.current?.prev();
+        }
     };
 
     const previousArt = arts[currentIndex - 1];
@@ -139,7 +142,7 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
                             {arts.map((art, idx) => (
                                 <div key={'' + art.id + idx}>
                                     <Row gutter={[8, 8]}>
-                                        <Col xs={24} style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <Col xs={24}>
                                             <Link to={`/arts/${art.id}`}>{art.name}</Link>
                                         </Col>
                                         <Col xs={24} md={12} lg={8} xl={6}>
@@ -155,8 +158,7 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
                                             <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                                                 <Image
                                                     src={`/static/${art.files![0].watermarkPath}`}
-                                                    style={{ maxWidth: '800px' }}
-                                                    preview={false}
+                                                    style={{ maxWidth: '1000px' }}
                                                 />
                                             </div>
                                         </Col>

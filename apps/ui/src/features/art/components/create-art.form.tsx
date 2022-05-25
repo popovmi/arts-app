@@ -33,7 +33,7 @@ export const CreateArtForm = () => {
     };
 
     return (
-        <Row gutter={[8, 8]} justify="center" style={{ padding: 8 }}>
+        <Row gutter={[8, 8]} justify="center" style={{ padding: 16 }}>
             <Col xs={24}>
                 {isError && (
                     <Space>
@@ -52,10 +52,10 @@ export const CreateArtForm = () => {
                     labelAlign="left"
                 >
                     <Spin spinning={isLoading}>
-                        <Row gutter={8}>
+                        <Row gutter={[8, 8]}>
                             <Col flex={1}>
                                 <Item
-                                    label="Название"
+                                    label="Чертеж(ревизия)"
                                     name="name"
                                     rules={[{ required: true, message: 'Необходимо загрузить файл!' }]}
                                 >

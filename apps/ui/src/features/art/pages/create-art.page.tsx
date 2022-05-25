@@ -18,7 +18,11 @@ export const CreateArtPage: FC = () => {
     return (
         <>
             <PageHeader
-                title={<Typography.Title level={1}>Новый ART</Typography.Title>}
+                title={
+                    <Typography.Title level={1} style={{ margin: 0 }}>
+                        Новый ART
+                    </Typography.Title>
+                }
                 onBack={() => navigate(-1)}
             />
             {isSuccess ? (

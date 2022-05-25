@@ -22,7 +22,7 @@ const artSlice = createSlice({
         data: [],
         filter: {},
         order: {},
-        pagination: { first: 2 },
+        pagination: { first: 25 },
         hasMore: false,
         doFetch: true,
         showColumns: [

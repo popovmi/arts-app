@@ -5,8 +5,8 @@ import { setShowColumns } from '..';
 
 const treeData = [
     {
-        title: 'Название',
-        label: 'Название',
+        title: 'Чертеж(ревизия)',
+        label: 'Чертеж(ревизия)',
         value: 'name',
     },
     {

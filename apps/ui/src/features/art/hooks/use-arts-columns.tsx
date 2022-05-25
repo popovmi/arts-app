@@ -190,7 +190,7 @@ export const useArtColumns = (): ArtTableColumnType[] => {
         {
             onHeaderCell: (record) => ({ dataIndex: 'name' } as HTMLAttributes<any>),
             dataIndex: 'name',
-            title: 'Название',
+            title: 'Чертеж(ревизия)',
             filteredValue: filter?.name?.contains ? [filter.name.contains] : [],
             filterDropdown: () => (
                 <ArtFilterInput
@@ -211,12 +211,15 @@ export const useArtColumns = (): ArtTableColumnType[] => {
             filterMultiple: false,
             render: (_, record) => (
                 <Row gutter={[4, 4]} justify={'space-between'}>
-                    <Col>
-                        <Link to={`/arts/${record.id}`}>
+                    <Col flex={1}>
+                        <Link
+                            to={`/arts/${record.id}`}
+                            style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                        >
                             {record.name}
                         </Link>
                     </Col>
-                    <Col>
+                    <Col flex={'none'}>
                         <ExpandOutlined
                             onClick={() => dispatch(setPreview({ artId: record.id, visible: true }))}
                         />

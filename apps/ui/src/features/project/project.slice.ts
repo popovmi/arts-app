@@ -16,6 +16,10 @@ type ProjectsState = {
     pagination: ConnectionArgs;
     hasMore: boolean;
     doFetch: boolean;
+    artPreview: {
+        visible: boolean;
+        artId: string | undefined;
+    };
 };
 
 const projectSlice = createSlice({
@@ -27,6 +31,7 @@ const projectSlice = createSlice({
         pagination: { first: 50 },
         hasMore: false,
         doFetch: true,
+        artPreview: { visible: false, artId: undefined },
     } as ProjectsState,
     reducers: {
         projectsLoaded: (state, action: PayloadAction<ProjectResponse>) => {
@@ -61,15 +66,19 @@ const projectSlice = createSlice({
         shouldFetch: (state, action) => {
             state.doFetch = action.payload;
         },
+        setArtPreview: (state, action: PayloadAction<ProjectsState['artPreview']>) => {
+            state.artPreview.artId = action.payload.artId;
+            state.artPreview.visible = action.payload.visible;
+        },
     },
 });
 
 export const projectReducer = projectSlice.reducer;
-export const { projectsLoaded, updateFilter, shouldFetch, clearFilter } = projectSlice.actions;
+export const { projectsLoaded, updateFilter, shouldFetch, clearFilter, setArtPreview } = projectSlice.actions;
 
 export const selectProjects = (state: RootState) => {
-    const { data, filter, hasMore, order, pagination, doFetch } = state.project;
+    const { data, filter, hasMore, order, pagination, doFetch, artPreview } = state.project;
     const projects: Project[] = data!.map((edge) => edge!.node!);
 
-    return { projects, filter, hasMore, order, pagination, doFetch };
+    return { projects, filter, hasMore, order, pagination, doFetch, artPreview };
 };

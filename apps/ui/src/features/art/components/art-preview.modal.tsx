@@ -1,19 +1,20 @@
-import { useAppDispatch } from '@/app/store';
 import { Art } from '@/graphql';
+import { CenteredSpin } from '@/shared/components';
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
-import { Button, Carousel, Col, Image, Modal, Row } from 'antd';
+import { Button, Carousel, Col, Image, Modal, Row, Space, Typography } from 'antd';
 import { CarouselRef } from 'antd/lib/carousel';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { setPreview } from '../art.slice';
 import { ArtDescriptions } from './art.descriptions';
 
 interface ArtsPreviewModalProps {
     arts: Art[];
     openArtId: string | undefined;
     visible: boolean;
-    fetchArts: () => Promise<void>;
-    hasMore: boolean;
+    onCancel: () => void;
+    fetchArts?: () => Promise<void>;
+    hasMore?: boolean;
+    loading?: boolean;
 }
 
 interface ArrowProps {
@@ -63,10 +64,11 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
     arts,
     openArtId,
     visible,
-    fetchArts,
-    hasMore,
-}) => {
-    const dispatch = useAppDispatch();
+    onCancel,
+    fetchArts = undefined,
+    hasMore = false,
+    loading = false,
+}: ArtsPreviewModalProps) => {
     const ref = useRef<CarouselRef | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -77,81 +79,107 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
     }, [openArtId]);
 
     const next = () => {
-        if (currentIndex === arts.length - 1 && hasMore) {
-            fetchArts().then(() => ref?.current?.next());
-        } else ref?.current?.next();
+        if (currentIndex === arts.length - 1 && hasMore && fetchArts) {
+            fetchArts().then(() => {
+                setCurrentIndex(currentIndex + 1);
+                ref?.current?.next();
+            });
+        } else {
+            setCurrentIndex(currentIndex + 1);
+            ref?.current?.next();
+        }
     };
 
     const previous = () => {
+        setCurrentIndex(currentIndex + 1);
         ref?.current?.prev();
     };
+
+    const previousArt = arts[currentIndex - 1];
+    const nextArt = arts[currentIndex + 1];
 
     return (
         <Modal
             visible={visible}
             destroyOnClose={true}
-            width={'80%'}
+            width={'90%'}
+            style={{ top: 20 }}
             footer={false}
-            onCancel={() => dispatch(setPreview({ artId: undefined, visible: false }))}
+            onCancel={onCancel}
+            wrapProps={{
+                onKeyUp: (evt: React.KeyboardEvent) => {
+                    if (evt.keyCode === 37) previous();
+                    if (evt.keyCode === 39) next();
+                },
+            }}
         >
-            <Row
-                style={{ height: '100%', padding: 32 }}
-                onKeyUp={(evt) => {
-                    console.log(evt);
-                }}
-            >
-                <Col
-                    xs={1}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <PrevArrow disabled={currentIndex === 0} onClick={previous} />
-                </Col>
-                <Col xs={22}>
-                    <Carousel
-                        infinite={false}
-                        dots={false}
-                        initialSlide={currentIndex}
-                        afterChange={setCurrentIndex}
-						arrows={false}
-                        ref={(node) => (ref.current = node)}
+            {loading ? (
+                <CenteredSpin spinning={true} />
+            ) : (
+                <Row style={{ height: '100%', padding: 8 }}>
+                    <Col
+                        xs={3}
+                        lg={2}
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                        {arts.map((art, idx) => (
-                            <div key={'' + art.id + idx}>
-                                <Row gutter={[8, 8]}>
-                                    <Col xs={24} style={{ display: 'flex', justifyContent: 'center' }}>
-                                        <Link to={`/arts/${art.id}`}>{art.name}</Link>
-                                    </Col>
-                                    <Col xs={24} md={12} lg={8} xl={6}>
-                                        <ArtDescriptions editable={false} art={art} />
-                                    </Col>
-                                    <Col
-                                        xs={24}
-                                        md={12}
-                                        lg={16}
-                                        xl={18}
-                                        style={{ display: 'flex', justifyContent: 'center' }}
-                                    >
-                                        <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-                                            <Image
-                                                src={`/static/${art.files![0].watermarkPath}`}
-                                                style={{ maxWidth: '800px' }}
-                                                preview={false}
-                                            />
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </div>
-                        ))}
-                    </Carousel>
-                </Col>
-                <Col xs={1} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <NextArrow disabled={currentIndex === arts.length - 1 && !hasMore} onClick={next} />
-                </Col>
-            </Row>
+                        <Space direction="vertical">
+                            <PrevArrow disabled={currentIndex === 0} onClick={previous} />
+                            <Typography.Text>{previousArt?.name}</Typography.Text>
+                        </Space>
+                    </Col>
+                    <Col xs={18} lg={20}>
+                        <Carousel
+                            infinite={false}
+                            dots={false}
+                            initialSlide={currentIndex}
+                            afterChange={setCurrentIndex}
+                            arrows={false}
+                            ref={(node) => (ref.current = node)}
+                        >
+                            {arts.map((art, idx) => (
+                                <div key={'' + art.id + idx}>
+                                    <Row gutter={[8, 8]}>
+                                        <Col xs={24} style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <Link to={`/arts/${art.id}`}>{art.name}</Link>
+                                        </Col>
+                                        <Col xs={24} md={12} lg={8} xl={6}>
+                                            <ArtDescriptions editable={false} art={art} />
+                                        </Col>
+                                        <Col
+                                            xs={24}
+                                            md={12}
+                                            lg={16}
+                                            xl={18}
+                                            style={{ display: 'flex', justifyContent: 'center' }}
+                                        >
+                                            <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                                                <Image
+                                                    src={`/static/${art.files![0].watermarkPath}`}
+                                                    style={{ maxWidth: '800px' }}
+                                                    preview={false}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            ))}
+                        </Carousel>
+                    </Col>
+                    <Col
+                        xs={3}
+                        lg={2}
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
+                        <Space direction="vertical">
+                            <NextArrow
+                                disabled={currentIndex === arts.length - 1 && !hasMore}
+                                onClick={next}
+                            />
+                            <Typography.Text>{nextArt?.name}</Typography.Text>
+                        </Space>
+                    </Col>
+                </Row>
+            )}
         </Modal>
     );
 };

@@ -22,7 +22,7 @@ const artSlice = createSlice({
         data: [],
         filter: {},
         order: {},
-        pagination: { first: 25 },
+        pagination: { first: 2 },
         hasMore: false,
         doFetch: true,
         showColumns: [
@@ -53,10 +53,14 @@ const artSlice = createSlice({
             state.data = partial ? [...state.data, ...data] : data;
             state.hasMore = action.payload.page.pageInfo?.hasNextPage || false;
             state.doFetch = false;
+
+            if (state.preview.visible) {
+                state.preview.artId = data[0]?.node?.id || undefined;
+            }
         },
         updateFilter: (state, action: PayloadAction<ArtFilterQuery & { shouldFetch: boolean }>) => {
             const { shouldFetch, ...payload } = action.payload;
-         	state.filter =  {
+            state.filter = {
                 ...state.filter,
                 ...payload,
                 project: { ...(state.filter.project || {}), ...(payload.project || {}) },

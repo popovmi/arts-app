@@ -63,8 +63,15 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
             component={false}
         >
             <Spin spinning={isLoading}>
+                <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
+                    {isEdit ? (
+                        <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
+                    ) : (
+                        <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
+                    )}
+                </Row>
                 <Descriptions bordered size="small" column={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
-                    <DItem label={'Внутренний'} span={1}>
+                    <DItem label={'Внутренний'}>
                         {isEdit ? (
                             <FItem noStyle name="internal" valuePropName="checked">
                                 <Checkbox />
@@ -73,7 +80,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                             <Text>{project.internal ? 'Да' : 'Нет'}</Text>
                         )}
                     </DItem>
-                    <DItem label={'Есть КД'} span={2}>
+                    <DItem label={'Есть КД'}>
                         {isEdit ? (
                             <FItem noStyle name="hasDesignDoc" valuePropName="checked">
                                 <Checkbox />
@@ -83,7 +90,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                         )}
                     </DItem>
                     {projectAttributesTypes.map((type, i, arr) => (
-                        <DItem key={type} label={AttributesLabels[type]} span={i === arr.length - 1 ? 2 : 1}>
+                        <DItem key={type} label={AttributesLabels[type]}>
                             {isEdit ? (
                                 <FItem noStyle name={type}>
                                     <AttributeSelector active type={type} allowClear />
@@ -94,7 +101,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                         </DItem>
                     ))}
 
-                    <DItem label={'Заказчик'} span={4}>
+                    <DItem label={'Заказчик'}>
                         {isEdit ? (
                             <FItem noStyle name="customerId">
                                 <CustomerSelector allowClear current={project?.customer as Customer} />
@@ -103,7 +110,7 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                             <Text>{project?.customer?.name}</Text>
                         )}
                     </DItem>
-                    <DItem label={'Завод'} span={4}>
+                    <DItem label={'Завод'}>
                         {isEdit ? (
                             <FItem noStyle name="factoryId">
                                 <FactorySelector allowClear current={project?.factory as Factory} />
@@ -113,13 +120,6 @@ export const ProjectDescriptions: FC<ProjectDescriptionsProps> = ({ project }) =
                         )}
                     </DItem>
                 </Descriptions>
-                <Row justify="end" gutter={[8, 8]} style={{ padding: 8 }}>
-                    {isEdit ? (
-                        <Button type={'primary'} icon={<SaveOutlined />} onClick={onFinish} />
-                    ) : (
-                        <Button icon={<EditOutlined />} onClick={() => toggleEdit(true)} />
-                    )}
-                </Row>
             </Spin>
         </Form>
     );

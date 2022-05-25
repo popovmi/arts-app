@@ -1,9 +1,8 @@
 import { Role, useWhoAmIQuery } from '@/graphql';
 import { Menu } from 'antd';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-const { Item, SubMenu } = Menu;
 
 export const AppNavigation: FC = () => {
     const { data, isSuccess } = useWhoAmIQuery();
@@ -23,7 +22,24 @@ export const AppNavigation: FC = () => {
             []
         );
 
-    if (!isSuccess) return <></>;
+    if (!isSuccess) return <div></div>;
+
+    const menuItems: ItemType[] = [
+        { label: <Link to={'projects'}>Проекты</Link>, key: 'projects' },
+        { label: <Link to={'arts'}>ART-ы</Link>, key: 'arts' },
+    ];
+
+    if (isAdmin) {
+        menuItems.push({
+            label: 'Админ',
+            key: 'admin',
+            children: [
+                { label: <Link to={'admin/users'}>Пользователи</Link>, key: 'admin/users' },
+                { label: <Link to={'admin/companies'}>Организации</Link>, key: 'admin/companies' },
+                { label: <Link to={'admin/attributes'}>Теги</Link>, key: 'admin/attributes' },
+            ],
+        });
+    }
 
     return (
         <Menu
@@ -33,26 +49,7 @@ export const AppNavigation: FC = () => {
             defaultSelectedKeys={[]}
             selectedKeys={selectedKeys}
             triggerSubMenuAction={'click'}
-        >
-            <Item key={'projects'}>
-                <Link to={'projects'}>Проекты</Link>
-            </Item>
-            <Item key={'arts'}>
-                <Link to={'arts'}>ART-ы</Link>
-            </Item>
-            {isAdmin && (
-                <SubMenu key="admin" title="Админ">
-                    <Item key={'admin/users'}>
-                        <Link to={'admin/users'}>Пользователи</Link>
-                    </Item>
-                    <Item key={'admin/companies'}>
-                        <Link to={'admin/companies'}>Организации</Link>
-                    </Item>
-                    <Item key={'admin/attributes'}>
-                        <Link to={'admin/attributes'}>Теги</Link>
-                    </Item>
-                </SubMenu>
-            )}
-        </Menu>
+            items={menuItems}
+        />
     );
 };

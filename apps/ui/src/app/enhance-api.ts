@@ -7,16 +7,28 @@ import { enhanceUsersApi } from '@/features/user';
 import { api as generatedApi } from '@/graphql';
 
 const enhancions = [
-    enhanceArtsApi,
     enhanceProjectsApi,
+    enhanceArtsApi,
     enhanceUsersApi,
     enhanceAttributesApi,
     enhanceCustomersApi,
     enhanceFactoriesApi,
 ];
 
-let api: any;
+const addTagTypes = enhancions.reduce((_tags: string[], enhancion) => {
+    return [..._tags, ...(enhancion.addTagTypes || [])];
+}, []);
 
-enhancions.forEach((enhancion) => (api = enhancion(api === undefined ? generatedApi : api)));
+const endpoints = enhancions.reduce(
+    (_endpoints: Parameters<typeof generatedApi['enhanceEndpoints']>[0]['endpoints'], enhancion) => {
+        return { ..._endpoints, ...(enhancion.endpoints || {}) };
+    },
+    {}
+);
 
-export { api };
+generatedApi.enhanceEndpoints({
+    addTagTypes,
+    endpoints,
+});
+
+export { generatedApi as api };

@@ -1,14 +1,17 @@
+import { useAppDispatch } from '@/app/store';
 import { CenteredSpin } from '@/shared/components';
 import { ClearOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Space, Table, Tooltip } from 'antd';
 import { FC } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { useNavigate } from 'react-router-dom';
+import { setPreview } from '../art.slice';
 import { ArtColumnsMenu, HeaderCell, HeaderRow, TableBody, useArtColumns } from '../components';
 import { ArtPreviewModal } from '../components/art-preview.modal';
 import { useArtsData } from '../hooks';
 
 export const ArtsListPage: FC = () => {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { arts, loading, hasMore, showColumns, fetchArts, resetFilter, preview } = useArtsData();
     const columns = useArtColumns();
@@ -19,6 +22,7 @@ export const ArtsListPage: FC = () => {
         delayInMs: 100,
     });
     const scroll = { x: showColumns.find((col) => col === 'project') ? 2500 : showColumns.length * 130 };
+    const onPreviewModalCancel = () => dispatch(setPreview({ artId: undefined, visible: false }));
 
     return (
         <>
@@ -28,6 +32,8 @@ export const ArtsListPage: FC = () => {
                 visible={preview.visible}
                 fetchArts={fetchArts}
                 hasMore={hasMore}
+                onCancel={onPreviewModalCancel}
+                loading={loading}
             />
             <Row /* ref={root.rootRef} */>
                 <Col

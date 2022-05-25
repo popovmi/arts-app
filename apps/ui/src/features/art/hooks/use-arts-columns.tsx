@@ -4,6 +4,7 @@ import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
 import { projectAttributesTypes } from '@/features/project/project-attribute.types';
 import { Art, ArtFilterQuery, AttributeType, ProjectFilterQuery, StringFieldOption } from '@/graphql';
+import { ExpandOutlined } from '@ant-design/icons';
 import {
     Button,
     Col,
@@ -20,6 +21,7 @@ import { FC, HTMLAttributes, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { selectArts, shouldFetch, updateFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
+import { setPreview } from '../art.slice';
 
 interface ArtFilterItemProps {
     value: any;
@@ -80,7 +82,7 @@ const ArtFilterInput: FC<ArtFilterItemProps> = ({ onChange, value, onClear, disa
     );
 };
 
-export const artColumns = (): ArtTableColumnType[] => {
+export const useArtColumns = (): ArtTableColumnType[] => {
     const dispatch = useAppDispatch();
     const { filter, showDataIndexes } = useAppSelector(selectArts);
 
@@ -208,9 +210,18 @@ export const artColumns = (): ArtTableColumnType[] => {
             ),
             filterMultiple: false,
             render: (_, record) => (
-                <Link to={`/arts/${record.id}`} target="_blank">
-                    {record.name}
-                </Link>
+                <Row gutter={[4, 4]} justify={'space-between'}>
+                    <Col>
+                        <Link to={`/arts/${record.id}`}>
+                            {record.name}
+                        </Link>
+                    </Col>
+                    <Col>
+                        <ExpandOutlined
+                            onClick={() => dispatch(setPreview({ artId: record.id, visible: true }))}
+                        />
+                    </Col>
+                </Row>
                 // <Space>
                 //     {record.files && record.files?.length > 0 && (
                 //         <Image
@@ -245,15 +256,14 @@ export const artColumns = (): ArtTableColumnType[] => {
         {
             title: 'Проект',
             key: 'project',
+            align: 'left',
             children: [
                 {
                     dataIndex: ['project', 'name'],
                     title: 'Название',
                     render: (_, record) =>
                         record.project && (
-                            <Link to={`/projects/${record.project.id}`} target="_blank">
-                                {record.project.name}
-                            </Link>
+                            <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>
                         ),
                     onHeaderCell: (record) => ({ dataIndex: ['project', 'name'] } as HTMLAttributes<any>),
                     filteredValue: filter?.project?.name?.contains ? [filter.project?.name.contains] : [],

@@ -1,6 +1,6 @@
 import { Art, useAddArtCommentMutation } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
-import { Button, Col, Comment, Input, List, Row, Typography } from 'antd';
+import { Button, Col, Divider, Input, List, Row, Typography } from 'antd';
 import { FC, useState } from 'react';
 import { ArtCommentView } from './art.comment';
 
@@ -10,7 +10,7 @@ export const ArtComments: FC<{ art: Art }> = ({ art }) => {
     const [newComment, setNewComment] = useState<string>('');
     const { comments } = art;
 
-    const [addComment, { isError, isLoading, isSuccess }] = useAddArtCommentMutation();
+    const [addComment, { isLoading }] = useAddArtCommentMutation();
 
     const handleAddComment = () => {
         addComment({ artCommentInput: { artId: art.id, text: newComment } }).then(() => setNewComment(''));
@@ -25,13 +25,14 @@ export const ArtComments: FC<{ art: Art }> = ({ art }) => {
     return (
         <CenteredSpin wrapperClassName={'ant-col ant-col-xs-24'} spinning={isLoading}>
             <Row style={{ width: '100%', padding: '0 24 24 24' }}>
-                <Col span={24} style={{ maxHeight: 400, overflowY: 'auto' }}>
+                <Col span={24} style={{ maxHeight: 350, overflowY: 'auto' }}>
                     <List
                         itemLayout="horizontal"
                         dataSource={comments || []}
                         renderItem={(item) => <ArtCommentView comment={item} />}
                     ></List>
                 </Col>
+                <Divider />
                 <Col span={24}>
                     <Typography.Title level={3} style={{ margin: 0 }}>
                         Добавить комментарий

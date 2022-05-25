@@ -15,5 +15,18 @@ body,
 #root,
 .ant-layout {
     height: 100%;
-    overflow: hidden auto;
+    // overflow: hidden auto;
+}
+
+.ant-carousel {
+    .slick-next {
+        &::before {
+            content: '';
+        }
+    }
+    .slick-prev {
+        &::before {
+            content: '';
+        }
+    }
 }

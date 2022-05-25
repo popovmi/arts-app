@@ -19,15 +19,27 @@ export const ArtPage: FC = () => {
 
     return (
         <>
-            <Row align="middle" style={{ padding: 8 }} gutter={[8, 8]}>
-                <Col>
+            <Row
+                align="middle"
+                style={{
+                    padding: '0 8px',
+                    position: 'fixed',
+                    zIndex: 1,
+                    width: '100%',
+                    backgroundColor: '#fff',
+                    height: '40px',
+                }}
+                gutter={[8, 8]}
+            >
+                <Col flex={'none'}>
                     <ArrowLeftOutlined style={{ fontSize: '16px' }} onClick={() => navigate(-1)} />
                 </Col>
                 <Col flex={1}>
                     <ArtTitle art={art} />
                 </Col>
             </Row>
-            <Row style={{ padding: 8 }} gutter={[8, 8]}>
+            <Row style={{ padding: '0 8px', marginTop: '48px' }} gutter={[8, 8]}>
+                <Divider style={{ margin: 0 }} />
                 <Col xs={24} lg={8}>
                     <ArtDescriptions art={art} />
                 </Col>

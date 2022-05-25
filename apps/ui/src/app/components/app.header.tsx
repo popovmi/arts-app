@@ -7,7 +7,7 @@ const { Header } = Layout;
 
 export const AppHeader: FC = () => {
     return (
-        <Header>
+        <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
             <Row wrap={false} justify="space-between">
                 <AppNavigation />
                 <AuthWidget />

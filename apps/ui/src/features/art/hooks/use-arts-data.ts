@@ -14,9 +14,12 @@ export const useArtsData = () => {
         if (doFetch) fetchArts();
     }, [doFetch]);
 
-    const fetchArts = () => {
-        load({ filter, order, pagination }).then(
-            (result) => 'data' in result && dispatch(artsLoaded(result.data!.arts as ArtResponse))
+    const fetchArts = (): Promise<void> => {
+        return new Promise((resolve) =>
+            load({ filter, order, pagination }).then((result) => {
+                'data' in result && dispatch(artsLoaded(result.data!.arts as ArtResponse));
+                resolve(undefined);
+            })
         );
     };
 

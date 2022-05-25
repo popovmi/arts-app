@@ -150,7 +150,7 @@ export const projectColumns = () => {
                 />
             ),
             filterMultiple: false,
-            render: (_, record) => <Link to={`/projects/${record.id}`} target='_blank'>{record.name}</Link>,
+            render: (_, record) => <Link to={`/projects/${record.id}`}>{record.name}</Link>,
         },
         {
             dataIndex: 'internal',

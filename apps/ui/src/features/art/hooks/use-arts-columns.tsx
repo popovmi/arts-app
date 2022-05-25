@@ -210,14 +210,18 @@ export const useArtColumns = (): ArtTableColumnType[] => {
             ),
             filterMultiple: false,
             render: (_, record) => (
-                <Space>
-                    <Link to={`/arts/${record.id}`} target="_blank">
-                        {record.name}
-                    </Link>
-                    <ExpandOutlined
-                        onClick={() => dispatch(setPreview({ artId: record.id, visible: true }))}
-                    />
-                </Space>
+                <Row gutter={[4, 4]} justify={'space-between'}>
+                    <Col>
+                        <Link to={`/arts/${record.id}`}>
+                            {record.name}
+                        </Link>
+                    </Col>
+                    <Col>
+                        <ExpandOutlined
+                            onClick={() => dispatch(setPreview({ artId: record.id, visible: true }))}
+                        />
+                    </Col>
+                </Row>
                 // <Space>
                 //     {record.files && record.files?.length > 0 && (
                 //         <Image
@@ -252,15 +256,14 @@ export const useArtColumns = (): ArtTableColumnType[] => {
         {
             title: 'Проект',
             key: 'project',
+            align: 'left',
             children: [
                 {
                     dataIndex: ['project', 'name'],
                     title: 'Название',
                     render: (_, record) =>
                         record.project && (
-                            <Link to={`/projects/${record.project.id}`} target="_blank">
-                                {record.project.name}
-                            </Link>
+                            <Link to={`/projects/${record.project.id}`}>{record.project.name}</Link>
                         ),
                     onHeaderCell: (record) => ({ dataIndex: ['project', 'name'] } as HTMLAttributes<any>),
                     filteredValue: filter?.project?.name?.contains ? [filter.project?.name.contains] : [],

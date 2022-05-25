@@ -9,11 +9,9 @@ export const AppLayout: FC = () => {
     return (
         <Layout>
             <AppHeader />
-            <Layout>
-                <Content>
-                    <Outlet />
-                </Content>
-            </Layout>
+            <Content style={{ marginTop: '40px' }}>
+                <Outlet />
+            </Content>
         </Layout>
     );
 };

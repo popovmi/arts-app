@@ -33,7 +33,7 @@ export const ArtTitle: React.FC<ArtTitleProps> = ({ art }) => {
         });
 
     return (
-        <Row style={{ padding: 8 }} gutter={[8, 8]}>
+        <Row style={{ padding: '0 8px', height: '40px' }} gutter={[8, 8]}>
             <Col flex="none">
                 <Typography.Title
                     className={styles['unselectable']}

@@ -23,7 +23,7 @@ const artSlice = createSlice({
         filter: {},
         order: {},
         pagination: { first: 25 },
-        hasMore: true,
+        hasMore: false,
         doFetch: true,
         showColumns: [
             'name',
@@ -56,15 +56,11 @@ const artSlice = createSlice({
         },
         updateFilter: (state, action: PayloadAction<ArtFilterQuery & { shouldFetch: boolean }>) => {
             const { shouldFetch, ...payload } = action.payload;
-            let filter = state.filter;
-
-            filter = {
-                ...filter,
+         	state.filter =  {
+                ...state.filter,
                 ...payload,
-                project: { ...(filter.project || {}), ...(payload.project || {}) },
+                project: { ...(state.filter.project || {}), ...(payload.project || {}) },
             };
-
-            state.filter = filter;
             state.pagination.before = null;
             state.pagination.after = null;
             if (shouldFetch === true) {

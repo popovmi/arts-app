@@ -34,8 +34,4 @@ interface TableBodyProps {
     [key: string]: any;
 }
 
-export const TableBody: FC<TableBodyProps> = ({ children, style, ...props }) => (
-    <tbody style={{ ...style, overflow: 'hidden' }} {...props}>
-        {children}
-    </tbody>
-);
+export const TableBody: FC<TableBodyProps> = ({ children, ...props }) => <tbody {...props}>{children}</tbody>;

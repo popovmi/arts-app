@@ -60,7 +60,7 @@ const ProjectFilterInput: FC<ProjectFilterItemProps> = ({
     );
 };
 
-export const projectColumns = () => {
+export const useProjectColumns = () => {
     const dispatch = useAppDispatch();
     const { filter } = useAppSelector(selectProjects);
 

@@ -1,7 +1,6 @@
-import { Art } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
 import { ClearOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Space, Table, TableColumnGroupType, Tooltip } from 'antd';
+import { Button, Col, Row, Space, Table, Tooltip } from 'antd';
 import { FC } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { useNavigate } from 'react-router-dom';
@@ -13,11 +12,10 @@ export const ArtsListPage: FC = () => {
     const navigate = useNavigate();
     const { arts, loading, hasMore, showColumns, fetchArts, resetFilter, preview } = useArtsData();
     const columns = useArtColumns();
-    const [sentryRef, root] = useInfiniteScroll({
+    const [sentryRef] = useInfiniteScroll({
         loading,
         hasNextPage: hasMore,
         onLoadMore: fetchArts,
-        // rootMargin: '200px',
         delayInMs: 100,
     });
     const scroll = { x: showColumns.find((col) => col === 'project') ? 2500 : showColumns.length * 130 };
@@ -72,29 +70,7 @@ export const ArtsListPage: FC = () => {
                                 wrapper: TableBody,
                             },
                         }}
-                        /*   summary={(pageData) => (
-                        <Table.Summary fixed={'top'}>
-                            <Table.Summary.Row>
-                                <Table.Summary.Cell
-                                    index={0}
-                                    colSpan={
-                                        columns.length +
-                                        columns
-                                            .filter((col) => !!(col as TableColumnGroupType<Art>).children)
-                                            .reduce(
-                                                (childrenLength, column) =>
-                                                    childrenLength +
-                                                    (column as TableColumnGroupType<Art>).children.length -
-                                                    1,
-                                                0
-                                            )
-                                    }
-                                ></Table.Summary.Cell>
-                            </Table.Summary.Row>
-                        </Table.Summary>
-                    )} */
                         pagination={false}
-                        // loading={loading}
                         size="small"
                         bordered
                         scroll={scroll}

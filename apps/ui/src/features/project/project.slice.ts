@@ -25,7 +25,7 @@ const projectSlice = createSlice({
         filter: {},
         order: {},
         pagination: { first: 50 },
-        hasMore: true,
+        hasMore: false,
         doFetch: true,
     } as ProjectsState,
     reducers: {

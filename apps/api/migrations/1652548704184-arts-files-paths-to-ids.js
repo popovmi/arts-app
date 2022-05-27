@@ -7,6 +7,7 @@ const { config } = require('dotenv');
 config();
 
 module.exports = class artsFilesPathsToIds1652548704184 {
+	name = 'artsFilesPathsToIds1652548704184';
     logger = new Logger(artsFilesPathsToIds1652548704184.name);
     config = { fileStoragePath: process.env.FILE_STORAGE_PATH };
     async up(queryRunner) {

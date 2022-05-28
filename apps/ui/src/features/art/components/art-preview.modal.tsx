@@ -12,7 +12,7 @@ interface ArtsPreviewModalProps {
     openArtId: string | undefined;
     visible: boolean;
     onCancel: () => void;
-    fetchArts?: () => Promise<void>;
+    fetchArts?: () => void;
     hasMore?: boolean;
     loading?: boolean;
 }
@@ -84,16 +84,15 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
             ref?.current?.next();
         }
         if (currentIndex === arts.length - 1 && hasMore && fetchArts) {
-            fetchArts().then(() => {
-                setCurrentIndex(currentIndex + 1);
-                ref?.current?.next();
-            });
+            fetchArts();
+            setCurrentIndex(currentIndex + 1);
+            ref?.current?.next();
         }
     };
 
     const previous = () => {
         if (currentIndex > 0) {
-            setCurrentIndex(currentIndex + 1);
+            setCurrentIndex(currentIndex - 1);
             ref?.current?.prev();
         }
     };

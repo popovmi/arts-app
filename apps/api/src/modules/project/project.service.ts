@@ -51,9 +51,10 @@ export class ProjectService {
 
         const count = await query.getCount();
 
-        query.addSelect(`left("projects"."name", strpos("projects"."name", '-') - 1) "code"`);
+        query.addSelect(`left("projects"."name", strpos("projects"."name", '-') - 1)`, 'code');
         query.addSelect(
-            `length(left("projects"."name", strpos("projects"."name", '-') - 1))::integer "code_length"`
+            `length(left("projects"."name", strpos("projects"."name", '-') - 1))::integer`,
+            'code_length'
         );
         query.addOrderBy(`code_length`, 'ASC');
         query.addOrderBy('code', 'ASC');

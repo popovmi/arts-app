@@ -15,7 +15,7 @@ const format = winstonLogger.format.combine(
 );
 
 const consoleTransport = new winstonLogger.transports.Console({
-    format: winstonLogger.format.combine(format, consoleFormat('RelaxClubAPI', { prettyPrint: true })),
+    format: winstonLogger.format.combine(format, consoleFormat('ArtsApp', { prettyPrint: true })),
 });
 
 const fileTransport = new winstonLogger.transports.DailyRotateFile({

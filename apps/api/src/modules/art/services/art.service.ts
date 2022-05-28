@@ -1,5 +1,5 @@
 import { filterQuery } from '@/shared/utils/query-builder';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
 import { In, Repository } from 'typeorm';
@@ -11,6 +11,8 @@ import { ArtFileService } from './art-file.service';
 
 @Injectable()
 export class ArtService {
+    private logger = new Logger(ArtService.name);
+
     constructor(
         @InjectRepository(Art) private artRepository: Repository<Art>,
         @InjectRepository(ArtComment)
@@ -33,22 +35,20 @@ export class ArtService {
 
     async getArts({ filter, pagination }: FindArtArgs): Promise<ArtResponse> {
         const { take = 50, skip = 0 } = pagination.pagingParams();
-        const query = filterQuery(
-            this.artRepository.createQueryBuilder('arts'),
-            'arts',
-            filter,
-            this.artRepository.manager.connection
-                .getMetadata(Art)
-                .relations.map(({ propertyName }) => propertyName)
-        )
+        const query = filterQuery(this.artRepository.createQueryBuilder('arts'), 'arts', filter, ['project'])
             .skip(skip)
             .take(take);
-        query.addSelect(`left("arts"."name", strpos("arts"."name", '-') - 1) "code"`);
-        query.addSelect(`length(left("arts"."name", strpos("arts"."name", '-') - 1))::integer "code_length"`);
         const count = await query.getCount();
+
+        query.addSelect(`left("arts"."name", strpos("arts"."name", '-') - 1)`, 'code');
+        query.addSelect(
+            `length(left("arts"."name", strpos("arts"."name", '-') - 1))::integer`,
+            'code_length'
+        );
         query.addOrderBy(`code_length`, 'ASC');
         query.addOrderBy('code', 'ASC');
-        // orderQuery(query, { ...order });
+
+        this.logger.debug({ message: 'arts query', query: query.getQuery() });
 
         const arts = await query.getMany();
         const page = connectionFromArraySlice(arts, pagination, {

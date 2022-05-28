@@ -79,11 +79,12 @@ export const ArtsListPage: FC = () => {
                         pagination={false}
                         size="small"
                         bordered
+                        loading={arts.length === 0 && loading}
                         scroll={scroll}
                         sticky={{ offsetHeader: 80 }}
                     />
                 </Col>
-                {hasMore && (
+                {arts.length > 0 && hasMore && (
                     <Col span={24} ref={sentryRef}>
                         <CenteredSpin />
                     </Col>

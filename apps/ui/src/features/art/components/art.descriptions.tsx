@@ -146,7 +146,6 @@ export const ArtDescriptions: FC<ArtDescriptionsProps> = ({ art, editable = true
                                             height={300}
                                             width={250}
                                             filePath={fileInfo.filePath}
-                                            extension={fileInfo.fileExtension}
                                         />
                                     )}
                                 </Col>

@@ -23,7 +23,7 @@ export const CreateArtForm = () => {
 
     const onUpload: OnArtFileUploadCallback = ({ filePath, fileName, index }) => {
         const fileParts = fileName.split('.');
-        const name = fileParts.join('.');
+        const name = fileParts[0];
         const arts = form.getFieldValue('arts');
         arts[index] = { ...arts[index], name, filePath };
 

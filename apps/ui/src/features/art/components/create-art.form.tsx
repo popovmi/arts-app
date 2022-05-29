@@ -3,8 +3,7 @@ import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { ProjectsSelector } from '@/features/project/components';
 import { CreateArtInput, useCreateManyArtsMutation } from '@/graphql';
 import { CloseOutlined } from '@ant-design/icons';
-import { Collapse, Button, Checkbox, Col, Form, Input, Row, Space, Spin, Typography } from 'antd';
-import { Fragment, useState } from 'react';
+import { Button, Checkbox, Col, Collapse, Form, Input, Row, Space, Spin, Typography } from 'antd';
 import { clearFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
 import { ArtFileUpload, ArtUploadFileView } from '../components';
@@ -13,38 +12,22 @@ const { Item } = Form;
 const { Text } = Typography;
 const { Panel } = Collapse;
 
+type OnArtFileUploadCallback = (params: { filePath: string; fileName: string; index: number }) => void;
+
 export const CreateArtForm = () => {
     const dispatch = useAppDispatch();
     const [createArts, { isLoading, error, isError, reset }] = useCreateManyArtsMutation({
         fixedCacheKey: 'createArts',
     });
     const [form] = Form.useForm<{ arts: CreateArtInput[] }>();
-    const [fileInfo, setFileInfo] = useState([{ artIndex: 0, filePath: '', fileExtension: '' }]);
-    const onUpload = ({
-        filePath,
-        fileName,
-        artIndex,
-    }: {
-        filePath: string;
-        fileName: string;
-        artIndex: number;
-    }) => {
+
+    const onUpload: OnArtFileUploadCallback = ({ filePath, fileName, index }) => {
         const fileParts = fileName.split('.');
-        const fileExtension = fileParts.pop()?.toLowerCase() || '';
         const name = fileParts.join('.');
         const arts = form.getFieldValue('arts');
-        let _fileInfo = Array.from(fileInfo);
-        const fileIndex = _fileInfo.findIndex((_file) => _file.artIndex === artIndex);
-        arts[artIndex] = { ...arts[artIndex], name, filePath };
-
-        if (fileIndex > -1) {
-            _fileInfo[fileIndex] = { ..._fileInfo[fileIndex], filePath, fileExtension };
-        } else {
-            _fileInfo = [..._fileInfo, { artIndex, filePath, fileExtension }];
-        }
+        arts[index] = { ...arts[index], name, filePath };
 
         form.setFieldsValue({ arts });
-        setFileInfo(_fileInfo);
     };
 
     const onFormFinish = ({ arts }: { arts: CreateArtInput[] }) => {
@@ -82,12 +65,11 @@ export const CreateArtForm = () => {
                                 </Col>
                                 <Col xs={24}>
                                     <Collapse accordion>
-                                        {fields.map(({ key, name, ...restField }, artIndex) => {
-                                            const _fileInfo = fileInfo.find(
-                                                (_fileInfo) => _fileInfo.artIndex === artIndex
-                                            );
-                                            const header =
-                                                form.getFieldValue(['arts', artIndex, 'name']) || '-';
+                                        {fields.map((field, index) => {
+                                            const { key, name, ...restField } = field;
+                                            const filePath =
+                                                form.getFieldValue(['arts', index, 'filePath']) || undefined;
+                                            const header = form.getFieldValue(['arts', index, 'name']) || '-';
                                             return (
                                                 <Panel key={key} header={header}>
                                                     <Row>
@@ -97,7 +79,7 @@ export const CreateArtForm = () => {
                                                                     <Item
                                                                         {...restField}
                                                                         label="Чертеж(ревизия)"
-                                                                        name={[artIndex, 'name']}
+                                                                        name={[index, 'name']}
                                                                         rules={[
                                                                             {
                                                                                 required: true,
@@ -115,7 +97,7 @@ export const CreateArtForm = () => {
                                                                             onUpload({
                                                                                 filePath,
                                                                                 fileName,
-                                                                                artIndex,
+                                                                                index,
                                                                             })
                                                                         }
                                                                     />
@@ -124,23 +106,20 @@ export const CreateArtForm = () => {
                                                             <Item
                                                                 {...restField}
                                                                 label="Внутренний"
-                                                                name={[artIndex, 'internal']}
+                                                                name={[index, 'internal']}
                                                                 valuePropName="checked"
                                                                 initialValue={true}
                                                             >
                                                                 <Checkbox />
                                                             </Item>
-                                                            <Item
-                                                                label="Проект"
-                                                                name={[artIndex, 'projectId']}
-                                                            >
+                                                            <Item label="Проект" name={[index, 'projectId']}>
                                                                 <ProjectsSelector allowClear />
                                                             </Item>
                                                             {artAttributesTypes.map((type) => (
                                                                 <Item
                                                                     key={type}
                                                                     label={AttributesLabels[type]}
-                                                                    name={[artIndex, type]}
+                                                                    name={[index, type]}
                                                                 >
                                                                     <AttributeSelector
                                                                         active
@@ -151,20 +130,17 @@ export const CreateArtForm = () => {
                                                             ))}
 
                                                             <Item
-                                                                name={[artIndex, 'filePath']}
+                                                                name={[index, 'filePath']}
                                                                 style={{ height: 0 }}
                                                             >
                                                                 <Input readOnly style={{ display: 'none' }} />
                                                             </Item>
                                                         </Col>
-                                                        <Col xs={24} md={16}>
-                                                            {_fileInfo?.filePath && (
-                                                                <ArtUploadFileView
-                                                                    filePath={_fileInfo.filePath}
-                                                                    extension={_fileInfo.fileExtension}
-                                                                />
-                                                            )}
-                                                        </Col>
+                                                        {filePath && (
+                                                            <Col xs={24} md={16}>
+                                                                <ArtUploadFileView filePath={filePath} />
+                                                            </Col>
+                                                        )}
                                                     </Row>
                                                 </Panel>
                                             );

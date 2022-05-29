@@ -5,10 +5,10 @@ interface ArtUploadFileViewProps {
     filePath: string;
     width?: string | number | undefined;
     height?: string | number | undefined;
-    extension: string;
 }
 
-export const ArtUploadFileView: FC<ArtUploadFileViewProps> = ({ filePath, width, height, extension }) => {
+export const ArtUploadFileView: FC<ArtUploadFileViewProps> = ({ filePath, width, height }) => {
+    const extension = filePath.split('.')[1];
     return extension === 'jpg' ? (
         <div
             style={{

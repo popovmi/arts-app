@@ -11,7 +11,7 @@ import { clearFilter } from '../project.slice';
 const { Item } = Form;
 const { Text } = Typography;
 
-export const CreateArtForm = () => {
+export const CreateProjectForm = () => {
     const dispatch = useAppDispatch();
     const [createProject, { isLoading, error, isError, reset }] = useCreateProjectMutation({
         fixedCacheKey: 'createProject',

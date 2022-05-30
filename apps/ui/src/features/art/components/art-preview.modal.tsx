@@ -70,30 +70,32 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
     loading = false,
 }: ArtsPreviewModalProps) => {
     const ref = useRef<CarouselRef | null>(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(arts.findIndex((_art) => _art.id === openArtId));
 
     useEffect(() => {
-        const index = arts.findIndex((_art) => _art.id === openArtId);
-        setCurrentIndex(index);
-        ref.current?.goTo(index);
+        if (visible) {
+            const index = arts.findIndex((_art) => _art.id === openArtId);
+            setCurrentIndex(index);
+            ref.current?.goTo(index);
+        }
     }, [openArtId]);
 
     const next = () => {
         if (currentIndex < arts.length - 1) {
             setCurrentIndex(currentIndex + 1);
-            ref?.current?.next();
+            ref?.current?.goTo(currentIndex + 1);
         }
         if (currentIndex === arts.length - 1 && hasMore && fetchArts) {
             fetchArts();
             setCurrentIndex(currentIndex + 1);
-            ref?.current?.next();
+            ref?.current?.goTo(currentIndex + 1);
         }
     };
 
     const previous = () => {
         if (currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
-            ref?.current?.prev();
+            ref?.current?.goTo(currentIndex - 1);
         }
     };
 

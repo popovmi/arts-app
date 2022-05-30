@@ -153,4 +153,8 @@ export class ArtService {
         }
         return arts;
     }
+
+    public async deleteArt(id: string) {
+        await this.artRepository.delete({ id });
+    }
 }

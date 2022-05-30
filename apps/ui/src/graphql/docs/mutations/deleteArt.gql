@@ -1,0 +1,3 @@
+mutation deleteArt($id: String!){
+    deleteArt(id: $id)
+}

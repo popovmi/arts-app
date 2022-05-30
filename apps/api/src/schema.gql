@@ -366,6 +366,7 @@ type Mutation {
   updateArtComment(id: Float!, text: String!): ArtComment!
   deleteArtComment(id: Float!): Boolean!
   createManyArts(artsInput: [CreateArtInput!]!): [Art!]!
+  deleteArt(id: String!): [Boolean!]!
   createFactory(input: CreateFactoryInput!): Factory!
   updateFactory(input: UpdateFactoryInput!): Factory!
   createCustomer(input: CreateCustomerInput!): Customer!

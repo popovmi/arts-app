@@ -2,7 +2,7 @@ import { useAppDispatch } from '@/app/store';
 import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { ProjectsSelector } from '@/features/project/components';
 import { CreateArtInput, useCreateManyArtsMutation } from '@/graphql';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Collapse, Form, Input, Row, Space, Spin, Typography } from 'antd';
 import { clearFilter } from '..';
 import { artAttributesTypes } from '../art-attribute.types';
@@ -32,6 +32,12 @@ export const CreateArtForm = () => {
 
     const onFormFinish = ({ arts }: { arts: CreateArtInput[] }) => {
         createArts({ artsInput: arts }).then((res) => 'data' in res && dispatch(clearFilter()));
+    };
+
+    const onArtDelete = (index: number) => {
+        const arts = form.getFieldValue('arts');
+        arts.splice(index, 1);
+        form.setFieldsValue({ arts });
     };
 
     return (
@@ -71,7 +77,18 @@ export const CreateArtForm = () => {
                                                 form.getFieldValue(['arts', index, 'filePath']) || undefined;
                                             const header = form.getFieldValue(['arts', index, 'name']) || '-';
                                             return (
-                                                <Panel key={key} header={header}>
+                                                <Panel
+                                                    key={key}
+                                                    header={
+                                                        <Space>
+                                                            {header}
+                                                            <DeleteOutlined
+                                                                style={{ color: 'red' }}
+                                                                onClick={() => onArtDelete(index)}
+                                                            />
+                                                        </Space>
+                                                    }
+                                                >
                                                     <Row>
                                                         <Col xs={24} md={8}>
                                                             <Row gutter={[8, 8]}>

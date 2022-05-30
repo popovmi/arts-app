@@ -12,8 +12,6 @@ const { Item } = Form;
 const { Text } = Typography;
 const { Panel } = Collapse;
 
-type OnArtFileUploadCallback = (params: { filePath: string; fileName: string; index: number }) => void;
-
 export const CreateArtForm = () => {
     const dispatch = useAppDispatch();
     const [createArts, { isLoading, error, isError, reset }] = useCreateManyArtsMutation({
@@ -88,7 +86,7 @@ export const CreateArtForm = () => {
                                                                             },
                                                                         ]}
                                                                     >
-                                                                        <Input readOnly />
+                                                                        <Input />
                                                                     </Item>
                                                                 </Col>
                                                                 <Col flex={'none'}>

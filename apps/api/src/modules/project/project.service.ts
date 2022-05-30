@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { connectionFromArraySlice } from 'graphql-relay';
 import { In, Repository } from 'typeorm';
+import { ArtService } from '@/modules/art/services';
 import {
     CreateProjectInput,
     FindProjectArgs,
@@ -17,7 +18,8 @@ export class ProjectService {
     constructor(
         @InjectRepository(Project) private projectRepository: Repository<Project>,
         @InjectRepository(ProjectComment)
-        private projectCommentRepository: Repository<ProjectComment>
+        private projectCommentRepository: Repository<ProjectComment>,
+        private artService: ArtService
     ) {}
 
     public async getByIds(ids: string[]): Promise<Project[]> {
@@ -69,12 +71,25 @@ export class ProjectService {
         return { page, pageData: { count, take, skip } };
     }
 
-    public createProject(createProjectInput: CreateProjectInput): Promise<Project> {
+    public async createProject(createProjectInput: CreateProjectInput): Promise<Project> {
+        const { arts, ...input } = createProjectInput.format();
+
         const project = this.projectRepository.create({
-            ...createProjectInput.format(),
+            ...input,
         });
 
-        return this.projectRepository.save(project);
+        await this.projectRepository.save(project);
+
+        if (arts?.length > 0) {
+            await this.artService.createManyArts(
+                arts.map((art) => {
+                    art.projectId = project.id;
+                    return art;
+                })
+            );
+        }
+
+        return project;
     }
 
     public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {

@@ -1,5 +1,7 @@
+import { CreateArtInput } from '@/modules/art/dto';
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString, IsBoolean, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsBoolean, IsOptional, ValidateNested, IsArray } from 'class-validator';
 
 @InputType()
 export class CreateProjectInput {
@@ -41,6 +43,12 @@ export class CreateProjectInput {
     @IsOptional()
     @Field(() => String, { nullable: true })
     factoryId: string;
+
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => CreateArtInput)
+    @Field(() => [CreateArtInput], { nullable: true })
+    arts: CreateArtInput[];
 
     format() {
         return {

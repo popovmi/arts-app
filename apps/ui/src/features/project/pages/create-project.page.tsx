@@ -1,5 +1,5 @@
 import { useCreateProjectMutation } from '@/graphql';
-import { Button, PageHeader, Result, Space } from 'antd';
+import { Button, PageHeader, Result, Space, Typography } from 'antd';
 import { FC, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CreateProjectForm } from '../components';
@@ -17,7 +17,14 @@ export const CreateProjectPage: FC = () => {
 
     return (
         <>
-            <PageHeader title="Новый проект" onBack={() => navigate(-1)} />
+            <PageHeader
+                title={
+                    <Typography.Title level={1} style={{ margin: 0 }}>
+                        Новый проект
+                    </Typography.Title>
+                }
+                onBack={() => navigate(-1)}
+            />
             {isSuccess ? (
                 <Result title={`Проект ${data?.createProject.name} создан`} status={'success'}>
                     <Space>

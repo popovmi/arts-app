@@ -23,7 +23,7 @@ export class ProjectComment {
     @Index()
     projectId: string;
 
-    @ManyToOne(() => Project)
+    @ManyToOne(() => Project, (project) => project.comments, { cascade: true })
     @JoinColumn({ name: 'projectId' })
     project: Project;
 

@@ -5,7 +5,7 @@ import { FactoryType } from '@/modules/factory/dto';
 import { Role } from '@/modules/user';
 import { Roles } from '@/shared/decorators/roles.decorator';
 import { AppContext } from '@/shared/types';
-import { ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import {
     CreateProjectInput,
@@ -21,15 +21,16 @@ import { ProjectService } from './project.service';
 
 @Resolver(() => ProjectType)
 @UseGuards(AuthGuard, RolesGuard)
-@Roles(Role.USER, Role.ADMIN)
 export class ProjectResolver {
     constructor(private projectService: ProjectService, private projectLoader: ProjectLoader) {}
 
+	@Roles(Role.USER, Role.ADMIN)
     @Query(() => ProjectType)
     async project(@Args('id') id: string) {
         return this.projectService.getProject(id);
     }
 
+	@Roles(Role.USER, Role.ADMIN)
     @Query(() => ProjectResponse)
     async projects(@Args() args: FindProjectArgs) {
         return await this.projectService.getProjects(args);
@@ -50,40 +51,45 @@ export class ProjectResolver {
         return factoryId ? await this.projectLoader.batchFactories.load(factoryId) : null;
     }
 
+	@Roles(Role.USER, Role.ADMIN)
     @Mutation(() => ProjectType)
     async createProject(@Args('createProjectInput') createProjectInput: CreateProjectInput) {
         return this.projectService.createProject(createProjectInput);
     }
 
+	@Roles(Role.USER, Role.ADMIN)
     @Mutation(() => ProjectType)
     async updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput) {
         return await this.projectService.updateProject(updateProjectInput);
     }
 
+	@Roles(Role.USER, Role.ADMIN)
     @Mutation(() => ProjectCommentType)
     public async addProjectComment(
         @Args('projectCommentInput') projectCommentInput: ProjectCommentInput,
         @Context() { currentUserId }: AppContext
     ) {
-        return this.projectService.addArtComment({
+        return this.projectService.addProjectComment({
             ...projectCommentInput,
             authorId: currentUserId,
         });
     }
 
+	@Roles(Role.USER, Role.ADMIN)
     @Mutation(() => ProjectCommentType)
     public async updateProjectComment(
         @Args('id', new ParseIntPipe()) id: number,
         @Args('text') text: string,
         @Context() { currentUserId }: AppContext
     ) {
-        return this.projectService.updateArtComment({
+        return this.projectService.updateProjectComment({
             commentId: id,
             text,
             authorId: currentUserId,
         });
     }
 
+	@Roles(Role.USER, Role.ADMIN)
     @Mutation(() => Boolean)
     public async deleteProjectComment(
         @Args('id', new ParseIntPipe()) id: number,
@@ -93,6 +99,13 @@ export class ProjectResolver {
             commentId: id,
             authorId: currentUserId,
         });
+        return true;
+    }
+
+	@Roles(Role.ADMIN)
+    @Mutation(() => [Boolean])
+    public async deleteProject(@Args('id', new ParseUUIDPipe()) id: string) {
+        await this.projectService.deleteProject(id);
         return true;
     }
 }

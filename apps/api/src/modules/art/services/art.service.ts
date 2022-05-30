@@ -154,7 +154,7 @@ export class ArtService {
         return arts;
     }
 
-    public async deleteArt(id: string) {
-        await this.artRepository.delete({ id });
+    public async deleteArt(where: { id?: string; projectId?: string }) {
+        await this.artRepository.delete(where);
     }
 }

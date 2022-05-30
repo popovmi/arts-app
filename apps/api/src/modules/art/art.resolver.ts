@@ -112,7 +112,7 @@ export class ArtResolver {
     @Roles(Role.ADMIN)
     @Mutation(() => [Boolean])
     public async deleteArt(@Args('id', new ParseUUIDPipe()) id: string) {
-        await this.artService.deleteArt(id);
+        await this.artService.deleteArt({ id });
         return true;
     }
 }

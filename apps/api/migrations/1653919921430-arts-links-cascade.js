@@ -1,5 +1,5 @@
-module.exports = class artsCommentsCascade1653919921430 {
-    name = 'artsCommentsCascade1653919921430';
+module.exports = class artsLinksCascade1653919921430 {
+    name = 'artsLinksCascade1653919921430';
 
     async up(queryRunner) {
         await queryRunner.query(`

@@ -359,7 +359,7 @@ type Mutation {
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   addProjectComment(projectCommentInput: ProjectCommentInput!): ProjectComment!
   updateProjectComment(id: Float!, text: String!): ProjectComment!
-  deleteProjectComment(id: Float!): Boolean!
+  deleteProjectComment(id: Float!, projectId: String!): Boolean!
   createArt(createArtInput: CreateArtInput!): Art!
   updateArt(updateArtInput: UpdateArtInput!): Art!
   addArtComment(artCommentInput: ArtCommentInput!): ArtComment!

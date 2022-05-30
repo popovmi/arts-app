@@ -75,5 +75,24 @@ export const enhanceProjectsApi: Parameters<typeof generatedApi['enhanceEndpoint
                 } catch {}
             },
         },
+        deleteProjectComment: {
+            onQueryStarted: async ({ id, projectId }, { dispatch, queryFulfilled }) => {
+                try {
+                    const {
+                        data: { deleteProjectComment },
+                    } = await queryFulfilled;
+                    if (deleteProjectComment) {
+                        dispatch(
+                            generatedApi.util.updateQueryData('project', { id: projectId }, (draft) => {
+                                if (draft.project.comments?.length) {
+                                    const idx = draft.project.comments.findIndex((_comm) => _comm.id === id);
+                                    draft.project.comments.splice(idx, 1);
+                                }
+                            })
+                        );
+                    }
+                } catch {}
+            },
+        },
     },
 };

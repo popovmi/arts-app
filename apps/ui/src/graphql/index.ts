@@ -344,6 +344,7 @@ export type MutationDeleteAttributeArgs = {
 
 export type MutationDeleteProjectCommentArgs = {
   id: Scalars['Float'];
+  projectId: Scalars['String'];
 };
 
 
@@ -735,7 +736,7 @@ export type AddProjectCommentMutationVariables = Exact<{
 }>;
 
 
-export type AddProjectCommentMutation = { __typename?: 'Mutation', addProjectComment: { __typename?: 'ProjectComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
+export type AddProjectCommentMutation = { __typename?: 'Mutation', addProjectComment: { __typename?: 'ProjectComment', id: number, text: string, projectId: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type ChangePasswordMutationVariables = Exact<{
   username: Scalars['String'];
@@ -813,6 +814,7 @@ export type DeleteAttributeMutation = { __typename?: 'Mutation', deleteAttribute
 
 export type DeleteProjectCommentMutationVariables = Exact<{
   id: Scalars['Float'];
+  projectId: Scalars['String'];
 }>;
 
 
@@ -962,7 +964,7 @@ export type ProjectQueryVariables = Exact<{
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, comments?: Array<{ __typename?: 'ProjectComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, comments?: Array<{ __typename?: 'ProjectComment', id: number, text: string, projectId: string, author: { __typename?: 'User', id: string, fullName: string } }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
 
 export type ProjectsQueryVariables = Exact<{
   filter?: InputMaybe<ProjectFilterQuery>;
@@ -1021,6 +1023,7 @@ export const AddProjectCommentDocument = `
   addProjectComment(projectCommentInput: $projectCommentInput) {
     id
     text
+    projectId
     author {
       id
       fullName
@@ -1157,8 +1160,8 @@ export const DeleteAttributeDocument = `
 }
     `;
 export const DeleteProjectCommentDocument = `
-    mutation deleteProjectComment($id: Float!) {
-  deleteProjectComment(id: $id)
+    mutation deleteProjectComment($id: Float!, $projectId: String!) {
+  deleteProjectComment(id: $id, projectId: $projectId)
 }
     `;
 export const LoginDocument = `
@@ -1530,6 +1533,7 @@ export const ProjectDocument = `
     comments {
       id
       text
+      projectId
       author {
         id
         fullName

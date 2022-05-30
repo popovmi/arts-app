@@ -31,6 +31,7 @@ query project($id: String!) {
         comments {
             id
             text
+			projectId
             author {
                 id
                 fullName

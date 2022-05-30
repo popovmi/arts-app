@@ -128,13 +128,25 @@ export class ProjectService {
         return this.projectCommentRepository.save(comment);
     }
 
-    public async deleteComment({ commentId, authorId }: { commentId: number; authorId: string }) {
+    public async deleteComment({
+        commentId,
+        authorId,
+        projectId,
+    }: {
+        commentId: number;
+        authorId: string;
+        projectId: string;
+    }) {
         const comment = await this.projectCommentRepository.findOneOrFail({
             where: { id: commentId },
         });
 
         if (authorId !== comment.authorId) {
             throw new Error('Невозможно удалить чужой комментарий!');
+        }
+
+		if (projectId !== comment.projectId) {
+            throw new Error('Не тот проект!');
         }
 
         await this.projectCommentRepository.delete({ id: commentId });

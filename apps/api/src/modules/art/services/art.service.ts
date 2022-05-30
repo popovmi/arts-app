@@ -130,13 +130,25 @@ export class ArtService {
         return await this.artCommentRepository.save(comment);
     }
 
-    public async deleteComment({ commentId, authorId }: { commentId: number; authorId: string }) {
+    public async deleteComment({
+        commentId,
+        authorId,
+        artId,
+    }: {
+        commentId: number;
+        authorId: string;
+        artId: string;
+    }) {
         const comment = await this.artCommentRepository.findOneOrFail({
             where: { id: commentId },
         });
 
         if (authorId !== comment.authorId) {
             throw new Error('Невозможно удалить чужой комментарий!');
+        }
+
+        if (artId !== comment.artId) {
+            throw new Error('Не тот арт!');
         }
 
         await this.artCommentRepository.delete({ id: commentId });

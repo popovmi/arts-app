@@ -75,5 +75,24 @@ export const enhanceArtsApi: Parameters<typeof generatedApi['enhanceEndpoints']>
                 } catch {}
             },
         },
+        deleteArtComment: {
+            onQueryStarted: async ({ id, artId }, { dispatch, queryFulfilled }) => {
+                try {
+                    const {
+                        data: { deleteArtComment },
+                    } = await queryFulfilled;
+                    if (deleteArtComment) {
+                        dispatch(
+                            generatedApi.util.updateQueryData('art', { id: artId }, (draft) => {
+                                if (draft.art.comments?.length) {
+                                    const idx = draft.art.comments.findIndex((_comm) => _comm.id === id);
+                                    draft.art.comments.splice(idx, 1);
+                                }
+                            })
+                        );
+                    }
+                } catch {}
+            },
+        },
     },
 };

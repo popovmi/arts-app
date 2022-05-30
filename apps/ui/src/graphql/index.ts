@@ -332,6 +332,7 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationDeleteArtCommentArgs = {
+  artId: Scalars['String'];
   id: Scalars['Float'];
 };
 
@@ -727,7 +728,7 @@ export type AddArtCommentMutationVariables = Exact<{
 }>;
 
 
-export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
+export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, artId: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type AddProjectCommentMutationVariables = Exact<{
   projectCommentInput: ProjectCommentInput;
@@ -797,6 +798,7 @@ export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __type
 
 export type DeleteArtCommentMutationVariables = Exact<{
   id: Scalars['Float'];
+  artId: Scalars['String'];
 }>;
 
 
@@ -899,7 +901,7 @@ export type ArtQueryVariables = Exact<{
 }>;
 
 
-export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null, comments?: Array<{ __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null } };
+export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null, comments?: Array<{ __typename?: 'ArtComment', id: number, text: string, artId: string, author: { __typename?: 'User', id: string, fullName: string } }> | null } };
 
 export type ArtsQueryVariables = Exact<{
   filter?: InputMaybe<ArtFilterQuery>;
@@ -1006,6 +1008,7 @@ export const AddArtCommentDocument = `
   addArtComment(artCommentInput: $artCommentInput) {
     id
     text
+    artId
     author {
       id
       fullName
@@ -1144,8 +1147,8 @@ export const CreateUserDocument = `
 }
     `;
 export const DeleteArtCommentDocument = `
-    mutation deleteArtComment($id: Float!) {
-  deleteArtComment(id: $id)
+    mutation deleteArtComment($id: Float!, $artId: String!) {
+  deleteArtComment(id: $id, artId: $artId)
 }
     `;
 export const DeleteAttributeDocument = `
@@ -1344,6 +1347,7 @@ export const ArtDocument = `
     comments {
       id
       text
+      artId
       author {
         id
         fullName

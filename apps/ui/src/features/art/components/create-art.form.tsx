@@ -88,7 +88,7 @@ export const CreateArtForm = () => {
                                                                             },
                                                                         ]}
                                                                     >
-                                                                        <Input readOnly />
+                                                                        <Input />
                                                                     </Item>
                                                                 </Col>
                                                                 <Col flex={'none'}>

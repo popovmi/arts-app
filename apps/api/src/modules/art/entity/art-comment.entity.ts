@@ -23,7 +23,7 @@ export class ArtComment {
     @Index()
     artId: string;
 
-    @ManyToOne(() => Art)
+    @ManyToOne(() => Art, (art) => art.comments, { cascade: true })
     @JoinColumn({ name: 'artId' })
     art: Art;
 

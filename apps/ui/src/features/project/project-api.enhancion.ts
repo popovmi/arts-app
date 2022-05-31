@@ -42,6 +42,9 @@ export const enhanceProjectsApi: Parameters<typeof generatedApi['enhanceEndpoint
                 } catch {}
             },
         },
+		deleteProject: {
+            invalidatesTags: [{ type: PROJECT_API_TAG, id: 'LIST' }],
+        },
         addProjectComment: {
             onQueryStarted: async ({ projectCommentInput: { projectId } }, { dispatch, queryFulfilled }) => {
                 try {

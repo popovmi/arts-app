@@ -1,7 +1,10 @@
-import { Art, useUpdateArtMutation } from '@/graphql';
-import { useToggle } from '@/shared/hooks';
+import { useAppDispatch } from '@/app/store';
+import { Art, useDeleteArtMutation, useUpdateArtMutation } from '@/graphql';
+import { useToggle, useUser } from '@/shared/hooks';
 import { EditOutlined } from '@ant-design/icons';
-import { Col, Row, Typography } from 'antd';
+import { Button, Col, Modal, Row, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { clearFilter } from '../../art.slice';
 import styles from './art-title.module.css';
 
 interface ArtTitleProps {
@@ -9,11 +12,21 @@ interface ArtTitleProps {
 }
 
 export const ArtTitle: React.FC<ArtTitleProps> = ({ art }) => {
+    const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
+
     const [isEdit, toggleIsEdit] = useToggle();
 
     const [update, { isLoading: isUpdating }] = useUpdateArtMutation({
         fixedCacheKey: 'updateArtName',
     });
+
+    const [deleteArt, { isLoading: isDeleting }] = useDeleteArtMutation({
+        fixedCacheKey: 'deleteArt',
+    });
+
+    const { isAdmin } = useUser();
 
     const handleUpdate = (val: string) =>
         update({
@@ -32,6 +45,20 @@ export const ArtTitle: React.FC<ArtTitleProps> = ({ art }) => {
             },
         });
 
+    const handleDelete = () => {
+        Modal.confirm({
+            title: 'Удалить ART?',
+            onOk: () => {
+                deleteArt({ id: art.id }).then(() => {
+                    navigate('/arts');
+                    dispatch(clearFilter());
+                });
+            },
+        });
+    };
+
+    const loading = isUpdating || isDeleting;
+
     return (
         <Row style={{ padding: '0 8px', height: '40px' }} gutter={[8, 8]}>
             <Col flex="none">
@@ -47,10 +74,10 @@ export const ArtTitle: React.FC<ArtTitleProps> = ({ art }) => {
             <Col flex={1}>
                 <Typography.Title
                     level={1}
-                    onClick={() => !isUpdating && toggleIsEdit()}
+                    onClick={() => !loading && toggleIsEdit()}
                     style={isEdit ? {} : { display: 'inline' }}
                     editable={{
-                        icon: <EditOutlined spin={isUpdating} />,
+                        icon: <EditOutlined spin={loading} />,
                         triggerType: ['icon'],
                         editing: isEdit,
                         onCancel: toggleIsEdit,
@@ -66,6 +93,13 @@ export const ArtTitle: React.FC<ArtTitleProps> = ({ art }) => {
                     {art.name}
                 </Typography.Title>
             </Col>
+            {isAdmin && (
+                <Col flex="none">
+                    <Button style={{ marginTop: '8px' }} danger onClick={handleDelete} loading={loading}>
+                        Удалить ART
+                    </Button>
+                </Col>
+            )}
         </Row>
     );
 };

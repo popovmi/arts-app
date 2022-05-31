@@ -44,6 +44,9 @@ export const enhanceArtsApi: Parameters<typeof generatedApi['enhanceEndpoints']>
                 } catch {}
             },
         },
+        deleteArt: {
+            invalidatesTags: [{ type: ART_API_TAG, id: 'LIST' }],
+        },
         addArtComment: {
             onQueryStarted: async ({ artCommentInput: { artId } }, { dispatch, queryFulfilled }) => {
                 try {

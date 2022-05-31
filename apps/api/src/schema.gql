@@ -360,12 +360,14 @@ type Mutation {
   addProjectComment(projectCommentInput: ProjectCommentInput!): ProjectComment!
   updateProjectComment(id: Float!, text: String!): ProjectComment!
   deleteProjectComment(id: Float!, projectId: String!): Boolean!
+  deleteProject(id: String!): [Boolean!]!
   createArt(createArtInput: CreateArtInput!): Art!
   updateArt(updateArtInput: UpdateArtInput!): Art!
   addArtComment(artCommentInput: ArtCommentInput!): ArtComment!
   updateArtComment(id: Float!, text: String!): ArtComment!
   deleteArtComment(id: Float!, artId: String!): Boolean!
   createManyArts(artsInput: [CreateArtInput!]!): [Art!]!
+  deleteArt(id: String!): [Boolean!]!
   createFactory(input: CreateFactoryInput!): Factory!
   updateFactory(input: UpdateFactoryInput!): Factory!
   createCustomer(input: CreateCustomerInput!): Customer!

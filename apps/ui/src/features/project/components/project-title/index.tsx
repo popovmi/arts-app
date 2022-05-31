@@ -1,7 +1,10 @@
-import { Project, useUpdateProjectMutation } from '@/graphql';
-import { useToggle } from '@/shared/hooks';
+import { useAppDispatch } from '@/app/store';
+import { Project, useDeleteProjectMutation, useUpdateProjectMutation } from '@/graphql';
+import { useToggle, useUser } from '@/shared/hooks';
 import { EditOutlined } from '@ant-design/icons';
-import { Col, Row, Typography } from 'antd';
+import { Button, Col, Modal, Row, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { clearFilter } from '../../project.slice';
 import styles from './project-title.module.css';
 
 interface ProjectTitleProps {
@@ -9,11 +12,21 @@ interface ProjectTitleProps {
 }
 
 export const ProjectTitle: React.FC<ProjectTitleProps> = ({ project }) => {
+    const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
+
     const [isEdit, toggleIsEdit] = useToggle();
 
     const [update, { isLoading: isUpdating }] = useUpdateProjectMutation({
         fixedCacheKey: 'updateProjectName',
     });
+
+    const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation({
+        fixedCacheKey: 'deleteArt',
+    });
+
+    const { isAdmin } = useUser();
 
     const handleUpdate = (val: string) =>
         update({
@@ -29,6 +42,20 @@ export const ProjectTitle: React.FC<ProjectTitleProps> = ({ project }) => {
                 intercenter: project.intercenter,
             },
         });
+
+    const handleDelete = () => {
+        Modal.confirm({
+            title: 'Удалить проект и ART-ы?',
+            onOk: () => {
+                deleteProject({ id: project.id }).then(() => {
+                    navigate('/projects');
+                    dispatch(clearFilter());
+                });
+            },
+        });
+    };
+
+    const loading = isUpdating || isDeleting;
 
     return (
         <Row style={{ padding: '0 8px', height: '40px' }} gutter={[8, 8]}>
@@ -64,6 +91,13 @@ export const ProjectTitle: React.FC<ProjectTitleProps> = ({ project }) => {
                     {project.name}
                 </Typography.Title>
             </Col>
+            {isAdmin && (
+                <Col flex="none">
+                    <Button style={{ marginTop: '8px' }} danger onClick={handleDelete} loading={loading}>
+                        Удалить проект
+                    </Button>
+                </Col>
+            )}
         </Row>
     );
 };

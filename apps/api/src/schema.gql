@@ -403,6 +403,22 @@ input CreateProjectInput {
   sfm: String
   customerId: String
   factoryId: String
+  arts: [CreateArtInput!]
+}
+
+input CreateArtInput {
+  name: String!
+  internal: Boolean = true
+  projectId: String
+  bottomForm: String
+  artClass: String
+  form: String
+  nominalVolume: String
+  height: String
+  productType: String
+  productionMethod: String
+  ringType: String
+  filePath: String!
 }
 
 input UpdateProjectInput {
@@ -420,21 +436,6 @@ input UpdateProjectInput {
 input ProjectCommentInput {
   text: String!
   projectId: String!
-}
-
-input CreateArtInput {
-  name: String!
-  internal: Boolean = true
-  projectId: String
-  bottomForm: String
-  artClass: String
-  form: String
-  nominalVolume: String
-  height: String
-  productType: String
-  productionMethod: String
-  ringType: String
-  filePath: String!
 }
 
 input UpdateArtInput {

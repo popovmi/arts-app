@@ -71,12 +71,25 @@ export class ProjectService {
         return { page, pageData: { count, take, skip } };
     }
 
-    public createProject(createProjectInput: CreateProjectInput): Promise<Project> {
+    public async createProject(createProjectInput: CreateProjectInput): Promise<Project> {
+        const { arts, ...input } = createProjectInput.format();
+
         const project = this.projectRepository.create({
-            ...createProjectInput.format(),
+            ...input,
         });
 
-        return this.projectRepository.save(project);
+        await this.projectRepository.save(project);
+
+        if (arts?.length > 0) {
+            await this.artService.createManyArts(
+                arts.map((art) => {
+                    art.projectId = project.id;
+                    return art;
+                })
+            );
+        }
+
+        return project;
     }
 
     public async updateProject(updateProjectInput: UpdateProjectInput): Promise<Project> {

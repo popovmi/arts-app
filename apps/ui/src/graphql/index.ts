@@ -191,6 +191,7 @@ export type CreateFactoryInput = {
 };
 
 export type CreateProjectInput = {
+  arts?: InputMaybe<Array<CreateArtInput>>;
   customerId?: InputMaybe<Scalars['String']>;
   dropNumber?: InputMaybe<Scalars['String']>;
   factoryId?: InputMaybe<Scalars['String']>;

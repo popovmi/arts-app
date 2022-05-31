@@ -2,6 +2,7 @@ mutation addArtComment($artCommentInput: ArtCommentInput!) {
     addArtComment(artCommentInput: $artCommentInput) {
         id
         text
+		artId
         author {
             id
             fullName

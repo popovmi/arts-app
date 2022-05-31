@@ -2,6 +2,7 @@ mutation addProjectComment($projectCommentInput: ProjectCommentInput!) {
     addProjectComment(projectCommentInput: $projectCommentInput) {
         id
         text
+		projectId
         author {
             id
             fullName

@@ -332,6 +332,7 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationDeleteArtCommentArgs = {
+  artId: Scalars['String'];
   id: Scalars['Float'];
 };
 
@@ -343,6 +344,7 @@ export type MutationDeleteAttributeArgs = {
 
 export type MutationDeleteProjectCommentArgs = {
   id: Scalars['Float'];
+  projectId: Scalars['String'];
 };
 
 
@@ -727,14 +729,14 @@ export type AddArtCommentMutationVariables = Exact<{
 }>;
 
 
-export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
+export type AddArtCommentMutation = { __typename?: 'Mutation', addArtComment: { __typename?: 'ArtComment', id: number, text: string, artId: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type AddProjectCommentMutationVariables = Exact<{
   projectCommentInput: ProjectCommentInput;
 }>;
 
 
-export type AddProjectCommentMutation = { __typename?: 'Mutation', addProjectComment: { __typename?: 'ProjectComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } } };
+export type AddProjectCommentMutation = { __typename?: 'Mutation', addProjectComment: { __typename?: 'ProjectComment', id: number, text: string, projectId: string, author: { __typename?: 'User', id: string, fullName: string } } };
 
 export type ChangePasswordMutationVariables = Exact<{
   username: Scalars['String'];
@@ -797,6 +799,7 @@ export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __type
 
 export type DeleteArtCommentMutationVariables = Exact<{
   id: Scalars['Float'];
+  artId: Scalars['String'];
 }>;
 
 
@@ -811,6 +814,7 @@ export type DeleteAttributeMutation = { __typename?: 'Mutation', deleteAttribute
 
 export type DeleteProjectCommentMutationVariables = Exact<{
   id: Scalars['Float'];
+  projectId: Scalars['String'];
 }>;
 
 
@@ -899,7 +903,7 @@ export type ArtQueryVariables = Exact<{
 }>;
 
 
-export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null, comments?: Array<{ __typename?: 'ArtComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null } };
+export type ArtQuery = { __typename?: 'Query', art: { __typename?: 'Art', id: string, name: string, internal: boolean, projectId?: string | null, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null, project?: { __typename?: 'Project', id: string, name: string } | null, comments?: Array<{ __typename?: 'ArtComment', id: number, text: string, artId: string, author: { __typename?: 'User', id: string, fullName: string } }> | null } };
 
 export type ArtsQueryVariables = Exact<{
   filter?: InputMaybe<ArtFilterQuery>;
@@ -960,7 +964,7 @@ export type ProjectQueryVariables = Exact<{
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, comments?: Array<{ __typename?: 'ProjectComment', id: number, text: string, author: { __typename?: 'User', id: string, fullName: string } }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, name: string, internal: boolean, hasDesignDoc?: boolean | null, sfm?: string | null, dropNumber?: string | null, intercenter?: string | null, createdAt: any, updatedAt: any, arts?: Array<{ __typename?: 'Art', id: string, name: string, internal: boolean, createdAt?: any | null, updatedAt?: any | null, bottomForm?: string | null, artClass?: string | null, form?: string | null, nominalVolume?: string | null, height?: string | null, productType?: string | null, productionMethod?: string | null, ringType?: string | null, files?: Array<{ __typename?: 'ArtFile', artId: string, originalPath: string, watermarkPath: string, uploadedAt: any }> | null }> | null, comments?: Array<{ __typename?: 'ProjectComment', id: number, text: string, projectId: string, author: { __typename?: 'User', id: string, fullName: string } }> | null, factory?: { __typename?: 'Factory', id: string, name: string } | null, customer?: { __typename?: 'Customer', id: string, name: string } | null } };
 
 export type ProjectsQueryVariables = Exact<{
   filter?: InputMaybe<ProjectFilterQuery>;
@@ -1006,6 +1010,7 @@ export const AddArtCommentDocument = `
   addArtComment(artCommentInput: $artCommentInput) {
     id
     text
+    artId
     author {
       id
       fullName
@@ -1018,6 +1023,7 @@ export const AddProjectCommentDocument = `
   addProjectComment(projectCommentInput: $projectCommentInput) {
     id
     text
+    projectId
     author {
       id
       fullName
@@ -1144,8 +1150,8 @@ export const CreateUserDocument = `
 }
     `;
 export const DeleteArtCommentDocument = `
-    mutation deleteArtComment($id: Float!) {
-  deleteArtComment(id: $id)
+    mutation deleteArtComment($id: Float!, $artId: String!) {
+  deleteArtComment(id: $id, artId: $artId)
 }
     `;
 export const DeleteAttributeDocument = `
@@ -1154,8 +1160,8 @@ export const DeleteAttributeDocument = `
 }
     `;
 export const DeleteProjectCommentDocument = `
-    mutation deleteProjectComment($id: Float!) {
-  deleteProjectComment(id: $id)
+    mutation deleteProjectComment($id: Float!, $projectId: String!) {
+  deleteProjectComment(id: $id, projectId: $projectId)
 }
     `;
 export const LoginDocument = `
@@ -1344,6 +1350,7 @@ export const ArtDocument = `
     comments {
       id
       text
+      artId
       author {
         id
         fullName
@@ -1526,6 +1533,7 @@ export const ProjectDocument = `
     comments {
       id
       text
+      projectId
       author {
         id
         fullName

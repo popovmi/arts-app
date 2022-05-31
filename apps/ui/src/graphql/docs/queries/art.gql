@@ -16,6 +16,7 @@ query art($id: String!) {
         comments {
             id
             text
+			artId
             author {
                 id
                 fullName

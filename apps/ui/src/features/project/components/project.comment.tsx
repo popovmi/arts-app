@@ -1,6 +1,10 @@
-import { useUpdateProjectCommentMutation, type ProjectComment } from '@/graphql';
+import {
+    useDeleteProjectCommentMutation,
+    useUpdateProjectCommentMutation,
+    type ProjectComment,
+} from '@/graphql';
 import { useToggle, useUser } from '@/shared/hooks';
-import { EditOutlined, SaveFilled } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, SaveFilled } from '@ant-design/icons';
 import { Comment, Input } from 'antd';
 import { FC, useState } from 'react';
 
@@ -34,7 +38,13 @@ export const ProjectCommentView: FC<{ comment: ProjectComment }> = ({ comment })
         ) : (
             <EditOutlined onClick={() => toggleEdit()} />
         );
-        actions.push(updateCommentControl);
+
+        const [deleteComment] = useDeleteProjectCommentMutation();
+        const deleteCommentControl = (
+            <DeleteOutlined onClick={() => deleteComment({ id: comment.id, projectId: comment.projectId })} />
+        );
+
+        actions.push(updateCommentControl, deleteCommentControl);
     }
 
     return (

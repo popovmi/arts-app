@@ -3,7 +3,7 @@ import { ProjectType } from '@/modules/project/dto';
 import { Role } from '@/modules/user';
 import { Roles } from '@/shared/decorators/roles.decorator';
 import { AppContext } from '@/shared/types';
-import { ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ParseIntPipe, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import {
     ArtCommentInput,
@@ -85,10 +85,12 @@ export class ArtResolver {
     @Mutation(() => Boolean)
     public async deleteArtComment(
         @Args('id', new ParseIntPipe()) id: number,
+        @Args('artId', new ParseUUIDPipe()) artId: string,
         @Context() { currentUserId }: AppContext
     ) {
         await this.artService.deleteComment({
             commentId: id,
+            artId,
             authorId: currentUserId,
         });
         return true;

@@ -1,3 +1,3 @@
-mutation deleteArtComment($id: Float!) {
-    deleteArtComment(id: $id)
+mutation deleteArtComment($id: Float!, $artId: String!) {
+    deleteArtComment(id: $id, artId: $artId)
 }

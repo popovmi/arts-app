@@ -5,7 +5,7 @@ import { AttributeSelector, AttributesLabels } from '@/features/attribute';
 import { CustomerSelector } from '@/features/customer';
 import { FactorySelector } from '@/features/factory';
 import { CreateProjectInput, useCreateProjectMutation } from '@/graphql';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Collapse, Divider, Form, Input, Row, Space, Spin, Typography } from 'antd';
 import { projectAttributesTypes } from '../project-attribute.types';
 import { clearFilter } from '../project.slice';
@@ -16,10 +16,13 @@ const { Panel } = Collapse;
 
 export const CreateProjectForm = () => {
     const dispatch = useAppDispatch();
+
     const [createProject, { isLoading, error, isError, reset }] = useCreateProjectMutation({
         fixedCacheKey: 'createProject',
     });
+
     const [form] = Form.useForm<CreateProjectInput>();
+
     const onFormFinish = (createProjectInput: CreateProjectInput) => {
         createProject({ createProjectInput }).then((res) => 'data' in res && dispatch(clearFilter()));
     };
@@ -30,6 +33,12 @@ export const CreateProjectForm = () => {
         const arts = form.getFieldValue('arts');
         arts[index] = { ...arts[index], name, filePath };
 
+        form.setFieldsValue({ arts });
+    };
+
+    const onArtDelete = (index: number) => {
+        const arts = form.getFieldValue('arts');
+        arts.splice(index, 1);
         form.setFieldsValue({ arts });
     };
 
@@ -51,6 +60,20 @@ export const CreateProjectForm = () => {
                                     Данные проекта
                                 </Typography.Title>
                             </Divider>
+                            <Col xs={24}>
+                                {isError && (
+                                    <Space>
+                                        <Text type="danger">{error?.message}</Text>
+                                        <Button
+                                            size="small"
+                                            type="link"
+                                            danger
+                                            icon={<CloseOutlined />}
+                                            onClick={reset}
+                                        />
+                                    </Space>
+                                )}
+                            </Col>
                             <Col xs={24} md={8}>
                                 <Item
                                     label="Название"
@@ -98,20 +121,6 @@ export const CreateProjectForm = () => {
                                     {(fields, { add, remove }, { errors }) => (
                                         <Row gutter={[8, 8]}>
                                             <Col xs={24}>
-                                                {isError && (
-                                                    <Space>
-                                                        <Text type="danger">{error?.message}</Text>
-                                                        <Button
-                                                            size="small"
-                                                            type="link"
-                                                            danger
-                                                            icon={<CloseOutlined />}
-                                                            onClick={reset}
-                                                        />
-                                                    </Space>
-                                                )}
-                                            </Col>
-                                            <Col xs={24}>
                                                 <Collapse accordion>
                                                     {fields.map((field, index) => {
                                                         const { key, name, ...restField } = field;
@@ -122,7 +131,18 @@ export const CreateProjectForm = () => {
                                                             form.getFieldValue(['arts', index, 'name']) ||
                                                             '-';
                                                         return (
-                                                            <Panel key={key} header={header}>
+                                                            <Panel
+                                                                key={key}
+                                                                header={
+                                                                    <Space>
+                                                                        {header}
+                                                                        <DeleteOutlined
+                                                                            style={{ color: 'red' }}
+                                                                            onClick={() => onArtDelete(index)}
+                                                                        />
+                                                                    </Space>
+                                                                }
+                                                            >
                                                                 <Row>
                                                                     <Col xs={24} md={8}>
                                                                         <Row gutter={[8, 8]}>
@@ -217,18 +237,6 @@ export const CreateProjectForm = () => {
                             </Item>
                         </Row>
                     </Spin>
-                    {isError && (
-                        <Space>
-                            <Text type="danger">{error?.message}</Text>
-                            <Button
-                                size="small"
-                                type="link"
-                                danger
-                                icon={<CloseOutlined />}
-                                onClick={reset}
-                            />
-                        </Space>
-                    )}
                 </Form>
             </Col>
         </Row>

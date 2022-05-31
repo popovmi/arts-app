@@ -20,29 +20,49 @@ module.exports = class fixArtsFilesPaths1653991278349 {
         });
         for (const file of originalFiles) {
             const [fileName, extension] = file.split('.');
-            const [art] = await queryRunner.query(
-                `select * from art a left join art_file af on af."artId" = a.id where a.id = '${fileName}'`
-            );
-            await queryRunner.query(`
-				update
-					art_file af
-				set
-					"originalPath" = 'original\\${art.id}.${extension}'
-				where af."artId" = '${art.id}'
+            const [art] = await queryRunner.query(`
+				select
+					*
+				from
+					art a
+				left join art_file af
+					on af."artId" = a.id
+				where
+					a."createdAt" < '2022-05-30'
+					and	a.name = '${fileName}'
 			`);
+            if (art) {
+                await queryRunner.query(`
+					update
+						art_file af
+					set
+						"originalPath" = 'original\\${art.id}.${extension}'
+					where af."artId" = '${art.id}'
+				`);
+            }
         }
         for (const file of watermarkFiles) {
             const [fileName, extension] = file.split('.');
-            const [art] = await queryRunner.query(
-                `select * from art a left join art_file af on af."artId" = a.id where a.id = '${fileName}'`
-            );
-            await queryRunner.query(`
-				update
-					art_file af
-				set
-					"watermarkPath" = 'watermark\\${art.id}.${extension}'
-				where af."artId" = '${art.id}'
-			`);
+            const [art] = await queryRunner.query(`
+				select
+					*
+				from 
+					art a 
+				left join art_file af 
+					on af."artId" = a.id 
+				where
+					a."createdAt" < '2022-05-30'
+					and	a.name = '${fileName}'
+				 `);
+            if (art) {
+                await queryRunner.query(`
+					update
+						art_file af
+					set
+						"watermarkPath" = 'watermark\\${art.id}.${extension}'
+					where af."artId" = '${art.id}'
+				`);
+            }
         }
     }
 

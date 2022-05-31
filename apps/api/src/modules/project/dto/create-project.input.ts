@@ -44,6 +44,7 @@ export class CreateProjectInput {
     @Field(() => String, { nullable: true })
     factoryId: string;
 
+    @IsOptional()
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => CreateArtInput)

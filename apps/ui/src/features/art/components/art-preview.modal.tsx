@@ -1,7 +1,7 @@
 import { Art } from '@/graphql';
 import { CenteredSpin } from '@/shared/components';
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
-import { Button, Carousel, Col, Image, Modal, Row, Space, Typography } from 'antd';
+import { Button, Carousel, Col, Image, Modal, Row, Space, Typography, Result } from 'antd';
 import { CarouselRef } from 'antd/lib/carousel';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -156,12 +156,16 @@ export const ArtPreviewModal: FC<ArtsPreviewModalProps> = ({
                                             xl={18}
                                             style={{ display: 'flex', justifyContent: 'center' }}
                                         >
-                                            <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
-                                                <Image
-                                                    src={`/static/${art.files![0].watermarkPath}`}
-                                                    style={{ maxWidth: '1000px' }}
-                                                />
-                                            </div>
+                                            {art.files![0]?.watermarkPath ? (
+                                                <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                                                    <Image
+                                                        src={`/static/${art.files![0].watermarkPath}`}
+                                                        style={{ maxWidth: '1000px' }}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <Result status="warning" title="Файл не загружен" />
+                                            )}
                                         </Col>
                                     </Row>
                                 </div>

@@ -13,9 +13,9 @@
                 "tsConfig": "apps/api/tsconfig.app.json",
                 "assets": [
                     {
-                        "glob": "ormconfig.prod.js",
+                        "glob": "datasource.prod.js",
                         "input": "apps/api",
-                        "output": "ormconfig.js"
+                        "output": "datasource.js"
                     },
                     {
                         "glob": "*.js",
@@ -77,7 +77,7 @@
                     "npm": "8.x"
                 },
                 "scripts": {
-                    "migration:run": "npx typeorm migration:run"
+                    "migration:run": "npx typeorm migration:run -d datasource.js"
                 }
             }
         },
